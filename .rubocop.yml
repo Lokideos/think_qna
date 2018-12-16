@@ -12,10 +12,11 @@ AllCops:
     - 'config.ru'
     - 'Rakefile'
     - 'db/schema.rb'
-    - 'test/test_helper.rb'
+    - 'spec/rails_helper.rb'
+    - 'spec/spec_helper.rb'
 
 Metrics/LineLength:
-  Max: 100
+  Max: 120
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
