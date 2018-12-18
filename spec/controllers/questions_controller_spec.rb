@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
+# rubocop:disable Metrics/LineLength
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
 
@@ -115,5 +116,19 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:question) { create(:question) }
+
+    it 'deletes the question' do
+      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+    end
+
+    it 'redirect to index' do
+      delete :destroy, params: { id: question }
+      expect(response).to redirect_to questions_path
+    end
+  end
 end
+# rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength
