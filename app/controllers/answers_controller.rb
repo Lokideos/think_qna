@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  before_action :load_question, only: :create
+  before_action :load_question, only: %i[create]
+  before_action :load_related_question, only: %i[update destroy]
 
   def index
     @answers = Answer.all
@@ -25,20 +26,23 @@ class AnswersController < ApplicationController
 
   def update
     if answer.update(answer_params)
-      redirect_to answer
+      redirect_to @question
     else
       render :edit
     end
   end
 
   def destroy
-    @question = answer.question
     answer.destroy
 
     redirect_to @question
   end
 
   private
+
+  def load_related_question
+    @question = answer.question
+  end
 
   def load_question
     @question = Question.find(params[:question_id])

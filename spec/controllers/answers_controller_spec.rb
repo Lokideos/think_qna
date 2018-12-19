@@ -95,7 +95,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to the updated answer' do
         patch :update, params: { id: answer, answer: attributes_for(:answer) }
-        expect(response).to redirect_to answer
+        expect(response).to redirect_to question
       end
     end
 
