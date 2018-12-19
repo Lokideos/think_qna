@@ -46,6 +46,10 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
+    it 'assign correct association to a answer' do
+      expect(assigns(:answer).question_id).to eq question.id
+    end
+
     it 'renders new view' do
       expect(response).to render_template :new
     end
