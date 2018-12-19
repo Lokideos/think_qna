@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  before_action :load_answer, only: %i[show edit update]
+  before_action :load_answer, only: %i[show edit update destroy]
+
   def index
     @answers = Answer.all
   end
@@ -31,6 +32,13 @@ class AnswersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @question = @answer.question
+    @answer.destroy
+
+    redirect_to question_answers_path(@question)
   end
 
   private

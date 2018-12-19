@@ -6,6 +6,7 @@ require 'rails_helper'
 # rubocop:disable Metrics/LineLength
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
+  let(:answer) { create(:answer, question: question) }
 
   describe 'GET #index' do
     let(:answers) do
@@ -51,8 +52,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-    let(:answer) { create(:answer) }
-
     before { get :edit, params: { id: answer } }
 
     it 'assigns the requested answer to @answer' do
@@ -94,8 +93,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:answer) { create(:answer, question: question) }
-
     it 'assigns the requested answer to @answer' do
       patch :update, params: { id: answer, answer: attributes_for(:answer) }
       expect(assigns(:answer)).to eq answer
@@ -125,6 +122,19 @@ RSpec.describe AnswersController, type: :controller do
       it 're-renders edit view' do
         expect(response).to render_template :edit
       end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:answer) { create(:answer, question: question) }
+
+    it 'deletes the answer' do
+      expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+    end
+
+    it 'redirects to the associated question view' do
+      delete :destroy, params: { id: answer }
+      expect(response).to redirect_to question_answers_path(question_id: question)
     end
   end
 end
