@@ -35,7 +35,7 @@ class AnswersController < ApplicationController
     @question = answer.question
     answer.destroy
 
-    redirect_to question_answers_path(@question)
+    redirect_to @question
   end
 
   private

@@ -122,7 +122,7 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'redirects to the associated question view' do
       delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question_answers_path(question_id: question)
+      expect(response).to redirect_to question
     end
   end
 end
