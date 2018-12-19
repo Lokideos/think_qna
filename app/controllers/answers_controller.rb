@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  before_action :load_answer, only: %i[show edit]
+  before_action :load_answer, only: %i[show edit update]
   def index
     @answers = Answer.all
   end
@@ -22,6 +22,14 @@ class AnswersController < ApplicationController
       redirect_to @question
     else
       render :new
+    end
+  end
+
+  def update
+    if @answer.update(answer_params)
+      redirect_to @answer
+    else
+      render :edit
     end
   end
 

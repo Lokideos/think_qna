@@ -92,6 +92,41 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let(:answer) { create(:answer, question: question) }
+
+    it 'assigns the requested answer to @answer' do
+      patch :update, params: { id: answer, answer: attributes_for(:answer) }
+      expect(assigns(:answer)).to eq answer
+    end
+
+    context 'with valid attributes' do
+      it 'changes the answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'redirect to the updated answer' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer) }
+        expect(response).to redirect_to answer
+      end
+    end
+
+    context 'with invalid attributes' do
+      before { patch :update, params: { id: answer, answer: { body: nil } } }
+
+      it 'does not change the answer attributes' do
+        answer.reload
+        expect(answer.body).to eq 'MyString'
+      end
+
+      it 're-renders edit view' do
+        expect(response).to render_template :edit
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength
