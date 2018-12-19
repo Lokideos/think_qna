@@ -30,10 +30,6 @@ RSpec.describe AnswersController, type: :controller do
 
     before { get :show, params: { id: answer } }
 
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -42,14 +38,6 @@ RSpec.describe AnswersController, type: :controller do
   describe 'GET #new' do
     before { get :new, params: { question_id: question } }
 
-    it 'assigns a new answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'assign correct association to a answer' do
-      expect(assigns(:answer).question_id).to eq question.id
-    end
-
     it 'renders new view' do
       expect(response).to render_template :new
     end
@@ -57,10 +45,6 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #edit' do
     before { get :edit, params: { id: answer } }
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
-    end
 
     it 'renders edit view' do
       expect(response).to render_template :edit

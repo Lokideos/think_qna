@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  before_action :load_answer, only: %i[show edit update destroy]
-  before_action :load_question, only: %i[new create]
+  before_action :load_question, only: :create
 
   def index
     @answers = Answer.all
@@ -10,9 +9,7 @@ class AnswersController < ApplicationController
 
   def show; end
 
-  def new
-    @answer = @question.answers.new
-  end
+  def new; end
 
   def edit; end
 
@@ -27,16 +24,16 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @answer
+    if answer.update(answer_params)
+      redirect_to answer
     else
       render :edit
     end
   end
 
   def destroy
-    @question = @answer.question
-    @answer.destroy
+    @question = answer.question
+    answer.destroy
 
     redirect_to question_answers_path(@question)
   end
@@ -47,8 +44,8 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
   end
 
-  def load_answer
-    @answer = Answer.find(params[:id])
+  def answer
+    @answer ||= params[:id] ? Answer.find(params[:id]) : load_question.answers.new
   end
 
   def answer_params
