@@ -6,8 +6,9 @@ require 'rails_helper'
 # rubocop:disable Metrics/LineLength
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
+  let(:answer) { create(:answer, question: question, user: user) }
   let(:user) { create(:user) }
+  let(:non_author) { create(:user) }
 
   describe 'GET #index' do
     let(:answers) do
@@ -122,12 +123,23 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :edit
       end
     end
+
+    context 'used by user, who is not author of the answer' do
+      it 'does not update the answer' do
+        login(non_author)
+        correct_answer_body = answer.body
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Other users body') }
+        answer.reload
+
+        expect(answer.body).to eq correct_answer_body
+      end
+    end
   end
 
   describe 'DELETE #destroy' do
     before { login(user) }
 
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, user: user) }
 
     it 'deletes the answer' do
       expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
@@ -135,7 +147,15 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'redirects to the associated question view' do
       delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question
+      expect(response).to redirect_to answer.question
+    end
+
+    context 'used by user, who is not author of the answer' do
+      it 'does not delete the answer' do
+        login(non_author)
+
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
     end
   end
 end

@@ -2,6 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
+  before_action :filter_non_author_users, only: %i[update destroy]
 
   def index
     @answers = Answer.all
@@ -39,6 +40,10 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def filter_non_author_users
+    redirect_to root_path unless current_user.author_of?(answer)
+  end
 
   def question
     @question ||= params[:question_id] ? Question.find(params[:question_id]) : answer.question
