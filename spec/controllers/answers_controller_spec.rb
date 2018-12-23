@@ -112,8 +112,10 @@ RSpec.describe AnswersController, type: :controller do
       before { patch :update, params: { id: answer, answer: { body: nil } } }
 
       it 'does not change the answer attributes' do
+        correct_answer_body = answer.body
         answer.reload
-        expect(answer.body).to eq 'MyString'
+
+        expect(answer.body).to eq correct_answer_body
       end
 
       it 're-renders edit view' do
