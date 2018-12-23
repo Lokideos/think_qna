@@ -6,8 +6,12 @@ p= question.body
 
 section.answers
   ul
-    - question.answers.each do |ans|
-      li= ans.body
+    - question.answers.each do |answer|
+      - if answer.persisted?
+        li
+          = answer.body
+          - if current_user&.author_of?(answer)
+            = link_to 'Delete answer', answer_path(answer), method: :delete
 
 section.new_answer
   - if current_user

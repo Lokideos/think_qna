@@ -15,6 +15,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = question.answers.new(answer_params)
+    @answer.user = current_user
 
     if answer.save
       redirect_to question, notice: 'Answer was successfully created.'
@@ -34,7 +35,7 @@ class AnswersController < ApplicationController
   def destroy
     answer.destroy
 
-    redirect_to question
+    redirect_to question, notice: 'Answer has been successfully deleted.'
   end
 
   private

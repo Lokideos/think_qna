@@ -6,6 +6,7 @@ FactoryBot.define do
   end
 
   factory :answer do
+    user
     question
     body
 
