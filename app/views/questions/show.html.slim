@@ -1,2 +1,14 @@
 h1= question.title
 p= question.body
+
+section.answers
+  ul
+    - question.answers.each do |ans|
+      li= ans.body
+
+section.new_answer
+  - if current_user
+    = form_with model: [question, @answer] do |f|
+      = f.label :body
+      = f.text_area :body
+      = f.submit 'Answer on question'

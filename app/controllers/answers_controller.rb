@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
+
   def index
     @answers = Answer.all
   end
@@ -15,9 +17,9 @@ class AnswersController < ApplicationController
     @answer = question.answers.new(answer_params)
 
     if answer.save
-      redirect_to question
+      redirect_to question, notice: 'Answer was successfully created.'
     else
-      render :new
+      redirect_to question, notice: "Answer wasn't created; check your input."
     end
   end
 
