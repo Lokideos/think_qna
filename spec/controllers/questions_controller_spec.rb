@@ -102,9 +102,10 @@ RSpec.describe QuestionsController, type: :controller do
       before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
 
       it 'does not change question' do
+        correct_question_title = question.title
         question.reload
 
-        expect(question.title).to eq 'MyString'
+        expect(question.title).to eq correct_question_title
         expect(question.body). to eq 'MyText'
       end
 
