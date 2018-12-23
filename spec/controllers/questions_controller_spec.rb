@@ -5,8 +5,8 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Metrics/LineLength
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     before { get :index }
@@ -57,6 +57,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
+
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
