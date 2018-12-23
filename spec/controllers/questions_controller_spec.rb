@@ -6,6 +6,7 @@ require 'rails_helper'
 # rubocop:disable Metrics/LineLength
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let(:non_author) { create(:user) }
   let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
@@ -114,12 +115,23 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :edit
       end
     end
+
+    context 'used by user, who is not author of the question' do
+      it 'does not update the question' do
+        login(non_author)
+        correct_question_title = question.title
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title') }
+        question.reload
+
+        expect(question.title).to eq correct_question_title
+      end
+    end
   end
 
   describe 'DELETE #destroy' do
     before { login(user) }
 
-    let!(:question) { create(:question) }
+    let!(:question) { create(:question, user: user) }
 
     it 'deletes the question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
@@ -128,6 +140,14 @@ RSpec.describe QuestionsController, type: :controller do
     it 'redirect to index' do
       delete :destroy, params: { id: question }
       expect(response).to redirect_to questions_path
+    end
+
+    context 'used by user, who is not author of the question' do
+      it 'does not delete the question' do
+        login(non_author)
+
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
     end
   end
 end
