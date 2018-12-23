@@ -28,3 +28,6 @@
 
 # Ignore local database settings
 /config/database.yml
+
+# Ignore rubymine settings
+.idea/
