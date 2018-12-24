@@ -4,13 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :filter_non_author_users, only: %i[update destroy]
 
-  def index
-    @answers = Answer.all
-  end
-
   def show; end
-
-  def new; end
 
   def edit; end
 
