@@ -43,6 +43,11 @@ RSpec.describe AnswersController, type: :controller do
         expect(assigns(:answer).question_id).to eq question.id
       end
 
+      it 'saves the correct association to the user' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question }
+        expect(assigns(:answer).user_id).to eq user.id
+      end
+
       it 'redirects the show view' do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
         expect(response).to redirect_to question
