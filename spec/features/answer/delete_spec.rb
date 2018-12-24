@@ -29,7 +29,7 @@ feature 'Author can create only his answers', "
     scenario "to delete other users' answer" do
       visit question_path(question)
 
-      within('.answers') { expect(page).to_not have_content 'Delete answer' }
+      within('.answers') { expect(page).to_not have_link 'Delete answer' }
     end
 
     scenario "to delete other user's answer via delete request" do
@@ -42,7 +42,7 @@ feature 'Author can create only his answers', "
   scenario 'Guest tries to delete an answer' do
     visit question_path(question)
 
-    within('.answers') { expect(page).to_not have_content 'Delete answer' }
+    within('.answers') { expect(page).to_not have_link 'Delete answer' }
   end
 end
 # rubocop:enable Metrics/BlockLength
