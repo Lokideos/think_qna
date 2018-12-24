@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 feature 'Author can create only his answers', "
   In order to delete only my answers
   As an author of the answer
@@ -22,11 +23,20 @@ feature 'Author can create only his answers', "
     expect(page).to_not have_content answer.body
   end
 
-  scenario "Authenticated user tries to delete other users' answer" do
-    sign_in(non_author)
-    visit question_path(question)
+  context 'Non author user triest' do
+    before { sign_in(non_author) }
 
-    within('.answers') { expect(page).to_not have_content 'Delete answer' }
+    scenario "to delete other users' answer" do
+      visit question_path(question)
+
+      within('.answers') { expect(page).to_not have_content 'Delete answer' }
+    end
+
+    scenario "to delete other user's answer via delete request" do
+      page.driver.submit :delete, "answers/#{answer.id}", {}
+
+      expect(page).to have_content 'You can modify or delete only your answers'
+    end
   end
 
   scenario 'Guest tries to delete an answer' do
@@ -35,3 +45,4 @@ feature 'Author can create only his answers', "
     within('.answers') { expect(page).to_not have_content 'Delete answer' }
   end
 end
+# rubocop:enable Metrics/BlockLength

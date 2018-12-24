@@ -105,6 +105,7 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
 
         expect(answer.body).to eq correct_answer_body
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -128,6 +129,7 @@ RSpec.describe AnswersController, type: :controller do
         login(non_author)
 
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        expect(response).to redirect_to root_path
       end
     end
   end
