@@ -30,6 +30,7 @@ feature 'User can create answer for the question', "
       click_on 'Answer on question'
 
       expect(page).to have_content "Answer wasn't created; check your input."
+      expect(page).to have_content "Body can't be blank"
     end
   end
 

@@ -15,7 +15,8 @@ class AnswersController < ApplicationController
     if answer.save
       redirect_to question, notice: 'Answer was successfully created.'
     else
-      redirect_to question, notice: "Answer wasn't created; check your input."
+      flash[:notice] = "Answer wasn't created; check your input."
+      render 'questions/show'
     end
   end
 
@@ -46,6 +47,8 @@ class AnswersController < ApplicationController
   def answer
     @answer ||= params[:id] ? Answer.find(params[:id]) : question.answers.new
   end
+
+  helper_method :answer, :question
 
   def answer_params
     params.require(:answer).permit(:body)

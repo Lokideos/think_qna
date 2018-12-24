@@ -15,6 +15,7 @@ section.answers
 
 section.new_answer
   - if current_user
+    = render 'shared/errors', resource: @answer
     = form_with model: [question, @answer] do |f|
       = f.label :body
       = f.text_area :body
