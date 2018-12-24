@@ -21,11 +21,20 @@ feature 'Author can delete his question', "
     expect(page).to_not have_content question.title
   end
 
-  scenario "User tries to delete other users' question" do
-    sign_in(non_author)
-    visit question_path(question)
+  context 'Non author user tries' do
+    before { sign_in(non_author) }
 
-    expect(page).to_not have_content 'Delete question'
+    scenario "to delete other users' question" do
+      visit question_path(question)
+
+      expect(page).to_not have_content 'Delete question'
+    end
+
+    scenario "to delete other users' question via delete request" do
+      page.driver.submit :delete, "/questions/#{question.id}", {}
+
+      expect(page).to have_content 'You can modify or delete only your questions'
+    end
   end
 
   scenario 'Unauthenticated user tries to delete a question' do

@@ -124,6 +124,7 @@ RSpec.describe QuestionsController, type: :controller do
         question.reload
 
         expect(question.title).to eq correct_question_title
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -147,6 +148,7 @@ RSpec.describe QuestionsController, type: :controller do
         login(non_author)
 
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+        expect(response).to redirect_to root_path
       end
     end
   end

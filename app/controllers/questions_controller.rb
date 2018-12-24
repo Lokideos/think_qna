@@ -41,9 +41,11 @@ class QuestionsController < ApplicationController
 
   private
 
+  # rubocop:disable Metrics/LineLength
   def filter_non_author_users
-    redirect_to root_path unless current_user.author_of?(question)
+    redirect_to root_path, notice: 'You can modify or delete only your questions' unless current_user.author_of?(question)
   end
+  # rubocop:enable Metrics/LineLength
 
   def question_params
     params.require(:question).permit(:title, :body)
