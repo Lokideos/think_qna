@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  def index
-    @answers = Answer.all
-  end
+  before_action :authenticate_user!, except: %i[show]
+  before_action :filter_non_author_users, only: %i[update destroy]
 
   def show; end
-
-  def new; end
 
   def edit; end
 
   def create
     @answer = question.answers.new(answer_params)
+    @answer.user = current_user
 
     if answer.save
-      redirect_to question
+      redirect_to question, notice: 'Answer was successfully created.'
     else
-      render :new
+      flash[:notice] = "Answer wasn't created; check your input."
+      render 'questions/show'
     end
   end
 
@@ -32,10 +31,14 @@ class AnswersController < ApplicationController
   def destroy
     answer.destroy
 
-    redirect_to question
+    redirect_to question, notice: 'Answer has been successfully deleted.'
   end
 
   private
+
+  def filter_non_author_users
+    redirect_to root_path, notice: 'You can modify or delete only your answers' unless current_user.author_of?(answer)
+  end
 
   def question
     @question ||= params[:question_id] ? Question.find(params[:question_id]) : answer.question
@@ -44,6 +47,8 @@ class AnswersController < ApplicationController
   def answer
     @answer ||= params[:id] ? Answer.find(params[:id]) : question.answers.new
   end
+
+  helper_method :answer, :question
 
   def answer_params
     params.require(:answer).permit(:body)

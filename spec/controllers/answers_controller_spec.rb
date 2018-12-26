@@ -6,24 +6,9 @@ require 'rails_helper'
 # rubocop:disable Metrics/LineLength
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
-
-  describe 'GET #index' do
-    let(:answers) do
-      question
-      create_list(:answer, 3)
-    end
-
-    before { get :index, params: { question_id: question } }
-
-    it 'populates an array of all answers' do
-      expect(assigns(:answers)).to match_array(answers)
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
-  end
+  let(:answer) { create(:answer, question: question, user: user) }
+  let(:user) { create(:user) }
+  let(:non_author) { create(:user) }
 
   describe 'GET #show' do
     let(:answer) { create(:answer, question: question) }
@@ -35,15 +20,9 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before { get :new, params: { question_id: question } }
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'GET #edit' do
+    before { login(user) }
+
     before { get :edit, params: { id: answer } }
 
     it 'renders edit view' do
@@ -52,6 +31,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
+
     context 'with valid attributes' do
       it 'saves the answer in the database' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(Answer, :count).by(1)
@@ -60,6 +41,11 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves the correct association to the question' do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
         expect(assigns(:answer).question_id).to eq question.id
+      end
+
+      it 'saves the correct association to the user' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question }
+        expect(assigns(:answer).user_id).to eq user.id
       end
 
       it 'redirects the show view' do
@@ -73,14 +59,16 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
+      it 'redirects to the questions show view' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end
 
   describe 'PATCH #update' do
+    before { login(user) }
+
     it 'assigns the requested answer to @answer' do
       patch :update, params: { id: answer, answer: attributes_for(:answer) }
       expect(assigns(:answer)).to eq answer
@@ -103,18 +91,34 @@ RSpec.describe AnswersController, type: :controller do
       before { patch :update, params: { id: answer, answer: { body: nil } } }
 
       it 'does not change the answer attributes' do
+        correct_answer_body = answer.body
         answer.reload
-        expect(answer.body).to eq 'MyString'
+
+        expect(answer.body).to eq correct_answer_body
       end
 
       it 're-renders edit view' do
         expect(response).to render_template :edit
       end
     end
+
+    context 'used by user, who is not author of the answer' do
+      it 'does not update the answer' do
+        login(non_author)
+        correct_answer_body = answer.body
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Other users body') }
+        answer.reload
+
+        expect(answer.body).to eq correct_answer_body
+        expect(response).to redirect_to root_path
+      end
+    end
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer, question: question) }
+    before { login(user) }
+
+    let!(:answer) { create(:answer, user: user) }
 
     it 'deletes the answer' do
       expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
@@ -122,7 +126,16 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'redirects to the associated question view' do
       delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question
+      expect(response).to redirect_to answer.question
+    end
+
+    context 'used by user, who is not author of the answer' do
+      it 'does not delete the answer' do
+        login(non_author)
+
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        expect(response).to redirect_to root_path
+      end
     end
   end
 end
