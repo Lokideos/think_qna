@@ -30,9 +30,14 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  header:
-    sign_in: 'Sign in'
-    sign_out: 'Sign out'
+  shared:
+    errors:
+      errors_counter:
+        one: '%{count} error detected:'
+        other: '%{count} errors detected:'
+    header:
+      sign_in: 'Sign in'
+      sign_out: 'Sign out'
 
   questions:
     index:
