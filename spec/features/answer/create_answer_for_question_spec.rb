@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 feature 'User can create answer for the question', "
   In order to solve the requested issue
   As authenticated user
@@ -23,7 +24,10 @@ feature 'User can create answer for the question', "
       click_on 'Answer to question'
 
       expect(page).to have_content 'Answer was successfully created.'
-      expect(page).to have_content 'Answer text'
+      expect(current_path).to eq question_path(question)
+      within '.answers' do
+        expect(page).to have_content 'Answer text'
+      end
     end
 
     scenario 'tries to create answer with wrong parameters for the question' do
@@ -40,3 +44,4 @@ feature 'User can create answer for the question', "
     within('.new_answer') { expect(page).to_not have_content 'Body' }
   end
 end
+# rubocop:enable Metrics/BlockLength
