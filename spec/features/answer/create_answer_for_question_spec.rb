@@ -16,7 +16,7 @@ feature 'User can create answer for the question', "
     background do
       sign_in(user)
 
-      visit question_path(question, lang: 'en')
+      visit question_path(question)
     end
 
     scenario 'create answer for the question' do
@@ -39,7 +39,7 @@ feature 'User can create answer for the question', "
   end
 
   scenario 'Unauthenticated user tries to create answer for the question' do
-    visit question_path(question, lang: 'en')
+    visit question_path(question)
 
     within('.new_answer') { expect(page).to_not have_content 'Body' }
   end

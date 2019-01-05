@@ -11,7 +11,7 @@ feature 'User can ses all created questions', "
   given!(:questions) { create_list(:question, 3) }
 
   scenario 'User can see all created questions' do
-    visit questions_path(lang: 'en')
+    visit questions_path
 
     questions.each { |question| expect(page).to have_content question.title }
   end
