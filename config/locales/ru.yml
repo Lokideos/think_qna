@@ -1,4 +1,8 @@
 ru:
+  header:
+    sign_in: 'Войти'
+    sign_out: 'Выйти'
+
   questions:
     index:
       ask: 'Задать Вопрос'

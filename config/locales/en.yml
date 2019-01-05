@@ -30,6 +30,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  header:
+    sign_in: 'Sign in'
+    sign_out: 'Sign out'
+
   questions:
     index:
       ask: 'Ask question'
