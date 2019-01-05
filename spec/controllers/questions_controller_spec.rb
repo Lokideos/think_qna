@@ -113,7 +113,7 @@ RSpec.describe QuestionsController, type: :controller do
         question.reload
 
         expect(question.title).to eq correct_question_title
-        expect(question.body). to eq 'MyText'
+        expect(question.body). to eq 'QuestionBody'
       end
 
       it 're-renders edit view' do
