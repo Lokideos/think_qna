@@ -10,6 +10,14 @@ ru:
       sign_in: 'Войти'
       sign_out: 'Выйти'
 
+  helpers:
+    label:
+      user:
+        email: 'Электронная почта'
+        password: 'Пароль'
+        password_confirmation: 'Подтверждение пароля'
+        remember_me: 'Запомнить меня'
+
   questions:
     index:
       ask: 'Задать Вопрос'
