@@ -30,4 +30,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  questions:
+    index:
+      ask: 'Ask question'
+    new:
+      ask: 'Ask'
+    show:
+      delete: 'Delete %{resource}'
+      reply: 'Answer to question'

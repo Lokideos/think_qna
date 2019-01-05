@@ -2,7 +2,7 @@ h1= question.title
 p= question.body
 
 - if current_user&.author_of?(question)
-  p= link_to 'Delete question', question_path(question), method: :delete
+  p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
   ul
@@ -11,7 +11,7 @@ section.answers
         li
           = answer.body
           - if current_user&.author_of?(answer)
-            = link_to 'Delete answer', answer_path(answer), method: :delete
+            = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete
 
 section.new_answer
   - if current_user
@@ -19,4 +19,4 @@ section.new_answer
     = form_with model: [question, @answer] do |f|
       = f.label :body
       = f.text_area :body
-      = f.submit 'Answer on question'
+      = f.submit t('.reply')

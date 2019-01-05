@@ -20,14 +20,14 @@ feature 'User can create answer for the question', "
 
     scenario 'create answer for the question' do
       fill_in 'Body', with: 'Answer text'
-      click_on 'Answer on question'
+      click_on 'Answer to question'
 
       expect(page).to have_content 'Answer was successfully created.'
       expect(page).to have_content 'Answer text'
     end
 
     scenario 'tries to create answer with wrong parameters for the question' do
-      click_on 'Answer on question'
+      click_on 'Answer to question'
 
       expect(page).to have_content "Answer wasn't created; check your input."
       expect(page).to have_content "Body can't be blank"

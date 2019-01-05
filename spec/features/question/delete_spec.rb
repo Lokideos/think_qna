@@ -15,7 +15,7 @@ feature 'Author can delete his question', "
   scenario 'Author deletes his question' do
     sign_in(author)
     visit question_path(question, lang: 'en')
-    click_on 'Delete question'
+    click_on 'Delete Question'
 
     expect(page).to have_content('You have successfully deleted the question.')
     expect(page).to_not have_content question.title
@@ -27,7 +27,7 @@ feature 'Author can delete his question', "
     scenario "to delete other users' question" do
       visit question_path(question, lang: 'en')
 
-      expect(page).to_not have_content 'Delete question'
+      expect(page).to_not have_content 'Delete Question'
     end
 
     scenario "to delete other users' question via delete request" do
@@ -40,6 +40,6 @@ feature 'Author can delete his question', "
   scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(question, lang: 'en')
 
-    expect(page).to_not have_content 'Delete question'
+    expect(page).to_not have_content 'Delete Question'
   end
 end

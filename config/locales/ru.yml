@@ -1,2 +1,9 @@
 ru:
-  
+  questions:
+    index:
+      ask: 'Задать Вопрос'
+    new:
+      ask: 'Спросить'
+    show:
+      delete: 'Удалить %{resource}'
+      reply: 'Ответить на вопрос'
