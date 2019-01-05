@@ -12,7 +12,7 @@ feature 'User can see all related to question answers on its page', "
   given!(:answers) { create_list(:answer, 4, question: question) }
 
   scenario 'User see all related answers' do
-    visit question_path(question)
+    visit question_path(question, lang: 'en')
 
     answers.each do |answer|
       expect(page).to have_content answer.body

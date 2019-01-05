@@ -16,7 +16,7 @@ feature 'Author can create only his answers', "
 
   scenario 'Author deletes his answer' do
     sign_in(author)
-    visit question_path(question)
+    visit question_path(question, lang: 'en')
     within('.answers') { click_on 'Delete answer' }
 
     expect(page).to have_content 'Answer has been successfully deleted.'
@@ -27,7 +27,7 @@ feature 'Author can create only his answers', "
     before { sign_in(non_author) }
 
     scenario "to delete other users' answer" do
-      visit question_path(question)
+      visit question_path(question, lang: 'en')
 
       within('.answers') { expect(page).to_not have_link 'Delete answer' }
     end
@@ -40,7 +40,7 @@ feature 'Author can create only his answers', "
   end
 
   scenario 'Guest tries to delete an answer' do
-    visit question_path(question)
+    visit question_path(question, lang: 'en')
 
     within('.answers') { expect(page).to_not have_link 'Delete answer' }
   end

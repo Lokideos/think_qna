@@ -14,7 +14,7 @@ feature 'User can create question', "
     background do
       sign_in(user)
 
-      visit questions_path
+      visit questions_path(lang: 'en')
       click_on 'Ask question'
     end
 
@@ -36,7 +36,7 @@ feature 'User can create question', "
   end
 
   scenario 'Unauthenticated user tries to ask a question' do
-    visit questions_path
+    visit questions_path(lang: 'en')
     click_on 'Ask question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
