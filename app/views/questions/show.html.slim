@@ -13,9 +13,10 @@ section.answers
           - if current_user&.author_of?(answer)
             = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete
 
-section.new_answer
+section.new-answer
   - if current_user
-    = render 'shared/errors', resource: @answer
+    .new-answer-errors
+      = render 'shared/errors', resource: @answer
     = form_with model: [question, @answer] do |f|
       = f.label :body
       = f.text_area :body
