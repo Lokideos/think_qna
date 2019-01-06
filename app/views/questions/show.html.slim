@@ -2,6 +2,7 @@ h1= question.title
 p= question.body
 
 - if current_user&.author_of?(question)
+  p= link_to 'Edit Question', edit_question_path(question)
   p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers

@@ -55,3 +55,6 @@ en:
     show:
       delete: 'Delete %{resource}'
       reply: 'Answer to question'
+    edit:
+      headline: 'Edit Question'
+      update: 'Update'

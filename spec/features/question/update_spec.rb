@@ -1,0 +1,76 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+# rubocop:disable Metrics/BlockLength
+feature 'User can update his question', "
+  In order to correct mistakes or to specify the question
+  As a User
+  I'd like to be able to update my question
+" do
+  given(:user) { create(:user) }
+  given(:non_author) { create(:user) }
+  given(:question) { create(:question, user: user) }
+
+  context 'Authenticated User' do
+    context 'and Author of the question' do
+      background do
+        sign_in(user)
+        visit question_path(question)
+
+        click_on 'Edit Question'
+      end
+
+      scenario 'updates the question' do
+        fill_in 'Title', with: 'Updated Question'
+        click_on 'Update'
+
+        expect(page).to have_content 'Your question has been successfully updated.'
+        expect(page).to have_content 'Updated Question'
+      end
+
+      scenario 'tries to update the question with invalid attributes' do
+        fill_in 'Title', with: ''
+        click_on 'Update'
+
+        expect(page).to have_content 'There were errors in your input.'
+        expect(page).to have_content "Title can't be blank"
+      end
+    end
+
+    context 'but non Author of the question' do
+      background do
+        sign_in(non_author)
+      end
+
+      scenario "tries to update other user's question" do
+        visit question_path(question)
+
+        expect(page).to_not have_link 'Edit Question'
+      end
+
+      scenario "tries to update other user's question via PATCH request" do
+        page.driver.submit :patch, "/questions/#{question.id}", title: 'Updated by non author'
+
+        expect(page).to have_content 'You can modify or delete only your questions'
+        expect(page).to_not have_content 'Updated by non author'
+      end
+    end
+  end
+
+  context 'Unauthenticated User' do
+    scenario 'tries to update the question' do
+      visit question_path(question)
+
+      expect(page).to_not have_link 'Edit Question'
+    end
+
+    scenario 'tries to update the question via PATCH request' do
+      page.driver.submit :patch, "/questions/#{question.id}", title: 'Updated by unauthenticated user'
+
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_content 'Updated by unauthenticated user'
+    end
+  end
+end
+# rubocop:enable Metrics/BlockLength

@@ -26,3 +26,6 @@ ru:
     show:
       delete: 'Удалить %{resource}'
       reply: 'Ответить на вопрос'
+    edit:
+      headline: 'Редактирование Вопроса'
+      update: 'Обновить'
