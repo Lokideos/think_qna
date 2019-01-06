@@ -2,7 +2,7 @@ $('.new-answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
 var answerNotice = '';
 
 <% if answer.persisted? %>
-  $('.answers').append('<%= j render answer %>');
+  $('.answers-list').append('<li><%= j render answer %></li>');
   $('#answer_body').val('');
   answerNotice = 'Answer was successfully created.';
 <% else %>

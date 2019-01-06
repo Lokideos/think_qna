@@ -5,7 +5,7 @@ p= question.body
   p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
-  ul
+  ul.answers-list
     - question.answers.each do |answer|
       - if answer.persisted?
         li
