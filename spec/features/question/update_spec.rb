@@ -16,25 +16,31 @@ feature 'User can update his question', "
     context 'and Author of the question' do
       background do
         sign_in(user)
-        visit question_path(question)
 
+        visit question_path(question)
         click_on 'Edit Question'
       end
 
-      scenario 'updates the question' do
-        fill_in 'Title', with: 'Updated Question'
-        click_on 'Update'
+      scenario 'updates the question', js: true do
+        within '.question' do
+          fill_in 'Title', with: 'Updated Question'
+          click_on 'Update'
+        end
 
         expect(page).to have_content 'Your question has been successfully updated.'
         expect(page).to have_content 'Updated Question'
       end
 
-      scenario 'tries to update the question with invalid attributes' do
-        fill_in 'Title', with: ''
-        click_on 'Update'
+      scenario 'tries to update the question with invalid attributes', js: true do
+        within '.question' do
+          fill_in 'Title', with: ''
+          click_on 'Update'
+        end
 
         expect(page).to have_content 'There were errors in your input.'
-        expect(page).to have_content "Title can't be blank"
+        within '.question' do
+          expect(page).to have_content "Title can't be blank"
+        end
       end
     end
 
@@ -43,7 +49,7 @@ feature 'User can update his question', "
         sign_in(non_author)
       end
 
-      scenario "tries to update other user's question" do
+      scenario "tries to update other user's question", js: true do
         visit question_path(question)
 
         expect(page).to_not have_link 'Edit Question'
@@ -59,7 +65,7 @@ feature 'User can update his question', "
   end
 
   context 'Unauthenticated User' do
-    scenario 'tries to update the question' do
+    scenario 'tries to update the question', js: true do
       visit question_path(question)
 
       expect(page).to_not have_link 'Edit Question'

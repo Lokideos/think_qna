@@ -1,0 +1,14 @@
+$('.question-update-errors').html('<%= render 'shared/errors', resource: question %>');
+var questionNotice = '';
+
+<% if !question.errors.present? %>
+  $('.question-info').html('<h1><%= j question.title %></h1><p><%= j question.body %></p>');
+  $('.question-info').show();
+  $('.edit-question-link').show();
+  $('.edit-question-form').addClass('hidden');
+  questionNotice = 'Your question has been successfully updated.';
+<% else %>
+  questionNotice = 'There were errors in your input.';
+<% end %>
+
+$('.notice').html(questionNotice);

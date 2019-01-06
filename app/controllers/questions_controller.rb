@@ -27,12 +27,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if question.update(question_params)
-      redirect_to @question, notice: 'Your question has been successfully updated.'
-    else
-      flash[:notice] = 'There were errors in your input.'
-      render :edit
-    end
+    question.update(question_params)
   end
 
   def destroy

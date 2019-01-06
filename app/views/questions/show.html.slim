@@ -1,9 +1,22 @@
-h1= question.title
-p= question.body
+section.question
+  .question-info
+    h1= question.title
+    p= question.body
 
-- if current_user&.author_of?(question)
-  p= link_to 'Edit Question', edit_question_path(question)
-  p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
+  - if current_user&.author_of?(question)
+    p= link_to 'Edit Question', edit_question_path(question), class: 'edit-question-link'
+    .question-update-errors
+      = render 'shared/errors', resource: question
+
+    = form_with model: question, class: 'edit-question-form hidden' do |f|
+      = f.label :title
+      = f.text_field :title
+
+      = f.label :body
+      = f.text_area :body
+
+      = f.submit t('questions.edit.update')
+    p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
   ul.answers-list
