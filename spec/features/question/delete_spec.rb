@@ -17,7 +17,7 @@ feature 'Author can delete his question', "
     visit question_path(question)
     click_on 'Delete Question'
 
-    expect(page).to have_content('You have successfully deleted the question.')
+    expect(page).to have_content('Your Question has been successfully deleted.')
     expect(page).to_not have_content question.title
   end
 
@@ -33,7 +33,7 @@ feature 'Author can delete his question', "
     scenario "to delete other users' question via delete request" do
       page.driver.submit :delete, "/questions/#{question.id}", {}
 
-      expect(page).to have_content 'You can modify or delete only your questions'
+      expect(page).to have_content 'You can modify or delete only your resources.'
     end
   end
 

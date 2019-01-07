@@ -37,7 +37,7 @@ feature 'Author can create only his answers', "
       scenario "tries to delete other user's answer via DELETE request" do
         page.driver.submit :delete, "answers/#{answer.id}", {}
 
-        expect(page).to have_content 'You can modify or delete only your answers'
+        expect(page).to have_content 'You can modify or delete only your resources.'
       end
     end
   end

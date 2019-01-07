@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
   private
 
   def filter_non_author_users
-    redirect_to root_path, notice: 'You can modify or delete only your answers' unless current_user.author_of?(answer)
+    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(answer)
   end
 
   def question

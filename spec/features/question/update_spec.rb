@@ -58,7 +58,7 @@ feature 'User can update his question', "
       scenario "tries to update other user's question via PATCH request" do
         page.driver.submit :patch, "/questions/#{question.id}", title: 'Updated by non author'
 
-        expect(page).to have_content 'You can modify or delete only your questions'
+        expect(page).to have_content 'You can modify or delete only your resources.'
         expect(page).to_not have_content 'Updated by non author'
       end
     end

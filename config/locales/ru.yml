@@ -1,4 +1,11 @@
 ru:
+  notifications:
+    created: 'Ваш %{resource} был успешно создан.'
+    updated: 'Ваш %{resource} был успешно отредактирован.'
+    deleted: 'Ваш %{resource} был удален.'
+    input_error: 'При вводе данных произошла ошибка.'
+    cherry_request_stub: 'Вы можете редактировать или удалить только ваши ресурсы.'
+
   shared:
     errors:
       errors_counter:
