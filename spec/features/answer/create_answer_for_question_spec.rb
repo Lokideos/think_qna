@@ -29,6 +29,10 @@ feature 'User can create answer for the question', "
         expect(page).to have_content 'Answer text'
         expect(page).to have_content 'Edit Answer'
       end
+
+      within '.new-answer' do
+        expect(find_field(id: 'answer_body').value).to eq ''
+      end
     end
 
     scenario 'tries to create answer with wrong parameters for the question', js: true do

@@ -3,7 +3,7 @@ var answerNotice = '';
 
 <% if answer.persisted? %>
   $('.answers-list').append('<li><%= j render answer %></li>');
-  $('#answer_body').val('');
+  $('.new-answer #answer_body').val('');
   answerNotice = '<%= t('notifications.created', resource: answer.class.model_name.human) %>';
 <% else %>
   answerNotice = '<%= t('notifications.not_created_error', resource: answer.class.model_name.human) %>';
