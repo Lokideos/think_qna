@@ -6,8 +6,6 @@ class AnswersController < ApplicationController
 
   def show; end
 
-  def edit; end
-
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
@@ -15,11 +13,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if answer.update(answer_params)
-      redirect_to question
-    else
-      render :edit
-    end
+    answer.update(answer_params)
   end
 
   def destroy
