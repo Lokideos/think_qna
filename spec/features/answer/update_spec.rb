@@ -54,6 +54,7 @@ feature 'User can update his answer', "
 
     context 'not as Author of answer' do
       background { sign_in(non_author) }
+
       scenario "tries to update other user's answer", js: true do
         visit question_path(question)
 

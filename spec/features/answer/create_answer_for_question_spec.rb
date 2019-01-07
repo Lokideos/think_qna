@@ -27,6 +27,7 @@ feature 'User can create answer for the question', "
       expect(current_path).to eq question_path(question)
       within '.answers' do
         expect(page).to have_content 'Answer text'
+        expect(page).to have_content 'Edit Answer'
       end
     end
 
