@@ -18,31 +18,32 @@ feature 'User can choose best answer', "
   context 'Authenticated user' do
     background { sign_in(user) }
 
-    scenario 'choose best answer', js: true do
-      visit question_path(question)
+    context 'in his question' do
+      background { visit question_path(question) }
 
-      within '.answers' do
-        click_on 'Best Answer'
+      scenario 'choose best answer', js: true do
+        within '.answers' do
+          click_on 'Best Answer'
+        end
+
+        expect(page).to have_content 'You chose the best answer.'
+        within '.best-answer' do
+          expect(page).to have_content answer.body
+        end
       end
 
-      expect(page).to have_content 'You chose the best answer.'
-      within '.best-answer' do
-        expect(page).to have_content answer.body
-      end
-    end
+      scenario 'tries to choose best answer, when the question already has best answer', js: true do
+        create(:answer, body: 'Other Answer Body', question: question, best: true)
 
-    scenario 'tries to choose best answer, when the question already has best answer', js: true do
-      visit question_path(question)
-      create(:answer, body: 'Other Answer Body', question: question, best: true)
+        within '.answers' do
+          click_on(id: "choose-best-answer-link-#{answer.id}")
+        end
 
-      within '.answers' do
-        click_on(id: "choose-best-answer-link-#{answer.id}")
-      end
-
-      expect(page).to have_content 'You chose the best answer.'
-      within '.best-answer' do
-        expect(page).to_not have_content 'Other Answer Body'
-        expect(page).to have_content answer.body
+        expect(page).to have_content 'You chose the best answer.'
+        within '.best-answer' do
+          expect(page).to_not have_content 'Other Answer Body'
+          expect(page).to have_content answer.body
+        end
       end
     end
 
