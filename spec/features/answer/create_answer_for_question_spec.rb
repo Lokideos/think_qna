@@ -23,7 +23,7 @@ feature 'User can create answer for the question', "
       fill_in 'Body', with: 'Answer text'
       click_on 'Answer to question'
 
-      expect(page).to have_content 'Answer was successfully created.'
+      expect(page).to have_content 'Your Answer has been successfully created.'
       expect(current_path).to eq question_path(question)
       within '.answers' do
         expect(page).to have_content 'Answer text'

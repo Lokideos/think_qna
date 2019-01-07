@@ -5,5 +5,5 @@
 = form_with model: answer, class: 'edit-answer-form hidden', html: { id: "edit-answer-#{ answer.id }" } do |f|
   = f.label :body
   = f.text_area :body
-  = f.submit 'Update'
+  = f.submit t('.update')
 = link_to t('.delete'), answer_path(answer), method: :delete, remote: true

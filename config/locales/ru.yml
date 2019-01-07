@@ -5,6 +5,7 @@ ru:
     deleted: 'Ваш %{resource} был удален.'
     input_error: 'При вводе данных произошла ошибка.'
     cherry_request_stub: 'Вы можете редактировать или удалить только ваши ресурсы.'
+    not_created_error: "%{resource} не был создан; проверьте введенные вами данные."
 
   shared:
     errors:
@@ -40,3 +41,4 @@ ru:
     answer:
       edit: 'Редактировать Ответ'
       delete: 'Удалить Ответ'
+      update: 'Сохранить'

@@ -6,9 +6,9 @@ var questionNotice = '';
   $('.question-info').show();
   $('.edit-question-link').show();
   $('.edit-question-form').addClass('hidden');
-  questionNotice = 'Your question has been successfully updated.';
+  questionNotice = '<%= t('notifications.updated', resource: question.class.model_name.human) %>';
 <% else %>
-  questionNotice = 'There were errors in your input.';
+  questionNotice = '<%= t('notifications.input_error') %>';
 <% end %>
 
 $('.notice').html(questionNotice);

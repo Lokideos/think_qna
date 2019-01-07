@@ -9,9 +9,9 @@ $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
   $(answerInfo).show();
   $('.edit-answer-link').show();
   $('form#edit-answer-' + answerId).addClass('hidden');
-  editAnswerNotice = 'Answer has been successfully updated.'
+  editAnswerNotice = '<%= t('notifications.updated', resource: answer.class.model_name.human) %>'
 <% else %>
-  editAnswerNotice = 'There were errors in your input.'
+  editAnswerNotice = '<%= t('notifications.input_error') %>'
 <% end %>
 
 $('.notice').html(editAnswerNotice);

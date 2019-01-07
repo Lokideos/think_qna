@@ -36,6 +36,7 @@ en:
     deleted: 'Your %{resource} has been successfully deleted.'
     input_error: 'There were errors in your input.'
     cherry_request_stub: 'You can modify or delete only your resources.'
+    not_created_error: "%{resource} wasn't created; check your input."
 
   shared:
     errors:
@@ -69,3 +70,4 @@ en:
     answer:
       edit: 'Edit Answer'
       delete: 'Delete Answer'
+      update: 'Update'

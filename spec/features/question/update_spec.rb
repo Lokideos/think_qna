@@ -27,7 +27,7 @@ feature 'User can update his question', "
           click_on 'Update'
         end
 
-        expect(page).to have_content 'Your question has been successfully updated.'
+        expect(page).to have_content 'Your Question has been successfully updated.'
         expect(page).to have_content 'Updated Question'
       end
 
