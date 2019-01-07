@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[show]
+  before_action :authenticate_user!
   before_action :filter_non_author_users, only: %i[update destroy]
-
-  def show; end
 
   def create
     @answer = question.answers.new(answer_params)

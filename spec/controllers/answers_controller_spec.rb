@@ -10,16 +10,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:non_author) { create(:user) }
 
-  describe 'GET #show' do
-    let(:answer) { create(:answer, question: question) }
-
-    before { get :show, params: { id: answer } }
-
-    it 'renders show view' do
-      expect(response).to render_template :show
-    end
-  end
-
   describe 'POST #create' do
     before { login(user) }
 
