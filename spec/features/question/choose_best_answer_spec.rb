@@ -64,7 +64,20 @@ feature 'User can choose best answer', "
   end
 
   context 'Unauthenticated user' do
-    scenario 'tries to choose best answer'
+    scenario 'tries to choose best answer', js: true do
+      visit question_path(question)
+
+      within '.answers' do
+        expect(page).to_not have_link 'Best Answer'
+      end
+    end
+
+    scenario 'tries to choose best answer via patch request' do
+      page.driver.submit :patch, "/answers/#{answer.id}", best: true
+
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_content 'Updated by unauthenticated user'
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
