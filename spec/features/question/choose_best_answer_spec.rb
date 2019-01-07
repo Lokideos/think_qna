@@ -13,6 +13,7 @@ feature 'User can choose best answer', "
   given(:question) { create(:question, user: user) }
   given(:other_question) { create(:question, user: non_author) }
   given!(:answer) { create(:answer, question: question, user: non_author) }
+  given(:other_answer) { create(:answer, question: other_question, user: user) }
 
   context 'Authenticated user' do
     background { sign_in(user) }
@@ -44,7 +45,21 @@ feature 'User can choose best answer', "
       end
     end
 
-    scenario "tries to choose best answer for other user's question"
+    scenario "tries to choose best answer for other user's question", js: true do
+      create(:answer, question: other_question, user: user)
+      visit question_path(other_question)
+
+      within '.answers' do
+        expect(page).to_not have_link 'Best Answer'
+      end
+    end
+
+    scenario "tries to choose best answer for other user's question via PATCH request" do
+      page.driver.submit :patch, "/answers/#{answer.id}", best: true
+
+      expect(page).to have_content 'You can modify or delete only your resources.'
+      expect(page).to_not have_content 'Updated by non author'
+    end
   end
 
   context 'Unauthenticated user' do
