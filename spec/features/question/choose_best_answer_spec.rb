@@ -41,6 +41,7 @@ feature 'User can choose best answer', "
 
       expect(page).to have_content 'You chose the best answer.'
       within '.best-answer' do
+        expect(page).to_not have_content 'Other Answer Body'
         expect(page).to have_content answer.body
       end
     end
