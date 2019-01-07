@@ -15,6 +15,20 @@ feature 'User can choose best answer', "
   given!(:answer) { create(:answer, question: question, user: non_author) }
   given(:other_answer) { create(:answer, question: other_question, user: user) }
 
+  scenario 'Any user visit question and see best answer' do
+    best_answer = create(:answer, question: question, best: true)
+    visit question_path(question)
+
+    within '.best-answer' do
+      expect(page).to have_content best_answer.body
+      expect(page).to_not have_link 'Best Answer'
+    end
+
+    within '.answers-list' do
+      expect(page).to_not have_content best_answer.body
+    end
+  end
+
   context 'Authenticated user' do
     background { sign_in(user) }
 
@@ -34,6 +48,7 @@ feature 'User can choose best answer', "
 
       scenario 'tries to choose best answer, when the question already has best answer', js: true do
         create(:answer, body: 'Other Answer Body', question: question, best: true)
+        visit question_path(question)
 
         within '.answers' do
           click_on(id: "choose-best-answer-link-#{answer.id}")
@@ -43,6 +58,11 @@ feature 'User can choose best answer', "
         within '.best-answer' do
           expect(page).to_not have_content 'Other Answer Body'
           expect(page).to have_content answer.body
+        end
+
+        within '.answers-list' do
+          expect(page).to_not have_content answer.body
+          expect(page).to have_content 'Other Answer Body'
         end
       end
     end

@@ -20,22 +20,16 @@ section.question
 
 section.answers
   .best-answer
-  ul.answers-list
-    - question.answers.each do |answer|
-      - if answer.persisted?
-        li
-          = content_tag(:div, answer.body, id: "answer-info-#{ answer.id }")
-          - if current_user&.author_of?(answer)
-            = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-            .answer-errors
-              = render 'shared/errors', resource: answer
-            = form_with model: answer, class: 'edit-answer-form hidden', html: { id: "edit-answer-#{ answer.id }" } do |f|
-              = f.label :body
-              = f.text_area :body
-              = f.submit t('.update')
-            = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: { answer_id: answer.id }, remote: true
-          - if current_user&.author_of?(question)
-            = link_to 'Best Answer', choose_best_answer_path(answer), id: "choose-best-answer-link-#{ answer.id }", method: :patch, remote: true
+    - if question.answers.find_by(best: true)
+      h3 Best Answer
+      .best-answer-info
+        = render question.answers.find_by(best: true)
+  .all-answers
+    h2 Answers on question
+    ul.answers-list
+      - question.answers.each do |answer|
+        - if answer.persisted? && !answer.best
+          li = render answer
 
 section.new-answer
   - if current_user
