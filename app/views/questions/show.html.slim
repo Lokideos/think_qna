@@ -19,6 +19,7 @@ section.question
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
+  .best-answer
   ul.answers-list
     - question.answers.each do |answer|
       - if answer.persisted?
@@ -33,6 +34,7 @@ section.answers
               = f.text_area :body
               = f.submit t('.update')
             = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: { answer_id: answer.id }, remote: true
+          = link_to 'Best Answer', choose_best_answer_path(answer), method: :patch, remote: true
 
 section.new-answer
   - if current_user

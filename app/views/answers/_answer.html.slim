@@ -7,3 +7,4 @@
   = f.text_area :body
   = f.submit t('.update')
 = link_to t('.delete'), answer_path(answer), method: :delete, remote: true
+= link_to 'Best Answer', choose_best_answer_path(answer), remote: true

@@ -18,6 +18,10 @@ class AnswersController < ApplicationController
     answer.destroy
   end
 
+  def choose_best
+    answer.choose_best_answer
+  end
+
   private
 
   def filter_non_author_users

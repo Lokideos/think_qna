@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: truee
 
 FactoryBot.define do
   sequence :body do |n|
@@ -9,6 +9,7 @@ FactoryBot.define do
     user
     question
     body
+    best { false }
 
     trait :invalid do
       body { nil }

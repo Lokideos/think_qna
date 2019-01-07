@@ -104,7 +104,7 @@ RSpec.describe AnswersController, type: :controller do
       expect { delete :destroy, params: { id: answer, format: :js } }.to change(Answer, :count).by(-1)
     end
 
-    it 'redirects to the associated question view' do
+    it 'render destroy template' do
       delete :destroy, params: { id: answer, format: :js }
       expect(response).to render_template :destroy
     end
@@ -116,6 +116,28 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
         expect(response).to redirect_to root_path
       end
+    end
+  end
+
+  describe 'PATCH #choose_best' do
+    before { login(user) }
+
+    it 'changes needed answer attributes' do
+      patch :choose_best, params: { id: answer, format: :js }
+      answer.reload
+      expect(answer.best).to be_truthy
+    end
+
+    it 'changes needed attributes for other answers' do
+      other_answer = create(:answer, question: question, best: true)
+      patch :choose_best, params: { id: answer, format: :js }
+      other_answer.reload
+      expect(other_answer.best).to be_falsey
+    end
+
+    it 'renders choose_best template' do
+      patch :choose_best, params: { id: answer, format: :js }
+      expect(response).to render_template :choose_best
     end
   end
 end
