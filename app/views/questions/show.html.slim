@@ -4,7 +4,7 @@ section.question
     p= question.body
 
   - if current_user&.author_of?(question)
-    p= link_to 'Edit Question', edit_question_path(question), class: 'edit-question-link'
+    p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors
       = render 'shared/errors', resource: question
 
@@ -15,7 +15,7 @@ section.question
       = f.label :body
       = f.text_area :body
 
-      = f.submit t('questions.edit.update')
+      = f.submit t('.update')
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
@@ -25,13 +25,13 @@ section.answers
         li
           = content_tag(:div, answer.body, id: "answer-info-#{ answer.id }")
           - if current_user&.author_of?(answer)
-            = link_to 'Edit Answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+            = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: { answer_id: answer.id }
             .answer-errors
               = render 'shared/errors', resource: answer
             = form_with model: answer, class: 'edit-answer-form hidden', html: { id: "edit-answer-#{ answer.id }" } do |f|
               = f.label :body
               = f.text_area :body
-              = f.submit 'Update'
+              = f.submit t('.update')
             = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete
 
 section.new-answer

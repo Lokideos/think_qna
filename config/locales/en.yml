@@ -54,7 +54,11 @@ en:
       ask: 'Ask'
     show:
       delete: 'Delete %{resource}'
+      edit: 'Edit %{resource}'
       reply: 'Answer to question'
-    edit:
-      headline: 'Edit Question'
       update: 'Update'
+
+  answers:
+    answer:
+      edit: 'Edit Answer'
+      delete: 'Delete Answer'

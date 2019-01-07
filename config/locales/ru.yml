@@ -25,7 +25,11 @@ ru:
       ask: 'Спросить'
     show:
       delete: 'Удалить %{resource}'
+      edit: 'Редактировать %{resource}'
       reply: 'Ответить на вопрос'
-    edit:
-      headline: 'Редактирование Вопроса'
-      update: 'Обновить'
+      update: 'Сохранить'
+
+  answers:
+    answer:
+      edit: 'Редактировать Ответ'
+      delete: 'Удалить Ответ'

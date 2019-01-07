@@ -1,9 +1,9 @@
 = content_tag(:div, answer.body, id: "answer-info-#{ answer.id }")
-= link_to 'Edit Answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+= link_to t('.edit'), '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 .answer-errors
   = render 'shared/errors', resource: answer
 = form_with model: answer, class: 'edit-answer-form hidden', html: { id: "edit-answer-#{ answer.id }" } do |f|
   = f.label :body
   = f.text_area :body
   = f.submit 'Update'
-= link_to t('questions.show.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete
+= link_to t('.delete'), answer_path(answer), method: :delete
