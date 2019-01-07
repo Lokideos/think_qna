@@ -26,7 +26,7 @@ questions = Question.create([{ title: 'Galactic Empire Weapon',
                                user: users[1] }])
 
 Answer.create([{ body: "It's stormtrooper", user: users[1], question: questions[0] },
-               { body: "It's the Death Star", user: users[2], question: questions[0] },
+               { body: "It's the Death Star", user: users[2], question: questions[0], best: true },
                { body: 'Try Ruby', user: users[2], question: questions[1] },
                { body: "It's green", user: users[0], question: questions[2] },
                { body: 'Or orange', user: users[0], question: questions[2] },
