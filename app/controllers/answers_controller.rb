@@ -18,8 +18,6 @@ class AnswersController < ApplicationController
 
   def destroy
     answer.destroy
-
-    redirect_to question, notice: 'Answer has been successfully deleted.'
   end
 
   private

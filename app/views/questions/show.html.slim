@@ -32,7 +32,7 @@ section.answers
               = f.label :body
               = f.text_area :body
               = f.submit t('.update')
-            = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete
+            = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: { answer_id: answer.id }, remote: true
 
 section.new-answer
   - if current_user
