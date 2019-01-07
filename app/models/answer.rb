@@ -20,6 +20,8 @@ class Answer < ApplicationRecord
   end
   # rubocop:enable Style/SafeNavigation
 
+  default_scope { order(created_at: :asc) }
+
   private
 
   def best_answer_uniqueness
