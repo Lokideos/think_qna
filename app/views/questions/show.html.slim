@@ -21,7 +21,7 @@ section.question
 section.answers
   .best-answer
     - if question.answers.find_by(best: true)
-      h3 Best Answer
+      h3= t('answers.answer.best_answer')
       .best-answer-info
         = render question.answers.find_by(best: true)
   .all-answers

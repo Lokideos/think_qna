@@ -25,11 +25,11 @@ class Answer < ApplicationRecord
   private
 
   def best_answer_uniqueness
-    errors.add(:best, 'flag has to be unique for each question') if two_best_answer_exists?
+    errors.add(:best, I18n.t('errors.best_answer_uniqueness')) if two_best_answer_exists?
   end
 
   def two_best_answers_exception
-    raise StandardError, 'There can be only one best answer for each question.' if two_best_answer_exists?
+    raise StandardError, I18n.t('errors.best_answer_duplicate') if two_best_answer_exists?
   end
 
   def two_best_answer_exists?

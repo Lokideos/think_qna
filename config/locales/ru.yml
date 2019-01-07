@@ -1,4 +1,7 @@
 ru:
+  errors:
+    best_answer_uniqueness: 'значение должно быть уникально для вопроса.'
+    best_answer_duplicate: 'Для каждого вопроса может существовать только один Лучший Ответ.'
   notifications:
     created: 'Ваш %{resource} был успешно создан.'
     updated: 'Ваш %{resource} был успешно отредактирован.'
@@ -6,6 +9,7 @@ ru:
     input_error: 'При вводе данных произошла ошибка.'
     cherry_request_stub: 'Вы можете редактировать или удалить только ваши ресурсы.'
     not_created_error: "%{resource} не был создан; проверьте введенные вами данные."
+    best_answer: 'Вы выбрали лучший ответ.'
 
   shared:
     errors:
@@ -39,6 +43,7 @@ ru:
 
   answers:
     answer:
+      best_answer: 'Лучший Ответ'
       edit: 'Редактировать Ответ'
       delete: 'Удалить Ответ'
       update: 'Сохранить'

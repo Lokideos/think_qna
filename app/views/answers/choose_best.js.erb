@@ -2,8 +2,8 @@ var answerId = <%= answer.id %>;
 var previousBestAnswer = document.querySelector('.best-answer .best-answer-info');
 console.log(previousBestAnswer);
 
-$('.notice').html('You chose the best answer.');
-$('.best-answer').html('<h2>Best Answer</h2><p><%= j render answer %></p>');
+$('.notice').html('<%= I18n.t('notifications.best_answer') %>');
+$('.best-answer').html('<h2><%= t('answers.answer.best_answer') %></h2><p><%= j render answer %></p>');
 $('.answers-list #answer-info-' + answerId).parent().remove();
 
 if (previousBestAnswer) {

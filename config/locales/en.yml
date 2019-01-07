@@ -30,6 +30,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  errors:
+    best_answer_uniqueness: 'flag has to be unique for each question'
+    best_answer_duplicate: 'There can be only one best answer for each question.'
   notifications:
     created: 'Your %{resource} has been successfully created.'
     updated: 'Your %{resource} has been successfully updated.'
@@ -37,6 +40,7 @@ en:
     input_error: 'There were errors in your input.'
     cherry_request_stub: 'You can modify or delete only your resources.'
     not_created_error: "%{resource} wasn't created; check your input."
+    best_answer: 'You chose the best answer.'
 
   shared:
     errors:
@@ -68,6 +72,7 @@ en:
 
   answers:
     answer:
+      best_answer: 'Best Answer'
       edit: 'Edit Answer'
       delete: 'Delete Answer'
       update: 'Update'

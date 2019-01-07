@@ -9,4 +9,4 @@
     = f.submit t('.update')
   = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: {answer_id: answer.id}, remote: true
 - if current_user&.author_of?(question) && !answer.best
-  = link_to 'Best Answer', choose_best_answer_path(answer), id: "choose-best-answer-link-#{ answer.id }", method: :patch, remote: true
+  = link_to t('.best_answer'), choose_best_answer_path(answer), id: "choose-best-answer-link-#{ answer.id }", method: :patch, remote: true
