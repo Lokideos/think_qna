@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'saves the correct association to the user' do
-        post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
+        post :create, params: { answer: attributes_for(:answer), question_id: question, user: user, format: :js }
         expect(assigns(:answer).user_id).to eq user.id
       end
 
@@ -39,7 +39,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirects to the questions show view' do
+      it 're-renders create template' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question, format: :js }
         expect(response).to render_template :create
       end
