@@ -73,53 +73,75 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+    context 'used by Authenticated user' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
-        expect(assigns(:question)).to eq question
+      context 'with valid attributes' do
+        it 'assigns the requested question to @question' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+          question.reload
+
+          expect(question.title).to eq 'new title'
+          expect(question.body).to eq 'new body'
+        end
+
+        it 'render update template' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(response).to render_template :update
+        end
       end
 
-      it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
-        question.reload
+      context 'with invalid attributes' do
+        before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
-      end
+        it 'does not change question' do
+          correct_question_title = question.title
+          question.reload
 
-      it 'render update template' do
-        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
-        expect(response).to render_template :update
-      end
-    end
+          expect(question.title).to eq correct_question_title
+          expect(question.body). to eq 'QuestionBody'
+        end
 
-    context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
-
-      it 'does not change question' do
-        correct_question_title = question.title
-        question.reload
-
-        expect(question.title).to eq correct_question_title
-        expect(question.body). to eq 'QuestionBody'
-      end
-
-      it 're-renders edit update view' do
-        expect(response).to render_template :update
+        it 're-renders edit update view' do
+          expect(response).to render_template :update
+        end
       end
     end
 
     context 'used by user, who is not author of the question' do
+      before { login(non_author) }
+
       it 'does not update the question' do
-        login(non_author)
         correct_question_title = question.title
         patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
         question.reload
 
         expect(question.title).to eq correct_question_title
+      end
+
+      it 'redirects to root path' do
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
         expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by unauthenticated user' do
+      it 'does not update the question' do
+        correct_question_title = question.title
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Unauthenticated users title'), format: :js }
+        question.reload
+
+        expect(question.title).to eq correct_question_title
+      end
+
+      it 'returns unauthorized 401 status code' do
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Unauthenticated users title'), format: :js }
+        expect(response).to have_http_status(401)
       end
     end
   end

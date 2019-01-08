@@ -54,13 +54,6 @@ feature 'User can update his question', "
 
         expect(page).to_not have_link 'Edit Question'
       end
-
-      scenario "tries to update other user's question via PATCH request" do
-        page.driver.submit :patch, "/questions/#{question.id}", title: 'Updated by non author'
-
-        expect(page).to have_content 'You can modify or delete only your resources.'
-        expect(page).to_not have_content 'Updated by non author'
-      end
     end
   end
 
@@ -69,13 +62,6 @@ feature 'User can update his question', "
       visit question_path(question)
 
       expect(page).to_not have_link 'Edit Question'
-    end
-
-    scenario 'tries to update the question via PATCH request' do
-      page.driver.submit :patch, "/questions/#{question.id}", title: 'Updated by unauthenticated user'
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(page).to_not have_content 'Updated by unauthenticated user'
     end
   end
 end
