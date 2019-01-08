@@ -10,24 +10,22 @@ RSpec.describe Answer, type: :model do
   end
 
   context 'Validations' do
+    let(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question, best: true) }
+
     it { should validate_presence_of :body }
 
     it 'should not allow creation 2nd answer with true value for best field' do
-      question = create(:question)
-      create(:answer, question: question, best: true)
       bad_answer = Answer.new(body: attributes_for(:answer), question: question, best: true)
 
       expect(bad_answer).to_not be_valid
     end
 
-    it 'should throw exception if user tries explicitly update best field for 2nd answer for question' do
-      question = create(:question)
-      create(:answer, question: question, best: true)
+    it 'should not allow update best field with true value if best answer already exists' do
       bad_answer = create(:answer, question: question)
 
-      bad_answer.update!(best: true)
-    rescue StandardError => e
-      expect(e.message).to eq 'There can be only one best answer for each question.'
+      bad_answer.best = true
+      expect(bad_answer).to_not be_valid
     end
   end
 
