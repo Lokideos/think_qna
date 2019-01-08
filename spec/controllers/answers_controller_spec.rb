@@ -125,14 +125,14 @@ RSpec.describe AnswersController, type: :controller do
     it 'changes needed answer attributes' do
       patch :choose_best, params: { id: answer, format: :js }
       answer.reload
-      expect(answer.best).to be_truthy
+      expect(answer).to be_best
     end
 
     it 'changes needed attributes for other answers' do
       other_answer = create(:answer, question: question, best: true)
       patch :choose_best, params: { id: answer, format: :js }
       other_answer.reload
-      expect(other_answer.best).to be_falsey
+      expect(other_answer).to_not be_best
     end
 
     it 'renders choose_best template' do

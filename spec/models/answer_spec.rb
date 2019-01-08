@@ -37,14 +37,14 @@ RSpec.describe Answer, type: :model do
       it 'should assign true to best attribute of answer' do
         answer.choose_best_answer
         answer.reload
-        expect(answer.best).to be_truthy
+        expect(answer).to be_best
       end
 
       it 'should assign false to existing answer with true value if it exists' do
         second_answer = create(:answer, question: question, best: true)
         answer.choose_best_answer
         second_answer.reload
-        expect(second_answer.best).to be_falsey
+        expect(second_answer).to_not be_best
       end
     end
   end
