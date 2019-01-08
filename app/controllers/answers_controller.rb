@@ -2,7 +2,8 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :filter_non_author_users, only: %i[update destroy]
+  before_action :filter_answer_non_author_users, only: %i[update destroy]
+  before_action :filter_question_non_author_users, only: %i[choose_best]
 
   def create
     @answer = question.answers.new(answer_params)
@@ -24,8 +25,12 @@ class AnswersController < ApplicationController
 
   private
 
-  def filter_non_author_users
+  def filter_answer_non_author_users
     redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(answer)
+  end
+
+  def filter_question_non_author_users
+    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
   end
 
   def question

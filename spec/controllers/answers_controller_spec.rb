@@ -5,10 +5,10 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Metrics/LineLength
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question, user: user) }
   let(:user) { create(:user) }
   let(:non_author) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -138,6 +138,23 @@ RSpec.describe AnswersController, type: :controller do
     it 'renders choose_best template' do
       patch :choose_best, params: { id: answer, format: :js }
       expect(response).to render_template :choose_best
+    end
+  end
+
+  context 'used by user, who is not author of the related question' do
+    let(:other_answer) { create(:answer, question: question, user: user) }
+
+    before { login(non_author) }
+
+    it 'does not change best status of the answer' do
+      patch :choose_best, params: { id: other_answer, format: :js }
+      answer.reload
+      expect(answer).to_not be_best
+    end
+
+    it 'redirect to root path' do
+      patch :choose_best, params: { id: answer, format: :js }
+      expect(response).to redirect_to root_path
     end
   end
 end
