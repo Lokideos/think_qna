@@ -75,13 +75,6 @@ feature 'User can choose best answer', "
         expect(page).to_not have_link 'Best Answer'
       end
     end
-
-    scenario "tries to choose best answer for other user's question via PATCH request" do
-      page.driver.submit :patch, "/answers/#{answer.id}", best: true
-
-      expect(page).to have_content 'You can modify or delete only your resources.'
-      expect(page).to_not have_content 'Updated by non author'
-    end
   end
 
   context 'Unauthenticated user' do
@@ -91,13 +84,6 @@ feature 'User can choose best answer', "
       within '.answers' do
         expect(page).to_not have_link 'Best Answer'
       end
-    end
-
-    scenario 'tries to choose best answer via patch request' do
-      page.driver.submit :patch, "/answers/#{answer.id}", best: true
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(page).to_not have_content 'Updated by unauthenticated user'
     end
   end
 end

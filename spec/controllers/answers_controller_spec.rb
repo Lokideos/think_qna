@@ -120,41 +120,56 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #choose_best' do
-    before { login(user) }
-
-    it 'changes needed answer attributes' do
-      patch :choose_best, params: { id: answer, format: :js }
-      answer.reload
-      expect(answer).to be_best
-    end
-
-    it 'changes needed attributes for other answers' do
-      other_answer = create(:answer, question: question, best: true)
-      patch :choose_best, params: { id: answer, format: :js }
-      other_answer.reload
-      expect(other_answer).to_not be_best
-    end
-
-    it 'renders choose_best template' do
-      patch :choose_best, params: { id: answer, format: :js }
-      expect(response).to render_template :choose_best
-    end
-  end
-
-  context 'used by user, who is not author of the related question' do
     let(:other_answer) { create(:answer, question: question, user: user) }
 
-    before { login(non_author) }
+    context 'used bu authenticated user' do
+      before { login(user) }
 
-    it 'does not change best status of the answer' do
-      patch :choose_best, params: { id: other_answer, format: :js }
-      answer.reload
-      expect(answer).to_not be_best
+      it 'changes needed answer attributes' do
+        patch :choose_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to be_best
+      end
+
+      it 'changes needed attributes for other answers' do
+        other_answer = create(:answer, question: question, best: true)
+        patch :choose_best, params: { id: answer, format: :js }
+        other_answer.reload
+        expect(other_answer).to_not be_best
+      end
+
+      it 'renders choose_best template' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to render_template :choose_best
+      end
     end
 
-    it 'redirect to root path' do
-      patch :choose_best, params: { id: answer, format: :js }
-      expect(response).to redirect_to root_path
+    context 'used by user, who is not author of the related question' do
+      before { login(non_author) }
+
+      it 'does not change best status of the answer' do
+        patch :choose_best, params: { id: other_answer, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
+
+      it 'redirect to root path' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by unauthenticated user' do
+      it 'does not change best status of the answer' do
+        patch :choose_best, params: { id: other_answer, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
+
+      it 'returns unauthorized 401 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status(401)
+      end
     end
   end
 end
