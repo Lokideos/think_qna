@@ -43,7 +43,7 @@ feature 'User can update his question', "
         end
       end
 
-      scenario 'attach files while updating the question', js: true do
+      scenario 'attach files to question while updating the question', js: true do
         within '.edit-question-form' do
           fill_in 'Title', with: 'Updated Question'
 
