@@ -41,16 +41,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    before { login(user) }
-
-    before { get :edit, params: { id: question } }
-
-    it 'render edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     before { login(user) }
 
@@ -83,77 +73,118 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+    context 'used by Authenticated user' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(assigns(:question)).to eq question
+      context 'with valid attributes' do
+        it 'assigns the requested question to @question' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+          question.reload
+
+          expect(question.title).to eq 'new title'
+          expect(question.body).to eq 'new body'
+        end
+
+        it 'render update template' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(response).to render_template :update
+        end
       end
 
-      it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
-        question.reload
+      context 'with invalid attributes' do
+        before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
-      end
+        it 'does not change question' do
+          correct_question_title = question.title
+          question.reload
 
-      it 'redirects to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(response).to redirect_to question
-      end
-    end
+          expect(question.title).to eq correct_question_title
+          expect(question.body). to eq 'QuestionBody'
+        end
 
-    context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
-
-      it 'does not change question' do
-        correct_question_title = question.title
-        question.reload
-
-        expect(question.title).to eq correct_question_title
-        expect(question.body). to eq 'MyText'
-      end
-
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+        it 're-renders edit update view' do
+          expect(response).to render_template :update
+        end
       end
     end
 
     context 'used by user, who is not author of the question' do
+      before { login(non_author) }
+
       it 'does not update the question' do
-        login(non_author)
         correct_question_title = question.title
-        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title') }
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
         question.reload
 
         expect(question.title).to eq correct_question_title
+      end
+
+      it 'redirects to root path' do
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
         expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by unauthenticated user' do
+      it 'does not update the question' do
+        correct_question_title = question.title
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Unauthenticated users title'), format: :js }
+        question.reload
+
+        expect(question.title).to eq correct_question_title
+      end
+
+      it 'returns unauthorized 401 status code' do
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Unauthenticated users title'), format: :js }
+        expect(response).to have_http_status(401)
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
-
     let!(:question) { create(:question, user: user) }
 
-    it 'deletes the question' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
-    end
+    context 'used by Authenticated user' do
+      before { login(user) }
 
-    it 'redirect to index' do
-      delete :destroy, params: { id: question }
-      expect(response).to redirect_to questions_path
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirect to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
 
     context 'used by user, who is not author of the question' do
-      it 'does not delete the question' do
-        login(non_author)
+      before { login(non_author) }
 
+      it 'does not delete the question from the database' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+
+      it 'redirects to root path' do
+        delete :destroy, params: { id: question }
+
         expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not delete the question from the database' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+
+      it 'redirects to login path' do
+        delete :destroy, params: { id: question }
+
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

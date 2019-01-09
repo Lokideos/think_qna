@@ -9,40 +9,39 @@ feature 'Author can create only his answers', "
   I'd like to be able to delete my answer
 " do
 
-  given(:author) { create(:user) }
+  given(:user) { create(:user) }
   given(:non_author) { create(:user) }
   given(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question, user: author) }
+  given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Author deletes his answer' do
-    sign_in(author)
-    visit question_path(question)
-    within('.answers') { click_on 'Delete answer' }
-
-    expect(page).to have_content 'Answer has been successfully deleted.'
-    expect(page).to_not have_content answer.body
-  end
-
-  context 'Non author user triest' do
-    before { sign_in(non_author) }
-
-    scenario "to delete other users' answer" do
+  context 'Authenticated user' do
+    scenario 'deletes his answer', js: true do
+      sign_in(user)
       visit question_path(question)
 
-      within('.answers') { expect(page).to_not have_link 'Delete answer' }
+      within('.answers') { click_on 'Delete Answer' }
+
+      expect(page).to have_content 'Answer has been successfully deleted.'
+      expect(page).to_not have_content answer.body
     end
 
-    scenario "to delete other user's answer via delete request" do
-      page.driver.submit :delete, "answers/#{answer.id}", {}
+    context 'not as author of the answer' do
+      before { sign_in(non_author) }
 
-      expect(page).to have_content 'You can modify or delete only your answers'
+      scenario "tries to delete other user's answer", js: true do
+        visit question_path(question)
+
+        within('.answers') { expect(page).to_not have_link 'Delete Answer' }
+      end
     end
   end
 
-  scenario 'Guest tries to delete an answer' do
-    visit question_path(question)
+  context 'Unauthenticated user' do
+    scenario 'tries to delete an answer', js: true do
+      visit question_path(question)
 
-    within('.answers') { expect(page).to_not have_link 'Delete answer' }
+      within('.answers') { expect(page).to_not have_link 'Delete Answer' }
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

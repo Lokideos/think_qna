@@ -1,0 +1,17 @@
+var editAnswerNotice = '';
+var answerId = <%= answer.id %>;
+var answerInfo = '#answer-info-' + answerId;
+var answerErrors = document.querySelector('#answer-info-' + answerId + '~ .answer-errors')
+$(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
+
+<% if !answer.errors.present? %>
+  $(answerInfo).html('<%= j answer.body %>');
+  $(answerInfo).show();
+  $('.edit-answer-link').show();
+  $('form#edit-answer-' + answerId).addClass('hidden');
+  editAnswerNotice = '<%= t('notifications.updated', resource: answer.class.model_name.human) %>'
+<% else %>
+  editAnswerNotice = '<%= t('notifications.input_error') %>'
+<% end %>
+
+$('.notice').html(editAnswerNotice);

@@ -20,32 +20,26 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
 
     if question.save
-      redirect_to @question, notice: 'Your question successfully created.'
+      redirect_to @question, notice: I18n.t('notifications.created', resource: question.class.model_name.human)
     else
       render :new
     end
   end
 
   def update
-    if question.update(question_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    question.update(question_params)
   end
 
   def destroy
     question.destroy
-    redirect_to questions_path, notice: 'You have successfully deleted the question.'
+    redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
 
   private
 
-  # rubocop:disable Metrics/LineLength
   def filter_non_author_users
-    redirect_to root_path, notice: 'You can modify or delete only your questions' unless current_user.author_of?(question)
+    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
   end
-  # rubocop:enable Metrics/LineLength
 
   def question_params
     params.require(:question).permit(:title, :body)

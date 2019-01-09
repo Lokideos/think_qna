@@ -1,0 +1,14 @@
+$('.question-update-errors').html('<%= render 'shared/errors', resource: question %>');
+var questionNotice = '';
+
+<% if !question.errors.present? %>
+  $('.question-info').html('<h1><%= j question.title %></h1><p><%= j question.body %></p>');
+  $('.question-info').show();
+  $('.edit-question-link').show();
+  $('.edit-question-form').addClass('hidden');
+  questionNotice = '<%= t('notifications.updated', resource: question.class.model_name.human) %>';
+<% else %>
+  questionNotice = '<%= t('notifications.input_error') %>';
+<% end %>
+
+$('.notice').html(questionNotice);

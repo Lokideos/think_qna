@@ -1,0 +1,49 @@
+ru:
+  errors:
+    best_answer_uniqueness: 'значение должно быть уникально для вопроса.'
+    best_answer_duplicate: 'Для каждого вопроса может существовать только один Лучший Ответ.'
+  notifications:
+    created: 'Ваш %{resource} был успешно создан.'
+    updated: 'Ваш %{resource} был успешно отредактирован.'
+    deleted: 'Ваш %{resource} был удален.'
+    input_error: 'При вводе данных произошла ошибка.'
+    cherry_request_stub: 'Вы можете редактировать или удалить только ваши ресурсы.'
+    not_created_error: "%{resource} не был создан; проверьте введенные вами данные."
+    best_answer: 'Вы выбрали лучший ответ.'
+
+  shared:
+    errors:
+      errors_counter:
+        few: '%{count} ошибки обнаружено:'
+        many: '%{count} ошибок обнаружено:'
+        one: '%{count} ошибка обнаружена:'
+        other: '%{count} ошибки обнаружено:'
+    header:
+      sign_in: 'Войти'
+      sign_out: 'Выйти'
+
+  helpers:
+    label:
+      user:
+        email: 'Электронная почта'
+        password: 'Пароль'
+        password_confirmation: 'Подтверждение пароля'
+        remember_me: 'Запомнить меня'
+
+  questions:
+    index:
+      ask: 'Задать Вопрос'
+    new:
+      ask: 'Спросить'
+    show:
+      delete: 'Удалить %{resource}'
+      edit: 'Редактировать %{resource}'
+      reply: 'Ответить на вопрос'
+      update: 'Сохранить'
+
+  answers:
+    answer:
+      best_answer: 'Лучший Ответ'
+      edit: 'Редактировать Ответ'
+      delete: 'Удалить Ответ'
+      update: 'Сохранить'

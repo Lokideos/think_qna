@@ -1,22 +1,41 @@
-h1= question.title
-p= question.body
+section.question
+  .question-info
+    h1= question.title
+    p= question.body
 
-- if current_user&.author_of?(question)
-  p= link_to 'Delete question', question_path(question), method: :delete
+  - if current_user&.author_of?(question)
+    p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
+    .question-update-errors
+      = render 'shared/errors', resource: question
+
+    = form_with model: question, class: 'edit-question-form hidden' do |f|
+      = f.label :title
+      = f.text_field :title
+
+      = f.label :body
+      = f.text_area :body
+
+      = f.submit t('.update')
+    p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
-  ul
-    - question.answers.each do |answer|
-      - if answer.persisted?
-        li
-          = answer.body
-          - if current_user&.author_of?(answer)
-            = link_to 'Delete answer', answer_path(answer), method: :delete
+  .best-answer
+    - if question.answers.find_by(best: true)
+      h3= t('answers.answer.best_answer')
+      .best-answer-info
+        = render question.answers.find_by(best: true)
+  .all-answers
+    h2 Answers on question
+    ul.answers-list
+      - question.answers.each do |answer|
+        - if answer.persisted? && !answer.best
+          li = render answer
 
-section.new_answer
+section.new-answer
   - if current_user
-    = render 'shared/errors', resource: @answer
+    .new-answer-errors
+      = render 'shared/errors', resource: @answer
     = form_with model: [question, @answer] do |f|
       = f.label :body
       = f.text_area :body
-      = f.submit 'Answer on question'
+      = f.submit t('.reply')

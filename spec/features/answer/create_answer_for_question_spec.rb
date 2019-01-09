@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 feature 'User can create answer for the question', "
   In order to solve the requested issue
   As authenticated user
@@ -18,25 +19,34 @@ feature 'User can create answer for the question', "
       visit question_path(question)
     end
 
-    scenario 'create answer for the question' do
+    scenario 'create answer for the question', js: true do
       fill_in 'Body', with: 'Answer text'
-      click_on 'Answer on question'
+      click_on 'Answer to question'
 
-      expect(page).to have_content 'Answer was successfully created.'
-      expect(page).to have_content 'Answer text'
+      expect(page).to have_content 'Your Answer has been successfully created.'
+      expect(current_path).to eq question_path(question)
+      within '.answers' do
+        expect(page).to have_content 'Answer text'
+        expect(page).to have_content 'Edit Answer'
+      end
+
+      within '.new-answer' do
+        expect(find_field(id: 'answer_body').value).to eq ''
+      end
     end
 
-    scenario 'tries to create answer with wrong parameters for the question' do
-      click_on 'Answer on question'
+    scenario 'tries to create answer with wrong parameters for the question', js: true do
+      click_on 'Answer to question'
 
       expect(page).to have_content "Answer wasn't created; check your input."
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthenticated user tries to create answer for the question' do
+  scenario 'Unauthenticated user tries to create answer for the question', js: true do
     visit question_path(question)
 
-    within('.new_answer') { expect(page).to_not have_content 'Body' }
+    expect(page).to_not have_selector 'textarea'
   end
 end
+# rubocop:enable Metrics/BlockLength

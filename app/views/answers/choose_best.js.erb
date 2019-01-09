@@ -1,0 +1,12 @@
+var answerId = <%= answer.id %>;
+var previousBestAnswer = document.querySelector('.best-answer .best-answer-info');
+console.log(previousBestAnswer);
+
+$('.notice').html('<%= I18n.t('notifications.best_answer') %>');
+$('.best-answer').html('<h2><%= t('answers.answer.best_answer') %></h2><p><%= j render answer %></p>');
+$('.answers-list #answer-info-' + answerId).parent().remove();
+
+if (previousBestAnswer) {
+  $('.answers-list').append('<li class="previous-best-answer"></li>');
+  $('.previous-best-answer').append(previousBestAnswer);
+}

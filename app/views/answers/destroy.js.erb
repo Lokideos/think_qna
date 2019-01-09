@@ -1,0 +1,3 @@
+$('.notice').html('<%= t('notifications.deleted', resource: answer.class.model_name.human) %>');
+var answerId = <%= answer.id %>
+$('#answer-info-' + answerId).parent().remove();

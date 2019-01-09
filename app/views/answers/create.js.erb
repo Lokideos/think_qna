@@ -1,0 +1,12 @@
+$('.new-answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
+var answerNotice = '';
+
+<% if answer.persisted? %>
+  $('.answers-list').append('<li><%= j render answer %></li>');
+  $('.new-answer #answer_body').val('');
+  answerNotice = '<%= t('notifications.created', resource: answer.class.model_name.human) %>';
+<% else %>
+  answerNotice = '<%= t('notifications.not_created_error', resource: answer.class.model_name.human) %>';
+<% end %>
+
+$('.notice').html(answerNotice);
