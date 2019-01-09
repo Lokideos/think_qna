@@ -7,7 +7,12 @@ section.question
       p Attached files
       - if question.files.attached?
         - question.files.each do |file|
-          p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
+          = content_tag(:p, id: "attachment-#{file.id}") do
+            = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
+            - if current_user&.author_of?(question)
+              |  | &nbsp
+              = link_to 'Delete Attachment', destroy_attachment_question_path(question, attachment_id: file.id), data: { attachment_id: file.id },
+                         method: :patch, class: 'attached-file-destroy-link', remote: true
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'

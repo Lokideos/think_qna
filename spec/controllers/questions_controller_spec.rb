@@ -188,6 +188,53 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #destroy_attachment' do
+    before do
+      question.files.attach(create_file_blob)
+      @attachment_id = question.files.first.id
+    end
+
+    context 'used by Authenticated user' do
+      before { login(user) }
+
+      it 'deletes the attachment' do
+        expect { patch :destroy_attachment, params: { id: question, attachment_id: @attachment_id, format: :js } }.to change(question.files, :count).by(-1)
+      end
+
+      it 'renders destroy_attachment template' do
+        patch :destroy_attachment, params: { id: question, attachment_id: @attachment_id, format: :js }
+
+        expect(response).to render_template :destroy_attachment
+      end
+    end
+
+    context 'used by user, who is not author of the question' do
+      before { login(non_author) }
+
+      it 'does not delete the attachment' do
+        expect { patch :destroy_attachment, params: { id: question, attachment_id: @attachment_id, format: :js } }.to_not change(question.files, :count)
+      end
+
+      it 'redirects to root path' do
+        patch :destroy_attachment, params: { id: question, attachment_id: @attachment_id, format: :js }
+
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not delete the attachment' do
+        expect { patch :destroy_attachment, params: { id: question, attachment_id: @attachment_id, format: :js } }.to_not change(question.files, :count)
+      end
+
+      it 'returns unauthorized 401 status code' do
+        patch :destroy_attachment, params: { id: question, attachment_id: @attachment_id, format: :js }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength

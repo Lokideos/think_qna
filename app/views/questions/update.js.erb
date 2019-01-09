@@ -8,7 +8,10 @@ var questionNotice = '';
       <div class="question-attached-files">
         <p>Attached files</p>
         <% question.files.each do |file| %>
-          <p><%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %></p>
+          <%= content_tag(:p, id: "attachment-#{file.id}") do %>
+            <%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %> |
+            <%= j link_to 'Delete Attachment', destroy_attachment_question_path(question, attachment_id: file.id), method: :patch, class: 'attached-file-destroy-link', remote: true %>
+          <% end %>
         <% end %>
       </div>
   `);

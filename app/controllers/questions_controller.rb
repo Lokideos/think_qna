@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :filter_non_author_users, only: %i[update destroy]
+  before_action :filter_non_author_users, only: %i[update destroy destroy_attachment]
 
   def index
     @questions = Question.all
@@ -33,6 +33,11 @@ class QuestionsController < ApplicationController
   def destroy
     question.destroy
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
+  end
+
+  def destroy_attachment
+    @attachment_id = params[:attachment_id]
+    question.files.find_by_id(@attachment_id).purge
   end
 
   private
