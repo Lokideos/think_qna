@@ -50,6 +50,22 @@ feature 'User can update his answer', "
           expect(page).to have_content "Body can't be blank"
         end
       end
+
+      scenario 'attach files to answer while updating the answer', js: true do
+        within '.answers' do
+          click_on 'Edit Answer'
+
+          fill_in 'Body', with: 'Updated Answer'
+
+          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Update'
+        end
+
+        within '.answers' do
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
     end
 
     context 'not as Author of answer' do

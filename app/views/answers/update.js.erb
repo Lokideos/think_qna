@@ -5,7 +5,14 @@ var answerErrors = document.querySelector('#answer-info-' + answerId + '~ .answe
 $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
 
 <% if !answer.errors.present? %>
-  $(answerInfo).html('<%= j answer.body %>');
+  $(answerInfo).html(`
+      <p><%= j answer.body %></p>
+      <%# if answer.files.attached? %>
+        <% answer.files.each do |file| %>
+          <p><%= j link_to file.filename.to_s, url_for(file) %></p>
+        <% end %>
+      <%# end %>
+  `);
   $(answerInfo).show();
   $('.edit-answer-link').show();
   $('form#edit-answer-' + answerId).addClass('hidden');

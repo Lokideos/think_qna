@@ -10,9 +10,15 @@
   .answer-errors
     = render 'shared/errors', resource: answer
   = form_with model: answer, class: 'edit-answer-form hidden', html: {id: "edit-answer-#{ answer.id }"} do |f|
-    = f.label :body
-    = f.text_area :body
-    = f.submit t('.update')
+    p
+      = f.label :body
+      = f.text_area :body
+
+    p
+      = f.label :files
+      = f.file_field :files, multiple: true
+
+    p= f.submit t('.update')
   = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: {answer_id: answer.id}, remote: true
 - if current_user&.author_of?(question) && !answer.best
   = link_to t('.best_answer'), choose_best_answer_path(answer), id: "choose-best-answer-link-#{ answer.id }", method: :patch, remote: true
