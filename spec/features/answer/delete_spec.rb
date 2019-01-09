@@ -33,12 +33,6 @@ feature 'Author can create only his answers', "
 
         within('.answers') { expect(page).to_not have_link 'Delete Answer' }
       end
-
-      scenario "tries to delete other user's answer via DELETE request" do
-        page.driver.submit :delete, "answers/#{answer.id}", {}
-
-        expect(page).to have_content 'You can modify or delete only your resources.'
-      end
     end
   end
 
@@ -47,12 +41,6 @@ feature 'Author can create only his answers', "
       visit question_path(question)
 
       within('.answers') { expect(page).to_not have_link 'Delete Answer' }
-    end
-
-    scenario 'tries to delete an answer via DELETE request' do
-      page.driver.submit :delete, "answers/#{answer.id}", {}
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
     end
   end
 end

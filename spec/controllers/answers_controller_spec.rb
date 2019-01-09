@@ -120,25 +120,44 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
-
     let!(:answer) { create(:answer, user: user) }
 
-    it 'deletes the answer' do
-      expect { delete :destroy, params: { id: answer, format: :js } }.to change(Answer, :count).by(-1)
-    end
+    context 'used by Authenticated user' do
+      before { login(user) }
 
-    it 'render destroy template' do
-      delete :destroy, params: { id: answer, format: :js }
-      expect(response).to render_template :destroy
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer, format: :js } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'render destroy template' do
+        delete :destroy, params: { id: answer, format: :js }
+        expect(response).to render_template :destroy
+      end
     end
 
     context 'used by user, who is not author of the answer' do
-      it 'does not delete the answer' do
-        login(non_author)
+      before { login(non_author) }
 
+      it 'does not delete the answer from the database' do
         expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
+      end
+
+      it 'redirects to root_path' do
+        delete :destroy, params: { id: answer, format: :js }
+
         expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not delete the answer from the database' do
+        expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
+      end
+
+      it 'returns unauthorized 401 status code' do
+        delete :destroy, params: { id: answer, format: :js }
+
+        expect(response).to have_http_status(401)
       end
     end
   end
