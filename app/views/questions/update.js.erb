@@ -2,7 +2,13 @@ $('.question-update-errors').html('<%= render 'shared/errors', resource: questio
 var questionNotice = '';
 
 <% if !question.errors.present? %>
-  $('.question-info').html('<h1><%= j question.title %></h1><p><%= j question.body %></p>');
+  $('.question-info').html(`
+      <h1><%= j question.title %></h1>
+      <p><%= j question.body %></p>
+      <% question.files.each do |file| %>
+        <p><%= j link_to file.filename.to_s, url_for(file) %></p>
+      <% end %>
+  `);
   $('.question-info').show();
   $('.edit-question-link').show();
   $('.edit-question-form').addClass('hidden');

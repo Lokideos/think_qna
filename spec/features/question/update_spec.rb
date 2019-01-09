@@ -42,6 +42,20 @@ feature 'User can update his question', "
           expect(page).to have_content "Title can't be blank"
         end
       end
+
+      scenario 'attach files while updating the question', js: true do
+        within '.edit-question-form' do
+          fill_in 'Title', with: 'Updated Question'
+
+          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Update'
+        end
+
+        within '.question' do
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
     end
 
     context 'but non Author of the question' do
