@@ -18,10 +18,11 @@ feature 'User can update his question', "
         sign_in(user)
 
         visit question_path(question)
-        click_on 'Edit Question'
       end
 
       scenario 'updates the question', js: true do
+        click_on 'Edit Question'
+
         within '.question' do
           fill_in 'Title', with: 'Updated Question'
           click_on 'Update'
@@ -32,6 +33,8 @@ feature 'User can update his question', "
       end
 
       scenario 'tries to update the question with invalid attributes', js: true do
+        click_on 'Edit Question'
+
         within '.question' do
           fill_in 'Title', with: ''
           click_on 'Update'
@@ -43,17 +46,57 @@ feature 'User can update his question', "
         end
       end
 
-      scenario 'attach files to question while updating the question', js: true do
-        within '.edit-question-form' do
-          fill_in 'Title', with: 'Updated Question'
+      context 'updates the question and attach files' do
+        background do
+          click_on 'Edit Question'
 
-          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-          click_on 'Update'
+          within '.edit-question-form' do
+            fill_in 'Title', with: 'Updated Question'
+
+            attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+            click_on 'Update'
+          end
         end
 
-        within '.question' do
-          expect(page).to have_link 'rails_helper.rb'
-          expect(page).to have_link 'spec_helper.rb'
+        scenario 'successfully', js: true do
+          within '.question' do
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
+        end
+
+        scenario 'then reload page and see attached files', js: true do
+          page.evaluate_script 'window.location.reload()'
+
+          click_on 'Edit Question'
+
+          within '.question' do
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
+        end
+
+        context 'decides to attach another file without reloading the page and' do
+          scenario 'see attached files', js: true do
+            click_on 'Edit Question'
+
+            within '.question' do
+              expect(page).to have_link 'rails_helper.rb'
+              expect(page).to have_link 'spec_helper.rb'
+            end
+          end
+
+          scenario 'see empty file upload path', js: true do
+            click_on 'Edit Question'
+
+            within '.edit-question-form' do
+              click_on 'Update'
+            end
+
+            within '.question' do
+              expect(page).to have_selector('.attached-file-link', count: 2)
+            end
+          end
         end
       end
     end

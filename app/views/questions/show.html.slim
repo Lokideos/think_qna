@@ -1,11 +1,13 @@
 section.question
   .question-info
     h1= question.title
-    p= question.body
+    p.question-info-body= question.body
 
-    - if question.files.attached?
-      - question.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file)
+    .question-attached-files
+      p Attached files
+      - if question.files.attached?
+        - question.files.each do |file|
+          p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
@@ -21,11 +23,17 @@ section.question
         = f.label :body
         = f.text_area :body
 
+      .question-form-attached-files
+        p Attached files
+        - if question.files.attached?
+          - question.files.each do |file|
+            p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
+
       p
         = f.label :files
         = f.file_field :files, multiple: true
 
-      p= f.submit t('.update')
+      p= f.submit t('.update'), class: 'question-form-update-btn'
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
