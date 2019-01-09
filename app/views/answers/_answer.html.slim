@@ -1,5 +1,4 @@
-/ = content_tag(:div, answer.body, id: "answer-info-#{ answer.id }")
-= content_tag :div, id: "answer-info-#{ answer.id }" do
+= content_tag :div, id: "answer-info-#{ answer.id }", class: 'answer-instance' do
   = answer.body
   .answer-attached-files
     - if answer.files.attached?

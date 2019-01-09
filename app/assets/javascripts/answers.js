@@ -7,8 +7,8 @@ $(document).on('turbolinks:load', function(){
         var answerId = $(this).data('answerId');
         $('#answer-info-' + answerId).hide();
         $('form#edit-answer-' + answerId).removeClass('hidden');
-        attachedToAnswerFiles = document.querySelector('.answer-attached-files');
-        $('.answer-form-attached-files').html(attachedToAnswerFiles);
+        attachedToAnswerFiles = $(this).closest('li').children('.answer-instance').children('.answer-attached-files');
+        $(this).closest('li').children('.edit-answer-form').children('.answer-form-attached-files').html(attachedToAnswerFiles);
     });
 
     $('.edit-answer-form').on('click', '.answer-form-update-btn', function(e) {

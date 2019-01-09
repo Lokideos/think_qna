@@ -70,6 +70,22 @@ feature 'User can update his answer', "
           end
         end
 
+        scenario 'does not see attached to this answer files when tries to update other answer', js: true do
+          other_answer = create(:answer, question: question, user: user)
+          page.evaluate_script 'window.location.reload()'
+
+          current_answer = page.find("#answer-info-#{other_answer.id}").first(:xpath, './/..')
+
+          within current_answer do
+            click_on 'Edit Answer'
+          end
+
+          within current_answer do
+            expect(page).to_not have_link 'rails_helper.rb'
+            expect(page).to_not have_link 'spec_helper.rb'
+          end
+        end
+
         scenario 'then reload page and see attached files', js: true do
           page.evaluate_script 'window.location.reload()'
 
