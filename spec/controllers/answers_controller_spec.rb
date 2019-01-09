@@ -47,50 +47,74 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+    context 'used by Authenticated user' do
+      before { login(user) }
 
-    it 'assigns the requested answer to @answer' do
-      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-      expect(assigns(:answer)).to eq answer
-    end
-
-    context 'with valid attributes' do
-      it 'changes the answer attributes' do
-        patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
-        answer.reload
-        expect(answer.body).to eq 'new body'
-      end
-
-      it 'renders update template' do
+      it 'assigns the requested answer to @answer' do
         patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-        expect(response).to render_template :update
-      end
-    end
-
-    context 'with invalid attributes' do
-      before { patch :update, params: { id: answer, answer: { body: nil }, format: :js } }
-
-      it 'does not change the answer attributes' do
-        correct_answer_body = answer.body
-        answer.reload
-
-        expect(answer.body).to eq correct_answer_body
+        expect(assigns(:answer)).to eq answer
       end
 
-      it 're-renders update template' do
-        expect(response).to render_template :update
+      context 'with valid attributes' do
+        it 'changes the answer attributes' do
+          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
+          answer.reload
+          expect(answer.body).to eq 'new body'
+        end
+
+        it 'renders update template' do
+          patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'with invalid attributes' do
+        before { patch :update, params: { id: answer, answer: { body: nil }, format: :js } }
+
+        it 'does not change the answer attributes' do
+          correct_answer_body = answer.body
+          answer.reload
+
+          expect(answer.body).to eq correct_answer_body
+        end
+
+        it 're-renders update template' do
+          expect(response).to render_template :update
+        end
       end
     end
 
     context 'used by user, who is not author of the answer' do
+      before { login(non_author) }
+
       it 'does not update the answer' do
-        login(non_author)
         correct_answer_body = answer.body
-        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Other users body') }
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Other users body'), format: :js }
         answer.reload
 
         expect(answer.body).to eq correct_answer_body
+      end
+
+      it 'redirects to root path' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Other users body'), format: :js }
+
         expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not update the answer' do
+        correct_answer_body = answer.body
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Unauthenticated users body'), format: :js }
+        answer.reload
+
+        expect(answer.body).to eq correct_answer_body
+      end
+
+      it 'returns unauthorized 401 status code' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Unauthenticated users body'), format: :js }
+
+        expect(response).to have_http_status(401)
       end
     end
   end

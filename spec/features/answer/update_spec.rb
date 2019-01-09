@@ -62,13 +62,6 @@ feature 'User can update his answer', "
           expect(page).to_not have_link 'Edit Answer'
         end
       end
-
-      scenario "tries to update other user's answer via PATCH request" do
-        page.driver.submit :patch, "/answers/#{answer.id}", body: 'Updated by non author'
-
-        expect(page).to have_content 'You can modify or delete only your resources.'
-        expect(page).to_not have_content 'Updated by non author'
-      end
     end
   end
 
@@ -79,13 +72,6 @@ feature 'User can update his answer', "
       within '.answers' do
         expect(page).to_not have_link 'Edit Answer'
       end
-    end
-
-    scenario 'tries to update answer via PATCH request' do
-      page.driver.submit :patch, "/answers/#{answer.id}", body: 'Updated by non author'
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(page).to_not have_content 'Updated by non author'
     end
   end
 end
