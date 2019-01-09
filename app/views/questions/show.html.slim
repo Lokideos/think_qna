@@ -3,6 +3,10 @@ section.question
     h1= question.title
     p= question.body
 
+    - if question.files.attached?
+      - question.files.each do |file|
+        p= link_to file.filename.to_s, url_for(file)
+
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors
