@@ -1,9 +1,10 @@
 / = content_tag(:div, answer.body, id: "answer-info-#{ answer.id }")
 = content_tag :div, id: "answer-info-#{ answer.id }" do
   = answer.body
-  - if answer.files.attached?
-    - answer.files.each do |file|
-      p= link_to file.filename.to_s, url_for(file)
+  .answer-attached-files
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
@@ -14,11 +15,16 @@
       = f.label :body
       = f.text_area :body
 
+    .answer-form-attached-files
+      p Attached files
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
     p
       = f.label :files
       = f.file_field :files, multiple: true
 
-    p= f.submit t('.update')
+    p= f.submit t('.update'), class: 'answer-form-update-btn'
   = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: {answer_id: answer.id}, remote: true
 - if current_user&.author_of?(question) && !answer.best
   = link_to t('.best_answer'), choose_best_answer_path(answer), id: "choose-best-answer-link-#{ answer.id }", method: :patch, remote: true

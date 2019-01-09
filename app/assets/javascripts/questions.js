@@ -1,4 +1,4 @@
-var attachedFiles = '';
+var attachedToQuestionFiles = '';
 
 $(document).on('turbolinks:load', function(){
     $('.question').on('click', '.edit-question-link', function(e) {
@@ -9,8 +9,8 @@ $(document).on('turbolinks:load', function(){
     });
 
     $('.edit-question-link').on('click', function(e) {
-        attachedFiles = document.querySelector('.question-attached-files');
-        $('.question-form-attached-files').html(attachedFiles);
+        attachedToQuestionFiles = document.querySelector('.question-attached-files');
+        $('.question-form-attached-files').html(attachedToQuestionFiles);
     });
 
     $('.edit-question-form').on('click', '.question-form-update-btn', function(e) {

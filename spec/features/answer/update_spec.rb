@@ -51,19 +51,61 @@ feature 'User can update his answer', "
         end
       end
 
-      scenario 'attach files to answer while updating the answer', js: true do
-        within '.answers' do
-          click_on 'Edit Answer'
+      context 'updates the answer and attach files' do
+        background do
+          within '.answers' do
+            click_on 'Edit Answer'
 
-          fill_in 'Body', with: 'Updated Answer'
+            fill_in 'Body', with: 'Updated Answer'
 
-          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-          click_on 'Update'
+            attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+            click_on 'Update'
+          end
         end
 
-        within '.answers' do
-          expect(page).to have_link 'rails_helper.rb'
-          expect(page).to have_link 'spec_helper.rb'
+        scenario 'successfully', js: true do
+          within '.answers' do
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
+        end
+
+        scenario 'then reload page and see attached files', js: true do
+          page.evaluate_script 'window.location.reload()'
+
+          within '.answers' do
+            click_on 'Edit Answer'
+          end
+
+          within '.answers' do
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
+        end
+
+        context 'decides to attach another file without reloading the page and' do
+          scenario 'see attached files', js: true do
+            within '.answers' do
+              click_on 'Edit Answer'
+            end
+
+            within '.answers' do
+              expect(page).to have_link 'rails_helper.rb'
+              expect(page).to have_link 'spec_helper.rb'
+            end
+          end
+
+          scenario 'see empty file upload path', js: true do
+            within '.answers' do
+              click_on 'Edit Answer'
+
+              click_on 'Update'
+            end
+
+            within '.answers' do
+              expect(page).to have_selector('.attached-file-link', count: 2)
+            end
+          end
         end
       end
     end
