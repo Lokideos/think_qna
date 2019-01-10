@@ -2,7 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :filter_answer_non_author_users, only: %i[update destroy]
+  before_action :filter_answer_non_author_users, only: %i[update destroy destroy_attachment]
 
   def create
     @answer = question.answers.new(answer_params)
@@ -22,6 +22,11 @@ class AnswersController < ApplicationController
     redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
 
     answer.choose_best_answer
+  end
+
+  def destroy_attachment
+    @attachment_id = params[:attachment_id]
+    answer.files.find_by_id(@attachment_id).purge
   end
 
   private

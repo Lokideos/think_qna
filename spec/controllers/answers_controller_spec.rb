@@ -215,6 +215,30 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #destroy_attachment' do
+    before do
+      answer.files.attach(create_file_blob)
+      @attachment_id = answer.files.first.id
+    end
+
+    context 'used by authenticated user' do
+      before { login(user) }
+
+      it 'deletes attachment from the database' do
+        expect { patch :destroy_attachment, params: { id: answer, attachment_id: @attachment_id, format: :js } }.to change(answer.files, :count).by(-1)
+      end
+
+      it 'renders delete_attachment template' do
+        patch :destroy_attachment, params: { id: answer, attachment_id: @attachment_id, format: :js }
+
+        expect(response).to render_template :destroy_attachment
+      end
+    end
+
+    context 'used by user, who is not author of the answer'
+    context 'used by unauthenticated user'
+  end
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength
