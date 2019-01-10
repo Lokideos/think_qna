@@ -57,6 +57,13 @@ feature 'User can delete attachment to his answer', "
       expect(page).to_not have_link 'Delete Attachment'
     end
   end
-  scenario 'Unauthenticated user tries to delete attachment to answer'
+
+  scenario 'Unauthenticated user tries to delete attachment to answer', js: true do
+    visit question_path(question)
+
+    within '.answer-attached-files' do
+      expect(page).to_not have_link 'Delete Attachment'
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

@@ -1,6 +1,7 @@
 = content_tag :div, id: "answer-info-#{ answer.id }", class: 'answer-instance' do
   = answer.body
   .answer-attached-files
+    p Attached files
     - if answer.files.attached?
       - answer.files.each do |file|
         = content_tag(:p, id: "answer-attachment-#{file.id}") do

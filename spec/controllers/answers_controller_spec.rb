@@ -250,7 +250,16 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'used by unauthenticated user'
+    context 'used by unauthenticated user' do
+      it 'does not delete attachment from the database' do
+        expect { patch :destroy_attachment, params: { id: answer, attachment_id: @attachment_id, format: :js } }.to_not change(answer.files, :count)
+      end
+
+      it 'returns unauthorized 401 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status(401)
+      end
+    end
   end
 end
 # rubocop:enable Metrics/LineLength
