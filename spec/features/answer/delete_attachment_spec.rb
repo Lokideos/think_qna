@@ -9,6 +9,7 @@ feature 'User can delete attachment to his answer', "
   I'd like to be able to delete attachments to my answers
 " do
   given(:user) { create(:user) }
+  given(:non_author) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
@@ -48,7 +49,14 @@ feature 'User can delete attachment to his answer', "
     end
   end
 
-  scenario "User tries to delete attachment ot other user's answer"
+  scenario "User tries to delete attachment ot other user's answer", js: true do
+    sign_in(non_author)
+    visit question_path(question)
+
+    within '.answer-attached-files' do
+      expect(page).to_not have_link 'Delete Attachment'
+    end
+  end
   scenario 'Unauthenticated user tries to delete attachment to answer'
 end
 # rubocop:enable Metrics/BlockLength

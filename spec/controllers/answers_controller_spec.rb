@@ -236,7 +236,20 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'used by user, who is not author of the answer'
+    context 'used by user, who is not author of the answer' do
+      before { login(non_author) }
+
+      it 'does not delete attachment from the database' do
+        expect { patch :destroy_attachment, params: { id: answer, attachment_id: @attachment_id, format: :js } }.to_not change(answer.files, :count)
+      end
+
+      it 'redirects to root path' do
+        patch :destroy_attachment, params: { id: answer, attachment_id: @attachment_id, format: :js }
+
+        expect(response).to redirect_to root_path
+      end
+    end
+
     context 'used by unauthenticated user'
   end
 end
