@@ -1,15 +1,15 @@
 = content_tag :div, id: "answer-info-#{ answer.id }", class: 'answer-instance' do
   = answer.body
   .answer-attached-files
-    p Attached files
+    p= t('.attached_files_section_headline')
     - if answer.files.attached?
       - answer.files.each do |file|
         = content_tag(:p, id: "answer-attachment-#{file.id}") do
           = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
           - if current_user&.author_of?(answer)
             |  | &nbsp
-            = link_to 'Delete Attachment', destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
-                                           method: :patch, class: 'attached-file-destroy-link', remote: true
+            = link_to t('.delete_attachment'), destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
+                                               method: :patch, class: 'attached-file-destroy-link', remote: true
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
@@ -21,14 +21,14 @@
       = f.text_area :body
 
     .answer-form-attached-files
-      p Attached files
+      p= t('.attached_files_section_headline')
       - if answer.files.attached?
         - answer.files.each do |file|
           = content_tag(:p, id: "answer-attachment-#{file.id}") do
             = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
             - if current_user&.author_of?(answer)
               |  | &nbsp
-              = link_to 'Delete Attachment', destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
+              = link_to t('.delete_attachment'), destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
                                              method: :patch, class: 'attached-file-destroy-link', remote: true
     p
       = f.label :files

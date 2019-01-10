@@ -4,14 +4,14 @@ section.question
     p.question-info-body= question.body
 
     .question-attached-files
-      p Attached files
+      p= t('.attached_files_section_headline')
       - if question.files.attached?
         - question.files.each do |file|
           = content_tag(:p, id: "attachment-#{file.id}") do
             = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
             - if current_user&.author_of?(question)
               |  | &nbsp
-              = link_to 'Delete Attachment', destroy_attachment_question_path(question, attachment_id: file.id), data: { attachment_id: file.id },
+              = link_to t('.delete_attachment'), destroy_attachment_question_path(question, attachment_id: file.id), data: { attachment_id: file.id },
                          method: :patch, class: 'attached-file-destroy-link', remote: true
 
   - if current_user&.author_of?(question)
@@ -29,7 +29,7 @@ section.question
         = f.text_area :body
 
       .question-form-attached-files
-        p Attached files
+        p= t('.attached_files_section_headline')
         - if question.files.attached?
           - question.files.each do |file|
             p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'

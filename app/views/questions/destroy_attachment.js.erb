@@ -2,4 +2,4 @@ var attachmentId = <%= @attachment_id %>;
 
 $('#attachment-' + attachmentId).remove();
 
-$('.notice').html('You have successfully deleted attachment.');
+$('.notice').html('<%= t('notifications.delete_attachment') %>>');
