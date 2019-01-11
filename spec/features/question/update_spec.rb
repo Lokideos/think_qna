@@ -59,6 +59,8 @@ feature 'User can update his question', "
         end
 
         scenario 'successfully', js: true do
+          wait_for_ajax
+
           within '.question' do
             expect(page).to have_link 'rails_helper.rb'
             expect(page).to have_link 'spec_helper.rb'
@@ -66,6 +68,7 @@ feature 'User can update his question', "
         end
 
         scenario 'then reload page and see attached files', js: true do
+          sleep(2)
           page.evaluate_script 'window.location.reload()'
 
           click_on 'Edit Question'

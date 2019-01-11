@@ -34,9 +34,9 @@ section.question
           - question.files.each do |file|
             p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
 
-      p
+      p.question-file-upload-section
         = f.label :files
-        = f.file_field :files, multiple: true
+        = f.file_field :files, multiple: true, direct_upload: true
 
       p= f.submit t('.update'), class: 'question-form-update-btn'
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
@@ -65,6 +65,6 @@ section.new-answer
 
       p
         = f.label :files
-        = f.file_field :files, multiple: true
+        = f.file_field :files, multiple: true, direct_upload: true
 
       p= f.submit t('.reply')

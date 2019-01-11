@@ -30,9 +30,9 @@
               |  | &nbsp
               = link_to t('.delete_attachment'), destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
                                              method: :patch, class: 'attached-file-destroy-link', remote: true
-    p
+    p.answer-file-upload-section
       = f.label :files
-      = f.file_field :files, multiple: true
+      = f.file_field :files, multiple: true, direct_upload: true
 
     p= f.submit t('.update'), class: 'answer-form-update-btn'
   = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: {answer_id: answer.id}, remote: true

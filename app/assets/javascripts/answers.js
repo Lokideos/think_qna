@@ -1,4 +1,5 @@
 var attachedToAnswerFiles = '';
+var answerFilesAttachForm = '';
 
 $(document).on('turbolinks:load', function(){
     $('.answers').on('click', '.edit-answer-link', function(e) {
@@ -7,6 +8,11 @@ $(document).on('turbolinks:load', function(){
         var answerId = $(this).data('answerId');
         $('#answer-info-' + answerId).hide();
         $('form#edit-answer-' + answerId).removeClass('hidden');
+        if (answerFilesAttachForm !== '') {
+            console.log(answerFilesAttachForm);
+            $('form#edit-answer-' + answerId + ' .answer-file-upload-section').html(answerFilesAttachForm);
+        }
+        answerFilesAttachForm = $('form#edit-answer-' + answerId + ' .answer-file-upload-section').children();
         attachedToAnswerFiles = $(this).closest('li').children('.answer-instance').children('.answer-attached-files');
         $(this).closest('li').children('.edit-answer-form').children('.answer-form-attached-files').html(attachedToAnswerFiles);
     });

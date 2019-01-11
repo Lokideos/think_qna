@@ -72,6 +72,7 @@ feature 'User can update his answer', "
 
         scenario 'does not see attached to this answer files when tries to update other answer', js: true do
           other_answer = create(:answer, question: question, user: user)
+          sleep(2)
           page.evaluate_script 'window.location.reload()'
 
           current_answer = page.find("#answer-info-#{other_answer.id}").first(:xpath, './/..')
@@ -87,6 +88,7 @@ feature 'User can update his answer', "
         end
 
         scenario 'then reload page and see attached files', js: true do
+          sleep(2)
           page.evaluate_script 'window.location.reload()'
 
           within '.answers' do
