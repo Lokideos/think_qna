@@ -11,9 +11,10 @@ addons:
   chrome: stable
 
 before_install:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   - gem update --system
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database.yml.travis config/database.yml
+  - rm config/storage.yml
+  - mv config/storage.yml.travis config/storage.yml
 script:
   - xvfb-run -a bundle exec rspec
