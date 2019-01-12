@@ -59,12 +59,12 @@ RSpec.describe AttachmentsController, type: :controller do
         end.to_not change(resource.files, :count)
       end
 
-      it 'returns Unauthorized 401 staus code' do
+      it 'returns Unauthorized 401 status code' do
         delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
         expect(response.status).to eq 401
       end
 
-      it 'returns Unauthorized 401 staus code if class name is bad' do
+      it 'returns Unauthorized 401 status code if class name is bad' do
         delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: 'Bad Class', format: :js }
         expect(response.status).to eq 401
       end
