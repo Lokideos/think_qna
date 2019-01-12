@@ -10,9 +10,9 @@ $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
       <div class="answer-attached-files">
         <p><%= t('.attached_files_section_headline') %></p>
           <% answer.files.each do |file| %>
-            <%= content_tag(:p, id: "answer-attachment-#{file.id}") do %>
+            <%= content_tag(:p, id: "file-#{file.id}") do %>
               <%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %> |
-              <%= j link_to t('.delete_attachment'), destroy_attachment_answer_path(answer, attachment_id: file.id), method: :patch, class: 'attached-file-destroy-link', remote: true %>
+              <%= j link_to t('.delete_attachment'), file_path(id: file.id, resource_id: answer, resource_class: answer.class), method: :delete, class: 'attached-file-destroy-link', remote: true %>
             <% end %>
           <% end %>
       </div>

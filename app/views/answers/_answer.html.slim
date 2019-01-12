@@ -4,18 +4,18 @@
     p= t('.attached_files_section_headline')
     - if answer.files.attached?
       - answer.files.each do |file|
-        = content_tag(:p, id: "answer-attachment-#{file.id}") do
+        = content_tag(:p, id: "file-#{file.id}") do
           = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
           - if current_user&.author_of?(answer)
             |  | &nbsp
-            = link_to t('.delete_attachment'), destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
-                                               method: :patch, class: 'attached-file-destroy-link', remote: true
+            = link_to t('.delete_attachment'), file_path(id: file.id, resource_id: answer, resource_class: answer.class), data: { attached_file_id: file.id },
+                                               method: :delete, class: 'attached-file-destroy-link', remote: true
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
   .answer-errors
     = render 'shared/errors', resource: answer
-  = form_with model: answer, class: 'edit-answer-form hidden', html: {id: "edit-answer-#{ answer.id }"} do |f|
+  = form_with model: answer, class: 'edit-answer-form hidden', html: { id: "edit-answer-#{ answer.id }" } do |f|
     p
       = f.label :body
       = f.text_area :body
@@ -24,12 +24,12 @@
       p= t('.attached_files_section_headline')
       - if answer.files.attached?
         - answer.files.each do |file|
-          = content_tag(:p, id: "answer-attachment-#{file.id}") do
+          = content_tag(:p, id: "file-#{file.id}") do
             = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
             - if current_user&.author_of?(answer)
               |  | &nbsp
-              = link_to t('.delete_attachment'), destroy_attachment_answer_path(answer, attachment_id: file.id), data: {attachment_id: file.id},
-                                             method: :patch, class: 'attached-file-destroy-link', remote: true
+              = link_to t('.delete_attachment'), file_path(id: file.id, resource_id: answer, resource_class: answer.class), data: { attached_file_id: file.id },
+                      method: :delete, class: 'attached-file-destroy-link', remote: true
     p.answer-file-upload-section
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true

@@ -8,9 +8,9 @@ var questionNotice = '';
       <div class="question-attached-files">
         <p><%= t('.attached_files_section_headline') %></p>
         <% question.files.each do |file| %>
-          <%= content_tag(:p, id: "attachment-#{file.id}") do %>
+          <%= content_tag(:p, id: "file-#{file.id}") do %>
             <%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %> |
-            <%= j link_to t('.delete_attachment'), destroy_attachment_question_path(question, attachment_id: file.id), method: :patch, class: 'attached-file-destroy-link', remote: true %>
+            <%= j link_to t('.delete_attachment'), file_path(id: file.id, resource_id: question, resource_class: question.class), data: { attached_file_id: file.id }, method: :delete, class: 'attached-file-destroy-link', remote: true %>
           <% end %>
         <% end %>
       </div>

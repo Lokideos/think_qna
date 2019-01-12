@@ -8,14 +8,10 @@ Rails.application.routes.draw do
     resources :questions do
       resources :answers, shallow: true, only: %i[create update destroy] do
         patch :choose_best, on: :member
-
-        get :destroy_attachment, on: :member
-        patch :destroy_attachment, on: :member
       end
-
-      get :destroy_attachment, on: :member
-      patch :destroy_attachment, on: :member
     end
+
+    resources :files, only: %i[destroy]
   end
 
   get '/:lang' => 'questions#index'

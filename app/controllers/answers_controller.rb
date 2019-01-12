@@ -24,11 +24,6 @@ class AnswersController < ApplicationController
     answer.choose_best_answer
   end
 
-  def destroy_attachment
-    @attachment_id = params[:attachment_id]
-    answer.files.find_by_id(@attachment_id).purge
-  end
-
   private
 
   def filter_answer_non_author_users

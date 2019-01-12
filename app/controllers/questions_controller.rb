@@ -35,11 +35,6 @@ class QuestionsController < ApplicationController
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
 
-  def destroy_attachment
-    @attachment_id = params[:attachment_id]
-    question.files.find_by_id(@attachment_id).purge
-  end
-
   private
 
   def filter_non_author_users
