@@ -14,6 +14,7 @@ $(document).on('turbolinks:load', function() {
     $('.edit-question-link').on('click', function (e) {
         attachedToQuestionFiles = document.querySelector('.question-attached-files');
         $('.question-form-attached-files').html(attachedToQuestionFiles);
+        $(questionFilesAttachForm[1]).prop('disabled', false);
         $('.edit-question-form .question-file-upload-section').html(questionFilesAttachForm);
     });
 

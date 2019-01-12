@@ -9,7 +9,7 @@ $(document).on('turbolinks:load', function(){
         $('#answer-info-' + answerId).hide();
         $('form#edit-answer-' + answerId).removeClass('hidden');
         if (answerFilesAttachForm !== '') {
-            console.log(answerFilesAttachForm);
+            $(answerFilesAttachForm[1]).prop('disabled', false);
             $('form#edit-answer-' + answerId + ' .answer-file-upload-section').html(answerFilesAttachForm);
         }
         answerFilesAttachForm = $('form#edit-answer-' + answerId + ' .answer-file-upload-section').children();
