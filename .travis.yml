@@ -16,5 +16,6 @@ before_install:
   - cp config/database.yml.travis config/database.yml
   - rm config/storage.yml
   - mv config/storage.yml.travis config/storage.yml
+
 script:
   - xvfb-run -a bundle exec rspec
