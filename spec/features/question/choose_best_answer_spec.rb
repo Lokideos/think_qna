@@ -21,7 +21,7 @@ feature 'User can choose best answer', "
 
     within '.best-answer' do
       expect(page).to have_content best_answer.body
-      expect(page).to_not have_link 'Best Answer'
+      expect(page).to have_css('a.best-answer-link.hidden')
     end
 
     within '.answers-list' do
