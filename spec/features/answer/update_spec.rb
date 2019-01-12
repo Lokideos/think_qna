@@ -64,6 +64,8 @@ feature 'User can update his answer', "
         end
 
         scenario 'successfully', js: true do
+          sleep(3)
+
           within '.answers' do
             expect(page).to have_link 'rails_helper.rb'
             expect(page).to have_link 'spec_helper.rb'
@@ -73,6 +75,7 @@ feature 'User can update his answer', "
         scenario 'does not see attached to this answer files when tries to update other answer', js: true do
           other_answer = create(:answer, question: question, user: user)
           sleep(2)
+
           page.evaluate_script 'window.location.reload()'
 
           current_answer = page.find("#answer-info-#{other_answer.id}").first(:xpath, './/..')

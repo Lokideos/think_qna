@@ -90,6 +90,7 @@ feature 'User can update his question', "
           end
 
           scenario 'see empty file upload path', js: true do
+            wait_for_ajax
             click_on 'Edit Question'
 
             within '.edit-question-form' do

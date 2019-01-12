@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
-# rubocop:disable Metrics/LineLength
 RSpec.describe AttachmentsController, type: :controller do
   describe 'DELETE #destroy' do
     let(:user) { create(:user) }
@@ -17,18 +16,13 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'deletes file from the database' do
         expect do
-          delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
+          delete :destroy, params: { id: resource.files.last, format: :js }
         end.to change(resource.files, :count).by(-1)
       end
 
       it 'renders destroy template' do
-        delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
+        delete :destroy, params: { id: resource.files.last, format: :js }
         expect(response).to render_template :destroy
-      end
-
-      it 'redirects to root path if class name is bad' do
-        delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: 'Bad Class', format: :js }
-        expect(response).to redirect_to root_path
       end
     end
 
@@ -37,17 +31,12 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'does not delete file from the database' do
         expect do
-          delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
+          delete :destroy, params: { id: resource.files.last, format: :js }
         end.to_not change(resource.files, :count)
       end
 
       it 'redirects to root path' do
-        delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
-        expect(response).to redirect_to root_path
-      end
-
-      it 'redirects to root path if class name is bad' do
-        delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: 'Bad Class', format: :js }
+        delete :destroy, params: { id: resource.files.last, format: :js }
         expect(response).to redirect_to root_path
       end
     end
@@ -55,21 +44,15 @@ RSpec.describe AttachmentsController, type: :controller do
     context 'used by unauthenticated user' do
       it 'does not delete file from the database' do
         expect do
-          delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
+          delete :destroy, params: { id: resource.files.last, format: :js }
         end.to_not change(resource.files, :count)
       end
 
       it 'returns Unauthorized 401 status code' do
-        delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: resource.class, format: :js }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns Unauthorized 401 status code if class name is bad' do
-        delete :destroy, params: { id: resource.files.last, resource_id: resource, resource_class: 'Bad Class', format: :js }
+        delete :destroy, params: { id: resource.files.last, format: :js }
         expect(response.status).to eq 401
       end
     end
   end
 end
 # rubocop:enable Metrics/BlockLength
-# rubocop:enable Metrics/LineLength

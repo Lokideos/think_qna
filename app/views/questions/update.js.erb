@@ -10,7 +10,7 @@ var questionNotice = '';
         <% question.files.each do |file| %>
           <%= content_tag(:p, id: "attachment-#{file.id}") do %>
             <%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %> |
-            <%= j link_to t('.delete_attachment'), attachment_path(id: file.id, resource_id: question, resource_class: question.class), data: { attachment_id: file.id }, method: :delete, class: 'attached-file-destroy-link', remote: true %>
+            <%= j link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id }, method: :delete, class: 'attached-file-destroy-link', remote: true %>
           <% end %>
         <% end %>
       </div>

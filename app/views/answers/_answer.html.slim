@@ -8,7 +8,7 @@
           = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
           - if current_user&.author_of?(answer)
             |  | &nbsp
-            = link_to t('.delete_attachment'), attachment_path(id: file.id, resource_id: answer, resource_class: answer.class), data: { attachment_id: file.id },
+            = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
                                            method: :delete, class: 'attached-file-destroy-link', remote: true
 
 - if current_user&.author_of?(answer)
@@ -28,7 +28,7 @@
             = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
             - if current_user&.author_of?(answer)
               |  | &nbsp
-              = link_to t('.delete_attachment'), attachment_path(id: file.id, resource_id: answer, resource_class: answer.class), data: { attachment_id: file.id },
+              = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
                                              method: :delete, class: 'attached-file-destroy-link', remote: true
     p.answer-file-upload-section
       = f.label :files
