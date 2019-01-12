@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Metrics/LineLength
-RSpec.describe FilesController, type: :controller do
+RSpec.describe AttachmentsController, type: :controller do
   describe 'DELETE #destroy' do
     let(:user) { create(:user) }
     let(:non_author) { create(:user) }

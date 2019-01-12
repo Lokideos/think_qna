@@ -7,12 +7,12 @@ section.question
       p= t('.attached_files_section_headline')
       - if question.files.attached?
         - question.files.each do |file|
-          = content_tag(:p, id: "file-#{file.id}") do
+          = content_tag(:p, id: "attachment-#{file.id}") do
             = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
             - if current_user&.author_of?(question)
               |  | &nbsp
-              = link_to t('.delete_attachment'), file_path(id: file.id, resource_id: question, resource_class: question.class), data: { attached_file_id: file.id },
-                                                 method: :delete, class: 'attached-file-destroy-link', remote: true
+              = link_to t('.delete_attachment'), attachment_path(id: file.id, resource_id: question, resource_class: question.class), data: { attachment_id: file.id },
+                                             method: :delete, class: 'attached-file-destroy-link', remote: true
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'

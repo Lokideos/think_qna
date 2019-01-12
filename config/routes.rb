@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :files, only: %i[destroy]
+    resources :attachments, only: %i[destroy]
   end
 
   get '/:lang' => 'questions#index'
