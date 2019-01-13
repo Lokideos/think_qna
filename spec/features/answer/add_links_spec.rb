@@ -72,5 +72,18 @@ feature 'User can add links to answer', "
       expect(page).to have_link 'Google', href: google_url
     end
   end
+
+  scenario 'If link leads to gist show gist in addition to link', js: true do
+    within '.new-answer' do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+
+      click_on 'Answer to question'
+    end
+
+    within '.answers' do
+      expect(page).to have_content 'Hello Gist!'
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
