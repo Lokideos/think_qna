@@ -50,6 +50,85 @@ feature 'User can update his answer', "
           expect(page).to have_content "Body can't be blank"
         end
       end
+
+      context 'updates the answer and attach files' do
+        background do
+          within '.answers' do
+            click_on 'Edit Answer'
+
+            fill_in 'Body', with: 'Updated Answer'
+
+            attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+            click_on 'Update'
+          end
+        end
+
+        scenario 'successfully', js: true do
+          sleep(3)
+
+          within '.answers' do
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
+        end
+
+        scenario 'does not see attached to this answer files when tries to update other answer', js: true do
+          other_answer = create(:answer, question: question, user: user)
+          sleep(2)
+
+          page.evaluate_script 'window.location.reload()'
+
+          current_answer = page.find("#answer-info-#{other_answer.id}").first(:xpath, './/..')
+
+          within current_answer do
+            click_on 'Edit Answer'
+          end
+
+          within current_answer do
+            expect(page).to_not have_link 'rails_helper.rb'
+            expect(page).to_not have_link 'spec_helper.rb'
+          end
+        end
+
+        scenario 'then reload page and see attached files', js: true do
+          sleep(2)
+          page.evaluate_script 'window.location.reload()'
+
+          within '.answers' do
+            click_on 'Edit Answer'
+          end
+
+          within '.answers' do
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
+        end
+
+        context 'decides to attach another file without reloading the page and' do
+          scenario 'see attached files', js: true do
+            within '.answers' do
+              click_on 'Edit Answer'
+            end
+
+            within '.answers' do
+              expect(page).to have_link 'rails_helper.rb'
+              expect(page).to have_link 'spec_helper.rb'
+            end
+          end
+
+          scenario 'see empty file upload path', js: true do
+            within '.answers' do
+              click_on 'Edit Answer'
+
+              click_on 'Update'
+            end
+
+            within '.answers' do
+              expect(page).to have_selector('.attached-file-link', count: 2)
+            end
+          end
+        end
+      end
     end
 
     context 'not as Author of answer' do

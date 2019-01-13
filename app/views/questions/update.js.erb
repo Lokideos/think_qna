@@ -2,7 +2,19 @@ $('.question-update-errors').html('<%= render 'shared/errors', resource: questio
 var questionNotice = '';
 
 <% if !question.errors.present? %>
-  $('.question-info').html('<h1><%= j question.title %></h1><p><%= j question.body %></p>');
+  $('.question-info').html(`
+      <h1><%= j question.title %></h1>
+      <p><%= j question.body %></p>
+      <div class="question-attached-files">
+        <p><%= t('.attached_files_section_headline') %></p>
+        <% question.files.each do |file| %>
+          <%= content_tag(:p, id: "attachment-#{file.id}") do %>
+            <%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %> |
+            <%= j link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id }, method: :delete, class: 'attached-file-destroy-link', remote: true %>
+          <% end %>
+        <% end %>
+      </div>
+  `);
   $('.question-info').show();
   $('.edit-question-link').show();
   $('.edit-question-form').addClass('hidden');

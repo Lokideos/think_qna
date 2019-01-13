@@ -1,0 +1,5 @@
+var answerAttachmentId = <%= @attachment_id %>;
+
+$('#answer-attachment-' + answerAttachmentId).remove();
+
+$('.notice').html('<%= t('notifications.delete_attachment') %>');

@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         patch :choose_best, on: :member
       end
     end
+
+    resources :attachments, only: %i[destroy]
   end
 
   get '/:lang' => 'questions#index'

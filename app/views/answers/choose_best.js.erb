@@ -1,12 +1,16 @@
 var answerId = <%= answer.id %>;
-var previousBestAnswer = document.querySelector('.best-answer .best-answer-info');
-console.log(previousBestAnswer);
+var previousAnswerId = '';
+var previousBestAnswer = $('.best-answer .best-answer-info');
 
 $('.notice').html('<%= I18n.t('notifications.best_answer') %>');
-$('.best-answer').html('<h2><%= t('answers.answer.best_answer') %></h2><p><%= j render answer %></p>');
+$('.best-answer').html('<h2><%= t('answers.answer.best_answer') %></h2><div class="best-answer-info"><%= j render answer %></div>');
 $('.answers-list #answer-info-' + answerId).parent().remove();
 
 if (previousBestAnswer) {
   $('.answers-list').append('<li class="previous-best-answer"></li>');
-  $('.previous-best-answer').append(previousBestAnswer);
+  $('.previous-best-answer').attr('id', 'list-element-answer-info-'+ previousAnswerId);
+  $('.previous-best-answer').removeClass('previous-best-answer');
+  $('#list-element-answer-info-' + previousAnswerId).append(previousBestAnswer.children());
+  $('.all-answers .best-answer-link').removeClass('hidden');
+    $('.all-answers .best-answer-link').removeClass('best-answer-link');
 }
