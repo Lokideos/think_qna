@@ -84,4 +84,7 @@ section.new-answer
             = nested_f.label :url
             = nested_f.text_field :url
 
+        .additional-links
+          = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+
       p= f.submit t('.reply')
