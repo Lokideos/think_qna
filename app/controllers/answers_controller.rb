@@ -2,7 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :filter_answer_non_author_users, only: %i[update destroy destroy_attachment]
+  before_action :filter_answer_non_author_users, only: %i[update destroy]
 
   def create
     @answer = question.answers.new(answer_params)
