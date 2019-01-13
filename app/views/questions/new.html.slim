@@ -13,4 +13,15 @@
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
+  p Links:
+  p
+    = f.fields_for :links do |nested_f|
+      p
+        = nested_f.label :name, 'Link name'
+        = nested_f.text_field :name
+
+      p
+        = nested_f.label :url
+        = nested_f.text_field :url
+
   p= f.submit t('.ask')

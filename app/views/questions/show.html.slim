@@ -14,6 +14,12 @@ section.question
               = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
                                              method: :delete, class: 'attached-file-destroy-link', remote: true
 
+    .links
+      h2 Links:
+      ul
+        - question.links.each do |link|
+          li = link_to link.name, link.url
+
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors
