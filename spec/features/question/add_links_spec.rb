@@ -29,6 +29,16 @@ feature 'User can add links to the question', "
     expect(page).to have_link 'My gist', href: gist_url
   end
 
+  scenario 'User tries to add link with bad url address' do
+    fill_in 'Link name', with: 'Bad URL'
+    fill_in 'Url', with: 'bad url'
+
+    click_on 'Ask'
+
+    expect(page).to_not have_link 'Bad URL'
+    expect(page).to have_content 'Links url should be correct url address.'
+  end
+
   scenario 'User adds several links when he asks the question', js: true do
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url

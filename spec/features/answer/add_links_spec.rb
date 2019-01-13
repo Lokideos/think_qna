@@ -35,6 +35,23 @@ feature 'User can add links to answer', "
     end
   end
 
+  scenario 'User tries to add link with bad url address', js: true do
+    within '.new-answer' do
+      fill_in 'Link name', with: 'Bad URL'
+      fill_in 'Url', with: 'bad url'
+
+      click_on 'Answer to question'
+    end
+
+    within '.answers' do
+      expect(page).to_not have_link 'Bad URL'
+    end
+
+    within '.new-answer' do
+      expect(page).to have_content 'Links url should be correct url address.'
+    end
+  end
+
   scenario 'User adds multiple links when he answers the question', js: true do
     within '.new-answer' do
       fill_in 'Link name', with: 'My gist'

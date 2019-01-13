@@ -7,4 +7,6 @@ RSpec.describe Link, type: :model do
 
   it { should validate_presence_of :name }
   it { should validate_presence_of :url }
+  it { should allow_value('https://google.com').for(:url) }
+  it { should_not allow_value('123456').for(:url) }
 end
