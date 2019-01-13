@@ -12,13 +12,15 @@ feature 'User can add links to the question', "
   given(:gist_url) { 'https://gist.github.com/Lokideos/815f3eea3f00a35ff48ea2984457b673' }
   given(:google_url) { 'https://google.ru' }
 
-  scenario 'User adds link when he asks the question' do
+  background do
     sign_in(user)
     visit new_question_path
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+  end
 
+  scenario 'User adds link when he asks the question' do
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
@@ -28,15 +30,6 @@ feature 'User can add links to the question', "
   end
 
   scenario 'User adds several links when he asks the question', js: true do
-    sign_in(user)
-    visit new_question_path
-
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text text'
-
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text text'
-
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
