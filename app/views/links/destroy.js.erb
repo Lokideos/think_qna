@@ -1,0 +1,5 @@
+var linkId = <%= @link.id %>;
+
+$('#link-' + linkId).remove();
+
+$('.notice').html('<%= t('notifications.delete_link') %>');

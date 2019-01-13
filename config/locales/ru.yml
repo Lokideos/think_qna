@@ -11,6 +11,7 @@ ru:
     not_created_error: "%{resource} не был создан; проверьте введенные вами данные."
     best_answer: 'Вы выбрали лучший ответ.'
     delete_attachment: 'Вы успешно удалили вложение.'
+    delete_link: 'Вы успешно удалили ссылку.'
 
   shared:
     errors:
@@ -43,6 +44,7 @@ ru:
       update: 'Сохранить'
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
+      delete_link: 'Удалить ссылку'
     update:
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
