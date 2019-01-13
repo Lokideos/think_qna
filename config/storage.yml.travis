@@ -10,12 +10,12 @@ amazon:
   service: S3
   access_key_id: <%= ENV['S3_TEST_ACCESS_KEY_ID'] %>
   secret_access_key: <%= ENV['S3_TEST_SECRET_ACCESS_KEY'] %>
-  region: eu-central-1
+  region: <%= ENV['S3_TEST_REGION'] %>
   bucket: <%= ENV['S3_TEST_BUCKET'] %>
 
 amazon_test:
   service: S3
   access_key_id: <%= ENV['S3_TEST_ACCESS_KEY_ID'] %>
   secret_access_key: <%= ENV['S3_TEST_SECRET_ACCESS_KEY'] %>
-  region: eu-central-1
+  region: <%= ENV['S3_TEST_REGION'] %>
   bucket: <%= ENV['S3_TEST_BUCKET'] %>
