@@ -18,7 +18,11 @@ section.question
       h2 Links:
       ul
         - question.links.each do |link|
-          li = link_to link.name, link.url
+          li
+            = link_to link.name, link.url
+            - if link.body
+              p Gist Content:
+              pre= link.body
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'

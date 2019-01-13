@@ -55,5 +55,14 @@ feature 'User can add links to the question', "
     expect(page).to have_link 'My gist', href: gist_url
     expect(page).to have_link 'Google', href: google_url
   end
+
+  scenario 'If link leads to gist show gist in addition to link' do
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'Url', with: gist_url
+
+    click_on 'Ask'
+
+    expect(page).to have_content 'Hello Gist!'
+  end
 end
 # rubocop:enable Metrics/BlockLength
