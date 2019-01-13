@@ -5,6 +5,8 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Answer, type: :model do
   context 'Associations' do
+    it { should have_many(:links).dependent(:destroy) }
+
     it { should belong_to :question }
     it { should belong_to :user }
 
@@ -18,6 +20,8 @@ RSpec.describe Answer, type: :model do
     let!(:answer) { create(:answer, question: question, best: true) }
 
     it { should validate_presence_of :body }
+
+    it { should accept_nested_attributes_for :links }
 
     it 'should not allow creation 2nd answer with true value for best field' do
       bad_answer = Answer.new(body: attributes_for(:answer), question: question, best: true)
