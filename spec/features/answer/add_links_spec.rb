@@ -73,6 +73,29 @@ feature 'User can add links to answer', "
     end
   end
 
+  scenario 'User does not see filled in link name and link url after he creates an answer with links', js: true do
+    within '.new-answer' do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+
+      click_on 'add link'
+
+      within '.nested-fields' do
+        fill_in 'Link name', with: 'Google'
+        fill_in 'Url', with: google_url
+      end
+
+      click_on 'Answer to question'
+    end
+
+    within '.new-answer' do
+      expect(page).to_not have_content 'My gist'
+      expect(page).to_not have_content gist_url
+      expect(page).to_not have_link 'Google'
+      expect(page).to_not have_content google_url
+    end
+  end
+
   scenario 'If link leads to gist show gist in addition to link', js: true do
     within '.new-answer' do
       fill_in 'Link name', with: 'My gist'
