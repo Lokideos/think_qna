@@ -15,6 +15,12 @@ $(document).on('turbolinks:load', function(){
         answerFilesAttachForm = $('form#edit-answer-' + answerId + ' .answer-file-upload-section').children();
         attachedToAnswerFiles = $(this).closest('li').children('.answer-instance').children('.answer-attached-files');
         $(this).closest('li').children('.edit-answer-form').children('.answer-form-attached-files').html(attachedToAnswerFiles);
+
+        $(this).closest('li').children('.edit-answer-form').children('.answer-form-attached-links').children('.answer-links-attach-section').children('p').children('input[type=text]').each(function() {
+            if ( $(this).val() !== '' ) {
+                $(this).parent().remove()
+            }
+        })
     });
 
     $('.edit-answer-form').on('click', '.answer-form-update-btn', function(e) {

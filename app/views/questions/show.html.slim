@@ -64,7 +64,7 @@ section.question
                 - if link.body
                   p Gist Content:
                   pre= link.body
-                - if current_user&.author_of?(question) && link.persisted?
+                - if current_user&.author_of?(question)
                   p= link_to t('.delete_link'), link_path(id: link.id), data: {link_id: link.id},
                           method: :delete, class: 'attached-link-destroy', remote: true
 
@@ -101,6 +101,7 @@ section.answers
           li = render answer
 
 section.new-answer
+  h2 New Answer Creation
   - if current_user
     .new-answer-errors
       = render 'shared/errors', resource: @answer

@@ -14,14 +14,15 @@
   .answer-links
     ul
       - answer.links.each do |link|
-        = content_tag(:li, id: "link-#{ link.id }" ) do
-          = link_to link.name, link.url
-          - if link.body
-            p Gist Content:
-            pre= link.body
-          - if current_user&.author_of?(answer)
-            p= link_to t('.delete_link'), link_path(id: link.id), data: { link_id: link.id },
-                                          method: :delete, class: 'attached-link-destroy', remote: true
+        - if link.persisted?
+          = content_tag(:li, id: "link-#{ link.id }" ) do
+            = link_to link.name, link.url
+            - if link.body
+              p Gist Content:
+              pre= link.body
+            - if current_user&.author_of?(answer)
+              p= link_to t('.delete_link'), link_path(id: link.id), data: { link_id: link.id },
+                                            method: :delete, class: 'attached-link-destroy', remote: true
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
@@ -45,6 +46,35 @@
     p.answer-file-upload-section
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
+
+    .answer-form-attached-links
+      h2 Links:
+      ul
+        - answer.links.each do |link|
+          - if link.persisted?
+            = content_tag(:li, id: "link-#{ link.id }") do
+              p= link_to link.name, link.url
+              - if link.body
+                p Gist Content:
+                pre= link.body
+              - if current_user&.author_of?(answer)
+                p= link_to t('.delete_link'), link_path(id: link.id), data: {link_id: link.id},
+                        method: :delete, class: 'attached-link-destroy', remote: true
+
+      .answer-links-attach-section
+        p New Links:
+        p
+          = f.fields_for :links do |nested_f|
+            p
+              = nested_f.label :name, 'Link name'
+              = nested_f.text_field :name
+
+            p
+              = nested_f.label :url
+              = nested_f.text_field :url
+
+          .additional-links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
     p= f.submit t('.update'), class: 'answer-form-update-btn'
   = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: {answer_id: answer.id}, remote: true

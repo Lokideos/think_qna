@@ -116,7 +116,7 @@ feature 'User can update his question', "
           end
         end
 
-        scenario 'with invalid url address', js: true do
+        scenario 'successfully', js: true do
           within '.edit-question-form' do
             fill_in 'Link name', with: 'My Gist'
             fill_in 'Url', with: gist_url
@@ -131,7 +131,7 @@ feature 'User can update his question', "
           end
         end
 
-        scenario 'empty link input field after attachin the url', js: true do
+        scenario 'empty link input field after attaching the url', js: true do
           within '.edit-question-form' do
             fill_in 'Link name', with: 'My Gist'
             fill_in 'Url', with: gist_url
@@ -160,7 +160,7 @@ feature 'User can update his question', "
           wait_for_ajax
 
           within '.question' do
-            expect(page).to_not have_link 'Bad Address', href: gist_url
+            expect(page).to_not have_link 'Bad Address', href: 'Bad URL Address'
             expect(page).to have_content 'Links url should be correct url address.'
           end
         end
