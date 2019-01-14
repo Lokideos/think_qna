@@ -16,6 +16,12 @@ section.question
           - if link.persisted?
             = render link, resource: question
 
+    - if question.reward
+      .best-answer-reward
+        h2 Best Answer Reward
+        p= question.reward.title
+        p= question.reward.image
+
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors
