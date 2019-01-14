@@ -170,9 +170,26 @@ feature 'User can update his answer', "
 
           click_on 'Edit Answer'
 
-          within '.edit-answer-form' do
+          within '.edit-answer-form .answer-links-attach-section' do
             expect(page).to_not have_content 'My Gist'
             expect(page).to_not have_content gist_url
+          end
+        end
+
+        scenario 'see created links in form during editing answer', js: true do
+          within '.edit-answer-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          click_on 'Edit Answer'
+
+          within '.edit-answer-form .answer-form-attached-links' do
+            expect(page).to have_link 'My Gist', href: gist_url
           end
         end
 

@@ -143,9 +143,26 @@ feature 'User can update his question', "
 
           click_on 'Edit Question'
 
-          within '.edit-question-form' do
+          within '.edit-question-form .question-links-attach-section' do
             expect(page).to_not have_content 'My Gist'
             expect(page).to_not have_content gist_url
+          end
+        end
+
+        scenario 'see created links in form during editing question', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          click_on 'Edit Question'
+
+          within '.edit-question-form' do
+            expect(page).to have_link 'My Gist', href: gist_url
           end
         end
 

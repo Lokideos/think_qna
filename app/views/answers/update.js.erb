@@ -36,6 +36,18 @@ $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
          </ul>
       </div>
   `);
+  $(answerInfo).parent().children('.edit-answer-form').children('.answer-form-attached-links').children('ul').html(`
+    <% answer.links.each do |link| %>
+      <%= content_tag(:li, id: "link-#{ link.id }") do %>
+        <p><%= link_to link.name, link.url %></p>
+        <% if link.body %>
+          <p>Gist Content:</p>
+          <pre><%= link.body %></pre>
+        <% end %>
+        <p><%= link_to t('answers.answer.delete_link'), link_path(id: link.id), data: {link_id: link.id}, method: :delete, class: 'attached-link-destroy', remote: true %></p>
+      <% end %>
+    <% end %>
+  `);
   $(answerInfo).show();
   $('.edit-answer-link').show();
   $('form#edit-answer-' + answerId).addClass('hidden');

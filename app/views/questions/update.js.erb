@@ -34,6 +34,18 @@ var questionNotice = '';
          </ul>
       </div>
   `);
+  $('.edit-question-form .question-form-attached-links ul').html(`
+    <% question.links.each do |link| %>
+      <%= content_tag(:li, id: "link-#{ link.id }") do %>
+        <p><%= link_to link.name, link.url %></p>
+        <% if link.body %>
+          <p>Gist Content:</p>
+          <pre><%= link.body %></pre>
+        <% end %>
+        <p><%= link_to t('answers.answer.delete_link'), link_path(id: link.id), data: {link_id: link.id}, method: :delete, class: 'attached-link-destroy', remote: true %></p>
+      <% end %>
+    <% end %>
+  `);
   $('.question-info').show();
   $('.edit-question-link').show();
   $('.edit-question-form').addClass('hidden');
