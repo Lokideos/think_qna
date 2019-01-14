@@ -21,7 +21,7 @@
       = link_to_add_association t('shared.link_fields.add_link'), f, :links, partial: 'shared/link_fields'
 
   .best-answer-reward
-    h2 Best Answer Reward
+    h2= t('.best_answer_section_headline')
     = f.fields_for :reward do |nested_f|
       p
         = nested_f.label :title

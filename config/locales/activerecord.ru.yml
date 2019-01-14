@@ -4,6 +4,7 @@ ru:
       question: 'Вопрос'
       answer: 'Ответ'
       link: 'Ссылка'
+      reward: 'Награда'
 
     attributes:
       question:
@@ -14,6 +15,9 @@ ru:
       link:
         name: 'Ссылка'
         url: 'Адрес ссылки'
+      reward:
+        title: 'Название'
+        image: 'Иконка'
 
     errors:
       messages:

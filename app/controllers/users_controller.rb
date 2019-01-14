@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   def rewards
     user = User.find(params[:id])
-    return redirect_to root_path, notice: "You can't check other user's rewards." unless current_user == user
+    return redirect_to root_path, notice: t('notifications.forbidden_for_non_author') unless current_user == user
 
     @rewards = user.rewards
   end

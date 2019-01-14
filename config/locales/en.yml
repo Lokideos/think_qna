@@ -43,6 +43,7 @@ en:
     best_answer: 'You chose the best answer.'
     delete_attachment: 'You have successfully deleted attachment.'
     delete_link: 'You have successfully deleted link.'
+    forbidden_for_non_author: "You can't check other user's rewards."
 
   shared:
     errors:
@@ -68,6 +69,7 @@ en:
     index:
       ask: 'Ask question'
     new:
+      best_answer_section_headline: 'Best Answer Reward'
       links_section_headline: 'Links:'
       ask: 'Ask'
     show:
@@ -80,6 +82,7 @@ en:
       attached_files_section_headline: 'Attached files'
       all_answers_section_headline: 'Answers on question'
       new_answer_section_headline: 'New Answer Creation'
+      best_answer_section_headline: 'Best Answer Reward'
     update:
       gist_headline: 'Gist Content:'
       links_section_headline: 'Links:'
@@ -101,6 +104,10 @@ en:
       delete: 'Delete Answer'
       update: 'Update'
       attached_files_section_headline: 'Attached files'
+
+  users:
+    rewards:
+      headline: 'Rewards'
 
   attachments:
     attachment:

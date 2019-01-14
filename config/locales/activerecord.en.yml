@@ -4,6 +4,7 @@ en:
       question: 'Question'
       answer: 'Answer'
       link: 'Link'
+      reward: 'Reward'
 
     attributes:
       question:
@@ -14,6 +15,9 @@ en:
       link:
         name: 'Link name'
         url: 'Url'
+      reward:
+        title: 'Title'
+        image: 'Image'
 
     errors:
       messages:

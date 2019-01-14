@@ -18,7 +18,7 @@ section.question
 
     - if question.reward
       .best-answer-reward
-        h2 Best Answer Reward
+        h2= t('.best_answer_section_headline')
         p= question.reward.title
         = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
 
