@@ -60,3 +60,4 @@ ru:
       update: 'Сохранить'
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
+      delete_link: 'Удалить ссылку'
