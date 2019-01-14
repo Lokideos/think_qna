@@ -4,12 +4,8 @@
     p= t('.attached_files_section_headline')
     - if answer.files.attached?
       - answer.files.each do |file|
-        = content_tag(:p, id: "attachment-#{file.id}") do
-          = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
-          - if current_user&.author_of?(answer)
-            |  | &nbsp
-            = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
-                                           method: :delete, class: 'attached-file-destroy-link', remote: true
+        = render 'attachments/attachment', resource: answer, file: file
+
   h2= t('.links_section_headline')
   .answer-links
     ul
@@ -30,12 +26,8 @@
       p= t('.attached_files_section_headline')
       - if answer.files.attached?
         - answer.files.each do |file|
-          = content_tag(:p, id: "attachment-#{file.id}") do
-            = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
-            - if current_user&.author_of?(answer)
-              |  | &nbsp
-              = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
-                                             method: :delete, class: 'attached-file-destroy-link', remote: true
+          = render 'attachments/attachment', resource: answer, file: file
+
     p.answer-file-upload-section
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true

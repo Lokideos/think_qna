@@ -77,7 +77,6 @@ en:
       edit: 'Edit %{resource}'
       reply: 'Answer to question'
       update: 'Update'
-      delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
       all_answers_section_headline: 'Answers on question'
       new_answer_section_headline: 'New Answer Creation'
@@ -101,8 +100,11 @@ en:
       edit: 'Edit Answer'
       delete: 'Delete Answer'
       update: 'Update'
-      delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
+
+  attachments:
+    attachment:
+      delete_attachment: 'Delete Attachment'
 
   links:
     link:
