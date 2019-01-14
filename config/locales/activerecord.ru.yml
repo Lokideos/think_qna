@@ -3,6 +3,7 @@ ru:
     models:
       question: 'Вопрос'
       answer: 'Ответ'
+      link: 'Ссылка'
 
     attributes:
       question:
@@ -10,6 +11,9 @@ ru:
         body: 'Содержание'
       answer:
         body: 'Содержание'
+      link:
+        name: 'Ссылка'
+        url: 'Адрес ссылки'
 
     errors:
       messages:

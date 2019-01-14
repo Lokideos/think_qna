@@ -15,7 +15,7 @@ section.question
                                              method: :delete, class: 'attached-file-destroy-link', remote: true
 
     .links
-      h2 Links:
+      h2= t('.links_section_headline')
       ul
         - question.links.each do |link|
           - if link.persisted?
@@ -46,14 +46,14 @@ section.question
         = f.file_field :files, multiple: true, direct_upload: true
 
       .question-form-attached-links
-        h2 Links:
+        h2= t('.links_section_headline')
         ul
           - question.links.each do |link|
             - if link.persisted?
               = render link, resource: question
 
       .question-links-attach-section
-        p New Links:
+        p= t('.new_links_section_headline')
         p
           = render 'links/link_nested_fields', form_builder: f
           .additional-links
@@ -70,14 +70,14 @@ section.answers
       .best-answer-info
         = render question.answers.find_by(best: true)
   .all-answers
-    h2 Answers on question
+    h2= t('.all_answers_section_headline')
     ul.answers-list
       - question.answers.each do |answer|
         - if answer.persisted? && !answer.best
           li = render answer
 
 section.new-answer
-  h2 New Answer Creation
+  h2= t('.new_answer_section_headline')
   - if current_user
     .new-answer-errors
       = render 'shared/errors', resource: @answer
@@ -90,7 +90,7 @@ section.new-answer
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
 
-      p Links:
+      p= t('.links_section_headline')
       p
         = render 'links/link_nested_fields', form_builder: f
         .additional-links

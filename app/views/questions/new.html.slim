@@ -13,10 +13,10 @@
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
-  p Links:
+  p= t('.links_section_headline')
   p
     = render 'links/link_nested_fields', form_builder: f
     .additional-links
-      = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+      = link_to_add_association t('shared.link_fields.add_link'), f, :links, partial: 'shared/link_fields'
 
   p= f.submit t('.ask')

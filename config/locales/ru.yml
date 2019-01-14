@@ -23,6 +23,9 @@ ru:
     header:
       sign_in: 'Войти'
       sign_out: 'Выйти'
+    link_fields:
+        remove_link: 'удалить ссылку'
+        add_link: 'добавить ссылку'
 
   helpers:
     label:
@@ -36,23 +39,34 @@ ru:
     index:
       ask: 'Задать Вопрос'
     new:
+      links_section_headline: 'Ссылки:'
       ask: 'Спросить'
     show:
+      links_section_headline: 'Ссылки:'
+      new_links_section_headline: 'Новые Ссылки:'
       delete: 'Удалить %{resource}'
       edit: 'Редактировать %{resource}'
       reply: 'Ответить на вопрос'
       update: 'Сохранить'
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
+      all_answers_section_headline: 'Ответы'
+      new_answer_section_headline: 'Новый Ответ'
     update:
+      links_section_headline: 'Ссылки:'
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
 
   answers:
     update:
-      delete_attachment: 'Удалить вложение'
+      gist_headline: 'Gist:'
+      links_section_headline: 'Ссылки:'
       attached_files_section_headline: 'Прикрепленные файлы'
+      delete_attachment: 'Удалить вложение'
+      delete_link: 'Удалить ссылку'
     answer:
+      links_section_headline: 'Ссылки:'
+      new_links_section_headline: 'Новые Ссылки:'
       best_answer: 'Лучший Ответ'
       edit: 'Редактировать Ответ'
       delete: 'Удалить Ответ'
@@ -62,4 +76,5 @@ ru:
 
   links:
     link:
+      gist_headline: 'Gist:'
       delete: 'Удалить ссылку'

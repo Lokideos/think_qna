@@ -10,7 +10,7 @@
             |  | &nbsp
             = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
                                            method: :delete, class: 'attached-file-destroy-link', remote: true
-  h2 Links:
+  h2= t('.links_section_headline')
   .answer-links
     ul
       - answer.links.each do |link|
@@ -41,14 +41,14 @@
       = f.file_field :files, multiple: true, direct_upload: true
 
     .answer-form-attached-links
-      h2 Links:
+      h2= t('.links_section_headline')
       ul
         - answer.links.each do |link|
           - if link.persisted?
             = render link, resource: answer
 
       .answer-links-attach-section
-        p New Links:
+        p= t('.new_links_section_headline')
         p
           = f.fields_for :links do |nested_f|
             p

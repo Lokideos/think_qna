@@ -1,7 +1,7 @@
 = content_tag(:li, id: "link-#{ link.id }") do
   p= link_to link.name, link.url
   - if link.body
-    p Gist Content:
+    p= t('.gist_headline')
     pre= link.body
   - if current_user&.author_of?(resource)
     p= link_to t('.delete'), link_path(id: link.id), data: { link_id: link.id },

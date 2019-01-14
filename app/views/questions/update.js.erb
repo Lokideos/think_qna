@@ -15,14 +15,14 @@ var questionNotice = '';
         <% end %>
       </div>
       <div class="links">
-        <h2>Links:</h2>
+        <h2><%= t('.links_section_headline') %></h2>
         <ul>
           <% question.links.each do |link| %>
             <%= content_tag(:li, id: "link-#{ link.id }") do %>
               <p>
                   <%= link_to link.name, link.url %>
                   <% if link.body %>
-                    <p>Gist Content:</p>
+                    <p><%= t('.gist_headline') %>></p>
                     <pre><%= link.body %></pre>
                   <% end %>
                   <p>
@@ -39,7 +39,7 @@ var questionNotice = '';
       <%= content_tag(:li, id: "link-#{ link.id }") do %>
         <p><%= link_to link.name, link.url %></p>
         <% if link.body %>
-          <p>Gist Content:</p>
+          <p><%= t('.gist_headline') %>></p>
           <pre><%= link.body %></pre>
         <% end %>
         <p><%= link_to t('answers.answer.delete_link'), link_path(id: link.id), data: {link_id: link.id}, method: :delete, class: 'attached-link-destroy', remote: true %></p>
