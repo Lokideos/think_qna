@@ -19,14 +19,7 @@ section.question
       ul
         - question.links.each do |link|
           - if link.persisted?
-            = content_tag(:li, id: "link-#{ link.id }") do
-              p= link_to link.name, link.url
-              - if link.body
-                p Gist Content:
-                pre= link.body
-              - if current_user&.author_of?(question)
-                p= link_to t('.delete_link'), link_path(id: link.id), data: { link_id: link.id },
-                                              method: :delete, class: 'attached-link-destroy', remote: true
+            = render link, resource: question
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
@@ -52,21 +45,12 @@ section.question
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
 
-
-
       .question-form-attached-links
         h2 Links:
         ul
           - question.links.each do |link|
             - if link.persisted?
-              = content_tag(:li, id: "link-#{ link.id }") do
-                p= link_to link.name, link.url
-                - if link.body
-                  p Gist Content:
-                  pre= link.body
-                - if current_user&.author_of?(question)
-                  p= link_to t('.delete_link'), link_path(id: link.id), data: {link_id: link.id},
-                          method: :delete, class: 'attached-link-destroy', remote: true
+              = render link, resource: question
 
       .question-links-attach-section
         p New Links:

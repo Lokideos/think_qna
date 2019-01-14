@@ -73,7 +73,6 @@ en:
       update: 'Update'
       delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
-      delete_link: 'Delete Link'
     update:
       delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
@@ -89,4 +88,7 @@ en:
       update: 'Update'
       delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
-      delete_link: 'Delete Link'
+
+  links:
+    link:
+      delete: 'Delete Link'

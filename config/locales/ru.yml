@@ -44,7 +44,6 @@ ru:
       update: 'Сохранить'
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
-      delete_link: 'Удалить ссылку'
     update:
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
@@ -60,4 +59,7 @@ ru:
       update: 'Сохранить'
       delete_attachment: 'Удалить вложение'
       attached_files_section_headline: 'Прикрепленные файлы'
-      delete_link: 'Удалить ссылку'
+
+  links:
+    link:
+      delete: 'Удалить ссылку'
