@@ -30,6 +30,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer).links.first).to be_a_new(Link)
     end
 
+    it 'assigns a new Link to question' do
+      expect(assigns(:question).links.first).to be_a_new(Link)
+    end
+
     it 'renders show view' do
       expect(response).to render_template :show
     end

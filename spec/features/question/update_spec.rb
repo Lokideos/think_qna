@@ -103,6 +103,49 @@ feature 'User can update his question', "
           end
         end
       end
+
+      context 'updates the question and attach link' do
+        given(:gist_url) { 'https://gist.github.com/Lokideos/815f3eea3f00a35ff48ea2984457b673' }
+
+        background do
+          click_on 'Edit Question'
+
+          within '.edit-question-form' do
+            fill_in 'Title', with: 'Updated Question'
+          end
+        end
+
+        scenario 'withi valid url address', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          within '.question' do
+            expect(page).to have_link 'My Gist', href: gist_url
+          end
+        end
+
+        scenario 'within invalid url address', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'Bad Address'
+            fill_in 'Url', with: 'Bad URL Address'
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          within '.question' do
+            expect(page).to_not have_link 'Bad Address', href: gist_url
+            expect(page).to have_content 'Links url should be correct url address.'
+          end
+        end
+      end
     end
 
     context 'but non Author of the question' do
