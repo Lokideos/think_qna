@@ -39,8 +39,9 @@ RSpec.describe Answer, type: :model do
 
   context 'Methods' do
     describe '#choose_best_answer' do
+      let(:user) { create(:user) }
       let(:question) { create(:question) }
-      let!(:answer) { create(:answer, question: question) }
+      let!(:answer) { create(:answer, question: question, user: user) }
 
       it 'should assign true to best attribute of answer' do
         answer.choose_best_answer
@@ -53,6 +54,21 @@ RSpec.describe Answer, type: :model do
         answer.choose_best_answer
         second_answer.reload
         expect(second_answer).to_not be_best
+      end
+
+      context 'used on question with reward' do
+        let(:question_with_reward) { create(:question) }
+        let!(:reward) { create(:reward, question: question_with_reward) }
+        let(:answer_on_question_with_reward) { create(:answer, question: question_with_reward, user: user) }
+
+        it 'should add reward to user' do
+          expect { answer_on_question_with_reward.choose_best_answer }.to change(user.rewards, :count).by(1)
+        end
+
+        it 'should not add reward to user if he already owns this reward' do
+          answer_on_question_with_reward.choose_best_answer
+          expect { answer_on_question_with_reward.choose_best_answer }.to_not change(user.rewards, :count)
+        end
       end
     end
   end

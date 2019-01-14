@@ -22,6 +22,7 @@ class Answer < ApplicationRecord
     Answer.transaction do
       previous_answer.update!(best: false) if previous_answer
       update!(best: true)
+      user.add_reward(question.reward) if question.reward
     end
   end
   # rubocop:enable Style/SafeNavigation

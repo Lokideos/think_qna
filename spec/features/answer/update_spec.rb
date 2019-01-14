@@ -167,6 +167,7 @@ feature 'User can update his answer', "
           end
 
           wait_for_ajax
+          sleep(2)
 
           click_on 'Edit Answer'
 

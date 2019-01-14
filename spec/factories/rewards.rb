@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :reward do
-    title { 'MyString' }
+    title { 'New Reward' }
+    question
   end
 end

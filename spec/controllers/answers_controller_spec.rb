@@ -165,7 +165,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #choose_best' do
     let(:other_answer) { create(:answer, question: question, user: user) }
 
-    context 'used bu authenticated user' do
+    context 'used by authenticated user' do
       before { login(user) }
 
       it 'changes needed answer attributes' do
@@ -184,6 +184,21 @@ RSpec.describe AnswersController, type: :controller do
       it 'renders choose_best template' do
         patch :choose_best, params: { id: answer, format: :js }
         expect(response).to render_template :choose_best
+      end
+
+      context 'on answer to question with reward for best answer' do
+        let(:question_with_reward) { create(:question) }
+        let!(:reward) { create(:reward, question: question_with_reward) }
+        let(:answer_on_question_with_reward) { create(:answer, question: question_with_reward, user: user) }
+
+        it 'add reward to user' do
+          expect { patch :choose_best, params: { id: answer_on_question_with_reward, format: :js } }.to change(user.rewards, :count).by(1)
+        end
+
+        it 'does not add reward to user if user already has reward' do
+          patch :choose_best, params: { id: answer_on_question_with_reward, format: :js }
+          expect { patch :choose_best, params: { id: answer_on_question_with_reward, format: :js } }.to_not change(user.rewards, :count)
+        end
       end
     end
 
