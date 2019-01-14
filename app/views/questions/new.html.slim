@@ -15,14 +15,7 @@
 
   p Links:
   p
-    = f.fields_for :links do |nested_f|
-      p
-        = nested_f.label :name, 'Link name'
-        = nested_f.text_field :name
-
-      p
-        = nested_f.label :url
-        = nested_f.text_field :url
+    = render 'links/link_nested_fields', form_builder: f
     .additional-links
       = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 

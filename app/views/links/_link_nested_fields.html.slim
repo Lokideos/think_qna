@@ -1,0 +1,8 @@
+= form_builder.fields_for :links do |nested_f|
+  p
+    = nested_f.label :name, 'Link name'
+    = nested_f.text_field :name
+
+  p
+    = nested_f.label :url
+    = nested_f.text_field :url
