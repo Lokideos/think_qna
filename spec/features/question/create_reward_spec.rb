@@ -26,5 +26,6 @@ feature 'User create a reward for best answer during question creation', "
     click_on 'Ask'
 
     expect(page).to have_content 'New Reward Title'
+    expect(page).to have_css("img[src^='https://#{ENV['S3_TEST_BUCKET']}']")
   end
 end

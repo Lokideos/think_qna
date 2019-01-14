@@ -20,7 +20,7 @@ section.question
       .best-answer-reward
         h2 Best Answer Reward
         p= question.reward.title
-        p= question.reward.image
+        = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
