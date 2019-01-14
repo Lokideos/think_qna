@@ -16,6 +16,12 @@ $(document).on('turbolinks:load', function() {
         $('.question-form-attached-files').html(attachedToQuestionFiles);
         $(questionFilesAttachForm[1]).prop('disabled', false);
         $('.edit-question-form .question-file-upload-section').html(questionFilesAttachForm);
+
+        $('.question-links-attach-section input[type=text]').each(function() {
+            if ( $(this).val() !== '' ) {
+                $(this).parent().remove()
+            }
+        });
     });
 
     $('.edit-question-form').on('click', '.question-form-update-btn', function (e) {

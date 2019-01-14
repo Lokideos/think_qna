@@ -60,6 +60,7 @@ feature 'User can update his question', "
 
         scenario 'successfully', js: true do
           wait_for_ajax
+          sleep(2)
 
           within '.question' do
             expect(page).to have_link 'rails_helper.rb'
@@ -115,7 +116,7 @@ feature 'User can update his question', "
           end
         end
 
-        scenario 'withi valid url address', js: true do
+        scenario 'with invalid url address', js: true do
           within '.edit-question-form' do
             fill_in 'Link name', with: 'My Gist'
             fill_in 'Url', with: gist_url
@@ -127,6 +128,24 @@ feature 'User can update his question', "
 
           within '.question' do
             expect(page).to have_link 'My Gist', href: gist_url
+          end
+        end
+
+        scenario 'empty link input field after attachin the url', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          click_on 'Edit Question'
+
+          within '.edit-question-form' do
+            expect(page).to_not have_content 'My Gist'
+            expect(page).to_not have_content gist_url
           end
         end
 
