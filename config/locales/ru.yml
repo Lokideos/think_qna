@@ -37,6 +37,10 @@ ru:
         remember_me: 'Запомнить меня'
 
   questions:
+    question_info:
+      attached_files_section_headline: 'Прикрепленные файлы'
+      links_section_headline: 'Ссылки:'
+      best_answer_section_headline: 'Награда за Лучший Ответ'
     index:
       ask: 'Задать Вопрос'
     new:

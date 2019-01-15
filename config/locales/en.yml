@@ -66,6 +66,10 @@ en:
         remember_me: 'Remember me'
 
   questions:
+    question_info:
+      attached_files_section_headline: 'Attached files'
+      links_section_headline: 'Links:'
+      best_answer_section_headline: 'Best Answer Reward'
     index:
       ask: 'Ask question'
     new:

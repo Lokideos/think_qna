@@ -5,49 +5,7 @@ var answerErrors = document.querySelector('#answer-info-' + answerId + '~ .answe
 $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
 
 <% if !answer.errors.present? %>
-  $(answerInfo).html(`
-      <p><%= j answer.body %></p>
-      <div class="answer-attached-files">
-        <p><%= t('.attached_files_section_headline') %></p>
-          <% answer.files.each do |file| %>
-            <%= content_tag(:p, id: "attachment-#{file.id}") do %>
-              <%= j link_to file.filename.to_s, url_for(file), class: 'attached-file-link' %> |
-              <%= j link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id }, method: :delete, class: 'attached-file-destroy-link', remote: true %>
-            <% end %>
-          <% end %>
-      </div>
-      <div class="links">
-        <h2><%= t('.links_section_headline') %></h2>
-        <ul>
-          <% answer.links.each do |link| %>
-            <%= content_tag(:li, id: "link-#{ link.id }") do %>
-              <p>
-                  <%= link_to link.name, link.url %>
-                  <% if link.body %>
-                    <p><%= t('.gist_headline') %></p>
-                    <pre><%= link.body %></pre>
-                  <% end %>
-                  <p>
-                    <%= link_to t('.delete_link'), link_path(id: link.id), data: { link_id: link.id }, method: :delete, class: 'attached-link-destroy', remote: true %>
-                  </p>
-              </p>
-            <% end %>
-          <% end %>
-         </ul>
-      </div>
-  `);
-  $(answerInfo).parent().find('.edit-answer-form .answer-form-attached-links ul').html(`
-    <% answer.links.each do |link| %>
-      <%= content_tag(:li, id: "link-#{ link.id }") do %>
-        <p><%= link_to link.name, link.url %></p>
-        <% if link.body %>
-          <p><%= t('.gist_headline') %>></p>
-          <pre><%= link.body %></pre>
-        <% end %>
-        <p><%= link_to t('.delete_link'), link_path(id: link.id), data: {link_id: link.id}, method: :delete, class: 'attached-link-destroy', remote: true %></p>
-      <% end %>
-    <% end %>
-  `);
+  $(answerInfo).parent().html('<%= j render answer %>');
   $(answerInfo).show();
   $('.edit-answer-link').show();
   $('form#edit-answer-' + answerId).addClass('hidden');
