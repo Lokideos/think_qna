@@ -104,6 +104,8 @@ feature 'User can add links to answer', "
       click_on 'Answer to question'
     end
 
+    wait_for_ajax
+
     within '.answers' do
       expect(page).to have_content 'Hello Gist!'
     end
