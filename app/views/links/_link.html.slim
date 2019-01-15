@@ -1,4 +1,4 @@
-= content_tag(:li, id: "link-#{ link.id }") do
+li id="link-#{link.id}"
   p= link_to link.name, link.url
   - if link.body
     p= t('.gist_headline')
