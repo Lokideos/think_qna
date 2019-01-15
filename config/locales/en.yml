@@ -108,6 +108,8 @@ en:
       delete: 'Delete Answer'
       update: 'Update'
       attached_files_section_headline: 'Attached files'
+    best_answer:
+      best_answer: 'Best Answer'
 
   users:
     rewards:

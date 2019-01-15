@@ -78,6 +78,8 @@ ru:
       delete: 'Удалить Ответ'
       update: 'Сохранить'
       attached_files_section_headline: 'Прикрепленные файлы'
+    best_answer:
+      best_answer: 'Лучший Ответ'
 
   users:
     rewards:

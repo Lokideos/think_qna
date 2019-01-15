@@ -2,8 +2,8 @@ $('.question-update-errors').html('<%= render 'shared/errors', resource: questio
 var questionNotice = '';
 
 <% if !question.errors.present? %>
-  $('.question-info').html('<%= j render "questions/question_info" %>');
-  $('.edit-question-form .question-form-attached-links ul').html('<%= j render 'questions/questions_links' %>');
+  $('.question-info').html('<%= j render 'question_info' %>');
+  $('.edit-question-form .question-form-attached-links ul').html('<%= j render 'questions_links' %>');
   $('.question-info').show();
   $('.edit-question-link').show();
   $('.edit-question-form').addClass('hidden');
