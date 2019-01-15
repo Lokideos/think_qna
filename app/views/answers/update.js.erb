@@ -36,7 +36,7 @@ $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
          </ul>
       </div>
   `);
-  $(answerInfo).parent().children('.edit-answer-form').children('.answer-form-attached-links').children('ul').html(`
+  $(answerInfo).parent().find('.edit-answer-form .answer-form-attached-links ul').html(`
     <% answer.links.each do |link| %>
       <%= content_tag(:li, id: "link-#{ link.id }") do %>
         <p><%= link_to link.name, link.url %></p>
