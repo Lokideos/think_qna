@@ -15,6 +15,6 @@ class User < ApplicationRecord
   end
 
   def add_reward(reward)
-    rewards.push(reward)
+    rewards << reward
   end
 end
