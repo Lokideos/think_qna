@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       resources :answers, shallow: true, only: %i[create update destroy] do
         patch :choose_best, on: :member
       end
+
+      get :like, on: :member
+      patch :like, on: :member
     end
 
     resources :attachments, only: %i[destroy]

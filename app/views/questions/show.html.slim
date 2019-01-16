@@ -22,6 +22,13 @@ section.question
         p= question.reward.title
         = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
 
+    .question-rating
+      - if question.rating
+        h2 Question Rating
+        .question-rating-value
+          p= "Rating: #{question.rating.score}"
+          = link_to 'Like', like_question_path, class: 'like-question-link', method: :patch, data: { type: :json }, remote: true
+
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors

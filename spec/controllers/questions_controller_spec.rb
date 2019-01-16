@@ -66,6 +66,11 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question).user_id).to eq user.id
       end
 
+      it 'creates rating for the question' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(assigns(:question).rating).to be_a(Rating)
+      end
+
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
@@ -200,6 +205,29 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #like' do
+    let!(:rating) { create(:rating, question: question) }
+
+    context 'used by Authenticated user, who is not author of the question' do
+      before { login(user) }
+
+      it 'increases question ratings score by 1' do
+        rating_count = question.rating.score
+        patch :like, params: { id: question, format: :json }
+        question.reload
+
+        expect(question.rating.score).to eq rating_count + 1
+      end
+
+      it 'returns 200 status' do
+        patch :like, params: { id: question, format: :json }
+
+        expect(response).to have_http_status 200
+      end
+    end
+  end
+  describe 'PATCH #dislike'
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength

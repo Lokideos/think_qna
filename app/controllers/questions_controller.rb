@@ -21,15 +21,18 @@ class QuestionsController < ApplicationController
 
   def edit; end
 
+  # rubocop:disable Metrics/AbcSize
   def create
     @question = current_user.questions.new(question_params)
 
     if question.save
-      redirect_to @question, notice: I18n.t('notifications.created', resource: question.class.model_name.human)
+      Rating.create(question: question)
+      redirect_to question, notice: I18n.t('notifications.created', resource: question.class.model_name.human)
     else
       render :new
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def update
     question.update(question_params)
@@ -38,6 +41,14 @@ class QuestionsController < ApplicationController
   def destroy
     question.destroy
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
+  end
+
+  def like
+    question.rating.score_up
+
+    respond_to do |format|
+      format.json { render json: question.rating }
+    end
   end
 
   private
