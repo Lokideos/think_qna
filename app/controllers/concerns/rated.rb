@@ -4,10 +4,13 @@ module Rated
   extend ActiveSupport::Concern
 
   def like
-    resource.rating.score_up
-
     respond_to do |format|
-      format.json { render json: resource.rating }
+      if !current_user.author_of?(resource)
+        resource.rating.score_up
+        format.json { render json: resource.rating }
+      else
+        format.json { render json: "Can't be modified", status: :unprocessable_entity }
+      end
     end
   end
 

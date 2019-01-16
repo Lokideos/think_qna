@@ -240,7 +240,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:rating) { create(:rating, ratable: answer) }
 
     context 'used by Authenticated user, who is not author of the answer' do
-      before { login(user) }
+      before { login(non_author) }
 
       it 'increases answer ratings score by 1' do
         rating_count = answer.rating.score
@@ -254,6 +254,24 @@ RSpec.describe AnswersController, type: :controller do
         patch :like, params: { id: answer, format: :json }
 
         expect(response).to have_http_status 200
+      end
+    end
+
+    context 'used by Author of the answer' do
+      before { login(user) }
+
+      it 'does not increase answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unprocessable Entity 422 status' do
+        patch :like, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 422
       end
     end
   end
