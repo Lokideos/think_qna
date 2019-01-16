@@ -30,7 +30,19 @@ feature 'User can rate the question', "
       expect(page).to have_content 'You have successfully rated the question.'
     end
 
-    scenario 'rates down the question'
+    scenario 'rates down the question', js: true do
+      visit question_path(question)
+
+      within '.question-rating' do
+        click_on 'Dislike'
+      end
+
+      within '.question-rating' do
+        expect(page).to have_content 'Rating: -1'
+      end
+
+      expect(page).to have_content 'You have successfully rated the question.'
+    end
   end
 
   scenario 'Author of the question tries to rate the question' do

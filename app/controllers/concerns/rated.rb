@@ -14,6 +14,17 @@ module Rated
     end
   end
 
+  def dislike
+    respond_to do |format|
+      if !current_user.author_of?(resource)
+        resource.rating.score_down
+        format.json { render json: resource.rating }
+      else
+        format.json { render json: "Can't be modified", status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   def resource

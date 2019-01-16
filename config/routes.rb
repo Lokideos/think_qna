@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   concern :ratable do
     member do
       patch :like
+      patch :dislike
     end
   end
 

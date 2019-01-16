@@ -262,7 +262,61 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #dislike'
+  describe 'PATCH #dislike' do
+    let!(:rating) { create(:rating, ratable: question) }
+
+    context 'used by Authenticated user, who is not author of the question' do
+      before { login(non_author) }
+
+      it 'decreases question ratings score by 1' do
+        rating_count = question.rating.score
+        patch :dislike, params: { id: question, format: :json }
+        question.reload
+
+        expect(question.rating.score).to eq rating_count - 1
+      end
+
+      it 'returns OK 200 status' do
+        patch :dislike, params: { id: question, format: :json }
+
+        expect(response).to have_http_status 200
+      end
+    end
+
+    context 'used by Author of the question' do
+      before { login(user) }
+
+      it 'does not decrease question rating score by 1' do
+        rating_count = question.rating.score
+        patch :dislike, params: { id: question, format: :json }
+        question.reload
+
+        expect(question.rating.score).to eq rating_count
+      end
+
+      it 'returns Unprocessable Entity 422 status' do
+        patch :dislike, params: { id: question, format: :json }
+
+        expect(response).to have_http_status 422
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not decrease question rating score by 1' do
+        rating_count = question.rating.score
+        patch :dislike, params: { id: question, format: :json }
+        question.reload
+
+        expect(question.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :dislike, params: { id: question, format: :json }
+
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength

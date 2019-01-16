@@ -31,7 +31,19 @@ feature 'User can rate the answer', "
       expect(page).to have_content 'You have successfully rated the answer.'
     end
 
-    scenario 'rate down the answer'
+    scenario 'rate down the answer', js: true do
+      visit question_path(question)
+
+      within '.answers .answer-rating' do
+        click_on 'Dislike'
+      end
+
+      within '.answers .answer-rating' do
+        expect(page).to have_content 'Rating: -1'
+      end
+
+      expect(page).to have_content 'You have successfully rated the answer.'
+    end
   end
 
   scenario 'Author tries to rate his answer' do

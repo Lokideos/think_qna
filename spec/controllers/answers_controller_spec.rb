@@ -291,6 +291,62 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #dislike' do
+    let!(:rating) { create(:rating, ratable: answer) }
+
+    context 'used by Authenticated user, who is not author of the answer' do
+      before { login(non_author) }
+
+      it 'decreases answer ratings score by 1' do
+        rating_count = answer.rating.score
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count - 1
+      end
+
+      it 'returns OK 200 status' do
+        patch :dislike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 200
+      end
+    end
+
+    context 'used by Author of the answer' do
+      before { login(user) }
+
+      it 'does not decrease answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unprocessable Entity 422 status' do
+        patch :dislike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 422
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not decrease answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :dislike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/BlockLength
