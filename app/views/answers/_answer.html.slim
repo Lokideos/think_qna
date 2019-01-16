@@ -14,7 +14,7 @@ div.answer-instance id="answer-info-#{answer.id}"
           = render link, resource: answer
 
   .answer-rating
-    - if answer.rating && !current_user.author_of?(answer)
+    - if answer.rating && !current_user&.author_of?(answer) && current_user
       h2 Answer Rating
       .answer-rating-value
         p= "Rating: #{answer.rating.score}"

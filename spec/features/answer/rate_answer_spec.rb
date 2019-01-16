@@ -43,6 +43,12 @@ feature 'User can rate the answer', "
     end
   end
 
-  scenario 'Unauthenticated user tries to rate his answer'
+  scenario 'Unauthenticated user tries to rate his answer' do
+    visit question_path(question)
+
+    within '.answers .answer-rating' do
+      expect(page).to_not have_link 'Like'
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

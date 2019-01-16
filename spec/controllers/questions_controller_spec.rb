@@ -244,6 +244,22 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to have_http_status 422
       end
     end
+
+    context 'used by Unauthenticated user' do
+      it 'does not increase question rating score by 1' do
+        rating_count = question.rating.score
+        patch :like, params: { id: question, format: :json }
+        question.reload
+
+        expect(question.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :like, params: { id: question, format: :json }
+
+        expect(response).to have_http_status 401
+      end
+    end
   end
 
   describe 'PATCH #dislike'

@@ -274,6 +274,22 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to have_http_status 422
       end
     end
+
+    context 'used by Unauthenticated user' do
+      it 'does not increase answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :like, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 401
+      end
+    end
   end
 end
 # rubocop:enable Metrics/LineLength

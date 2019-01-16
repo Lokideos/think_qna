@@ -23,7 +23,7 @@ section.question
         = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
 
     .question-rating
-      - if question.rating && !current_user.author_of?(question)
+      - if question.rating && !current_user&.author_of?(question) && current_user
         h2 Question Rating
         .question-rating-value
           p= "Rating: #{question.rating.score}"
