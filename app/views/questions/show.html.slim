@@ -7,12 +7,20 @@ section.question
       p= t('.attached_files_section_headline')
       - if question.files.attached?
         - question.files.each do |file|
-          = content_tag(:p, id: "attachment-#{file.id}") do
-            = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
-            - if current_user&.author_of?(question)
-              |  | &nbsp
-              = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
-                                             method: :delete, class: 'attached-file-destroy-link', remote: true
+          = render 'attachments/attachment', resource: question, file: file
+
+    .links
+      h2= t('.links_section_headline')
+      ul
+        - question.links.each do |link|
+          - if link.persisted?
+            = render link, resource: question
+
+    - if question.reward
+      .best-answer-reward
+        h2= t('.best_answer_section_headline')
+        p= question.reward.title
+        = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
@@ -32,13 +40,28 @@ section.question
         p= t('.attached_files_section_headline')
         - if question.files.attached?
           - question.files.each do |file|
-            p= link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
+            = render 'attachments/attachment', resource: question, file: file
 
       p.question-file-upload-section
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
 
+      .question-form-attached-links
+        h2= t('.links_section_headline')
+        ul
+          - question.links.each do |link|
+            - if link.persisted?
+              = render link, resource: question
+
+      .question-links-attach-section
+        p= t('.new_links_section_headline')
+        p
+          = render 'links/link_nested_fields', form_builder: f
+          .additional-links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+
       p= f.submit t('.update'), class: 'question-form-update-btn'
+
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
 section.answers
@@ -48,13 +71,14 @@ section.answers
       .best-answer-info
         = render question.answers.find_by(best: true)
   .all-answers
-    h2 Answers on question
+    h2= t('.all_answers_section_headline')
     ul.answers-list
       - question.answers.each do |answer|
         - if answer.persisted? && !answer.best
           li = render answer
 
 section.new-answer
+  h2= t('.new_answer_section_headline')
   - if current_user
     .new-answer-errors
       = render 'shared/errors', resource: @answer
@@ -66,5 +90,11 @@ section.new-answer
       p
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
+
+      p= t('.links_section_headline')
+      p
+        = render 'links/link_nested_fields', form_builder: f
+        .additional-links
+          = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
       p= f.submit t('.reply')

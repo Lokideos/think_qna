@@ -1,0 +1,6 @@
+var linkId = <%= @link.id %>;
+
+$('.question-form-attached-links #link-' + linkId).remove();
+$('#link-' + linkId).remove();
+
+$('.notice').html('<%= t('notifications.delete_link') %>');

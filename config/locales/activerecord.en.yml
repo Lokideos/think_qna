@@ -3,6 +3,8 @@ en:
     models:
       question: 'Question'
       answer: 'Answer'
+      link: 'Link'
+      reward: 'Reward'
 
     attributes:
       question:
@@ -10,6 +12,12 @@ en:
         body: 'Body'
       answer:
         body: 'Body'
+      link:
+        name: 'Link name'
+        url: 'Url'
+      reward:
+        title: 'Title'
+        image: 'Image'
 
     errors:
       messages:

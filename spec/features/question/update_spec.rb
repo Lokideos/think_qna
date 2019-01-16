@@ -60,6 +60,7 @@ feature 'User can update his question', "
 
         scenario 'successfully', js: true do
           wait_for_ajax
+          sleep(2)
 
           within '.question' do
             expect(page).to have_link 'rails_helper.rb'
@@ -100,6 +101,84 @@ feature 'User can update his question', "
             within '.question' do
               expect(page).to have_selector('.attached-file-link', count: 2)
             end
+          end
+        end
+      end
+
+      context 'updates the question and attach link' do
+        given(:gist_url) { 'https://gist.github.com/Lokideos/815f3eea3f00a35ff48ea2984457b673' }
+
+        background do
+          click_on 'Edit Question'
+
+          within '.edit-question-form' do
+            fill_in 'Title', with: 'Updated Question'
+          end
+        end
+
+        scenario 'successfully', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          within '.question' do
+            expect(page).to have_link 'My Gist', href: gist_url
+          end
+        end
+
+        scenario 'empty link input field after attaching the url', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          click_on 'Edit Question'
+
+          within '.edit-question-form .question-links-attach-section' do
+            expect(page).to_not have_content 'My Gist'
+            expect(page).to_not have_content gist_url
+          end
+        end
+
+        scenario 'see created links in form during editing question', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'My Gist'
+            fill_in 'Url', with: gist_url
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          click_on 'Edit Question'
+
+          within '.edit-question-form' do
+            expect(page).to have_link 'My Gist', href: gist_url
+          end
+        end
+
+        scenario 'within invalid url address', js: true do
+          within '.edit-question-form' do
+            fill_in 'Link name', with: 'Bad Address'
+            fill_in 'Url', with: 'Bad URL Address'
+
+            click_on 'Update'
+          end
+
+          wait_for_ajax
+
+          within '.question' do
+            expect(page).to_not have_link 'Bad Address', href: 'Bad URL Address'
+            expect(page).to have_content 'Links url should be correct url address.'
           end
         end
       end

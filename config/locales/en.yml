@@ -42,6 +42,8 @@ en:
     not_created_error: "%{resource} wasn't created; check your input."
     best_answer: 'You chose the best answer.'
     delete_attachment: 'You have successfully deleted attachment.'
+    delete_link: 'You have successfully deleted link.'
+    forbidden_for_non_author: "You can't check other user's rewards."
 
   shared:
     errors:
@@ -51,6 +53,9 @@ en:
     header:
       sign_in: 'Sign in'
       sign_out: 'Sign out'
+    link_fields:
+      remove_link: 'remove link'
+      add_link: 'add link'
 
   helpers:
     label:
@@ -61,29 +66,60 @@ en:
         remember_me: 'Remember me'
 
   questions:
+    question_info:
+      attached_files_section_headline: 'Attached files'
+      links_section_headline: 'Links:'
+      best_answer_section_headline: 'Best Answer Reward'
     index:
       ask: 'Ask question'
     new:
+      best_answer_section_headline: 'Best Answer Reward'
+      links_section_headline: 'Links:'
       ask: 'Ask'
     show:
+      links_section_headline: 'Links:'
+      new_links_section_headline: 'New Links:'
       delete: 'Delete %{resource}'
       edit: 'Edit %{resource}'
       reply: 'Answer to question'
       update: 'Update'
-      delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
+      all_answers_section_headline: 'Answers on question'
+      new_answer_section_headline: 'New Answer Creation'
+      best_answer_section_headline: 'Best Answer Reward'
     update:
+      gist_headline: 'Gist Content:'
+      links_section_headline: 'Links:'
       delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
 
   answers:
     update:
-      delete_attachment: 'Delete Attachment'
+      gist_headline: 'Gist Content:'
+      links_section_headline: 'Links:'
       attached_files_section_headline: 'Attached files'
+      delete_attachment: 'Delete Attachment'
+      delete_link: 'Delete Link'
     answer:
+      links_section_headline: 'Links:'
+      new_links_section_headline: 'New Links:'
       best_answer: 'Best Answer'
       edit: 'Edit Answer'
       delete: 'Delete Answer'
       update: 'Update'
-      delete_attachment: 'Delete Attachment'
       attached_files_section_headline: 'Attached files'
+    best_answer:
+      best_answer: 'Best Answer'
+
+  users:
+    rewards:
+      headline: 'Rewards'
+
+  attachments:
+    attachment:
+      delete_attachment: 'Delete Attachment'
+
+  links:
+    link:
+      gist_headline: 'Gist Content:'
+      delete: 'Delete Link'

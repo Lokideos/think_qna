@@ -4,6 +4,9 @@ var answerNotice = '';
 <% if answer.persisted? %>
   $('.answers-list').append('<li><%= j render answer %></li>');
   $('.new-answer #answer_body').val('');
+  $('.new-answer #answer_links_attributes_0_name').val('');
+  $('.new-answer #answer_links_attributes_0_url').val('');
+  $('.nested-fields').remove();
   answerNotice = '<%= t('notifications.created', resource: answer.class.model_name.human) %>';
 <% else %>
   answerNotice = '<%= t('notifications.not_created_error', resource: answer.class.model_name.human) %>';

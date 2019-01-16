@@ -1,15 +1,17 @@
-= content_tag :div, id: "answer-info-#{ answer.id }", class: 'answer-instance' do
+div.answer-instance id="answer-info-#{answer.id}"
   = answer.body
   .answer-attached-files
     p= t('.attached_files_section_headline')
     - if answer.files.attached?
       - answer.files.each do |file|
-        = content_tag(:p, id: "attachment-#{file.id}") do
-          = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
-          - if current_user&.author_of?(answer)
-            |  | &nbsp
-            = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
-                                           method: :delete, class: 'attached-file-destroy-link', remote: true
+        = render 'attachments/attachment', resource: answer, file: file
+
+  h2= t('.links_section_headline')
+  .answer-links
+    ul
+      - answer.links.each do |link|
+        - if link.persisted?
+          = render link, resource: answer
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
@@ -24,15 +26,25 @@
       p= t('.attached_files_section_headline')
       - if answer.files.attached?
         - answer.files.each do |file|
-          = content_tag(:p, id: "attachment-#{file.id}") do
-            = link_to file.filename.to_s, url_for(file), class: 'attached-file-link'
-            - if current_user&.author_of?(answer)
-              |  | &nbsp
-              = link_to t('.delete_attachment'), attachment_path(id: file.id), data: { attachment_id: file.id },
-                                             method: :delete, class: 'attached-file-destroy-link', remote: true
+          = render 'attachments/attachment', resource: answer, file: file
+
     p.answer-file-upload-section
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
+
+    .answer-form-attached-links
+      h2= t('.links_section_headline')
+      ul
+        - answer.links.each do |link|
+          - if link.persisted?
+            = render link, resource: answer
+
+      .answer-links-attach-section
+        p= t('.new_links_section_headline')
+        p
+          = render 'links/link_nested_fields', form_builder: f
+          .additional-links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
     p= f.submit t('.update'), class: 'answer-form-update-btn'
   = link_to t('.delete', resource: answer.class.model_name.human), answer_path(answer), method: :delete, data: {answer_id: answer.id}, remote: true

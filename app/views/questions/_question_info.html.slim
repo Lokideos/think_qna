@@ -1,0 +1,18 @@
+h1= question.title
+p.question-info-body= question.body
+
+.question-attached-files
+  p= t('.attached_files_section_headline')
+  - if question.files.attached?
+    - question.files.each do |file|
+      = render 'attachments/attachment', resource: question, file: file
+
+.links
+  h2= t('.links_section_headline')
+  ul= render 'questions/questions_links'
+
+- if question.reward
+  .best-answer-reward
+    h2= t('.best_answer_section_headline')
+    p= question.reward.title
+    = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')

@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   scope '(:lang)', lang: /en|ru/, defaults: { lang: 'en' } do
     devise_for :users
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+    resources :users, only: [] do
+      get :rewards, on: :member
+    end
 
     resources :questions do
       resources :answers, shallow: true, only: %i[create update destroy] do
@@ -12,6 +15,7 @@ Rails.application.routes.draw do
     end
 
     resources :attachments, only: %i[destroy]
+    resources :links, only: %i[destroy]
   end
 
   get '/:lang' => 'questions#index'

@@ -43,6 +43,9 @@ feature 'User can delete attachment to his answer', "
         click_on 'Update'
       end
 
+      wait_for_ajax
+      sleep(3)
+
       within '.answer-attached-files' do
         expect(page).to_not have_content 'image.jpg'
       end

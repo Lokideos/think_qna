@@ -3,6 +3,8 @@ ru:
     models:
       question: 'Вопрос'
       answer: 'Ответ'
+      link: 'Ссылка'
+      reward: 'Награда'
 
     attributes:
       question:
@@ -10,6 +12,12 @@ ru:
         body: 'Содержание'
       answer:
         body: 'Содержание'
+      link:
+        name: 'Ссылка'
+        url: 'Адрес ссылки'
+      reward:
+        title: 'Название'
+        image: 'Иконка'
 
     errors:
       messages:

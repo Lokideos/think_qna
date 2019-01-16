@@ -3,7 +3,7 @@ var previousAnswerId = '';
 var previousBestAnswer = $('.best-answer .best-answer-info');
 
 $('.notice').html('<%= I18n.t('notifications.best_answer') %>');
-$('.best-answer').html('<h2><%= t('answers.answer.best_answer') %></h2><div class="best-answer-info"><%= j render answer %></div>');
+$('.best-answer').html('<%= j render 'best_answer' %>');
 $('.answers-list #answer-info-' + answerId).parent().remove();
 
 if (previousBestAnswer) {
