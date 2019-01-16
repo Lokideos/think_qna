@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rating, type: :model do
-  it { should belong_to :question }
+  it { should belong_to :ratable }
   it { should validate_presence_of :score }
 
   context 'Methods' do

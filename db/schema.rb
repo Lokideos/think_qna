@@ -69,10 +69,11 @@ ActiveRecord::Schema.define(version: 2019_01_16_195631) do
 
   create_table "ratings", force: :cascade do |t|
     t.bigint "score", default: 0, null: false
-    t.bigint "question_id"
+    t.string "ratable_type"
+    t.bigint "ratable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_ratings_on_question_id"
+    t.index ["ratable_type", "ratable_id"], name: "index_ratings_on_ratable_type_and_ratable_id"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -100,7 +101,6 @@ ActiveRecord::Schema.define(version: 2019_01_16_195631) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "users"
-  add_foreign_key "ratings", "questions"
   add_foreign_key "rewards", "questions"
   add_foreign_key "rewards", "users"
 end

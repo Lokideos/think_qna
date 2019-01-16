@@ -28,4 +28,11 @@ $(document).on('turbolinks:load', function(){
             $('.edit-answer-form input[type="file"]').val('');
         }, 1);
     });
+
+    $('.answers').on('ajax:success', '.answer-instance', function(e) {
+        var answer_rating = e.detail[0]
+
+        $(this).find('.answer-rating-value').html('<p>Rating: ' + answer_rating.score + '</p>');
+        $('.notice').html('You have successfully rated the answer.');
+    })
 });

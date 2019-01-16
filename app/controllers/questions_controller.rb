@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
+  include Rated
+
   before_action :authenticate_user!, except: %i[index show]
   before_action :filter_non_author_users, only: %i[update destroy]
 
@@ -26,7 +28,7 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
 
     if question.save
-      Rating.create(question: question)
+      Rating.create(ratable: question)
       redirect_to question, notice: I18n.t('notifications.created', resource: question.class.model_name.human)
     else
       render :new
@@ -43,13 +45,13 @@ class QuestionsController < ApplicationController
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
 
-  def like
-    question.rating.score_up
-
-    respond_to do |format|
-      format.json { render json: question.rating }
-    end
-  end
+  # def like
+  #   question.rating.score_up
+  #
+  #   respond_to do |format|
+  #     format.json { render json: question.rating }
+  #   end
+  # end
 
   private
 

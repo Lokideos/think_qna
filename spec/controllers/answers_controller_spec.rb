@@ -28,6 +28,11 @@ RSpec.describe AnswersController, type: :controller do
         expect(assigns(:answer).user_id).to eq user.id
       end
 
+      it 'creates rating for the answer' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question, user: user, format: :js }
+        expect(assigns(:answer).rating).to be_a(Rating)
+      end
+
       it 'render the create view' do
         post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
         expect(response).to render_template :create
@@ -227,6 +232,28 @@ RSpec.describe AnswersController, type: :controller do
       it 'returns unauthorized 401 status code' do
         patch :choose_best, params: { id: answer, format: :js }
         expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+  describe 'PATCH #like' do
+    let!(:rating) { create(:rating, ratable: answer) }
+
+    context 'used by Authenticated user, who is not author of the answer' do
+      before { login(user) }
+
+      it 'increases answer ratings score by 1' do
+        rating_count = answer.rating.score
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count + 1
+      end
+
+      it 'returns 200 status' do
+        patch :like, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 200
       end
     end
   end

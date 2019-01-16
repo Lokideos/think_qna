@@ -207,7 +207,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #like' do
-    let!(:rating) { create(:rating, question: question) }
+    let!(:rating) { create(:rating, ratable: question) }
 
     context 'used by Authenticated user, who is not author of the question' do
       before { login(user) }
@@ -227,6 +227,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
   describe 'PATCH #dislike'
 end
 # rubocop:enable Metrics/LineLength

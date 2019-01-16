@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Rating < ApplicationRecord
-  belongs_to :question
+  belongs_to :ratable, polymorphic: true
 
   validates :score, presence: true
 

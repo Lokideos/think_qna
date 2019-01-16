@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
+  include Rated
+
   before_action :authenticate_user!
   before_action :filter_answer_non_author_users, only: %i[update destroy]
 
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
-    @answer.save
+    Rating.create(ratable: answer) if @answer.save
   end
 
   def update

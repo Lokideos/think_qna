@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :rating do
     score { 0 }
-    question
+    ratable { |r| r.association(:question) }
   end
 end
