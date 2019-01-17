@@ -23,9 +23,9 @@ feature 'User can rate the question', "
         click_on 'Like'
       end
       wait_for_ajax
-      sleep(2)
+      sleep(1)
 
-      within '.question-rating' do
+      within '.question-rating .question-rating-value' do
         expect(page).to have_content 'Rating: 1'
       end
 
@@ -37,9 +37,9 @@ feature 'User can rate the question', "
         click_on 'Dislike'
       end
       wait_for_ajax
-      sleep(2)
+      sleep(1)
 
-      within '.question-rating' do
+      within '.question-rating .question-rating-value' do
         expect(page).to have_content 'Rating: -1'
       end
 
@@ -51,9 +51,9 @@ feature 'User can rate the question', "
         click_on 'Like'
       end
       wait_for_ajax
-      sleep(2)
+      sleep(1)
 
-      within '.question-rating' do
+      within '.question-rating .question-rating-value' do
         expect(page).to have_content 'Rating: 1'
         expect(page).to_not have_link 'Like'
       end
@@ -64,39 +64,43 @@ feature 'User can rate the question', "
         click_on 'Dislike'
       end
       wait_for_ajax
-      sleep(2)
+      sleep(1)
 
-      within '.question-rating' do
+      within '.question-rating .question-rating-value' do
         expect(page).to have_content 'Rating: -1'
         expect(page).to_not have_link 'Dislike'
       end
     end
 
-    scenario 'see rating and does not see link to like the question after liking it and reloading the page' do
-      within '.question-rating' do
-        click_on 'Like'
-      end
-      page.evaluate_script 'window.location.reload()'
-      wait_for_ajax
-      sleep(2)
+    context 'after reloading the page does not see rate link and see correct rating' do
+      scenario 'after liking the question', js: true do
+        new_question = create(:question)
+        visit question_path(new_question)
 
-      within '.question-rating' do
-        expect(page).to_not have_content 'Rating: 1'
-        expect(page).to_not have_link 'Like'
-      end
-    end
+        within '.question-rating' do
+          click_on 'Like'
+        end
+        page.evaluate_script 'window.location.reload()'
 
-    scenario 'see rating and does not see link to dislike the question after disliking it and reloading the page' do
-      within '.question-rating' do
-        click_on 'Dislike'
+        within '.question-rating .question-rating-value' do
+          expect(page).to have_content 'Rating: 1'
+          expect(page).to_not have_link 'Like'
+        end
       end
-      page.evaluate_script 'window.location.reload()'
-      wait_for_ajax
-      sleep(2)
 
-      within '.question-rating' do
-        expect(page).to_not have_content 'Rating: -1'
-        expect(page).to_not have_link 'Dislike'
+      scenario 'after disliking the question', js: true do
+        another_new_question = create(:question)
+        visit question_path(another_new_question)
+
+        within '.question-rating' do
+          click_on 'Dislike'
+        end
+        page.evaluate_script 'window.location.reload()'
+
+        within '.question-rating .question-rating-value' do
+          expect(page).to have_content 'Rating: -1'
+          expect(page).to_not have_link 'Dislike'
+        end
       end
     end
   end

@@ -29,6 +29,7 @@ $(document).on('turbolinks:load', function() {
             $('.edit-question-form input[type="file"]').val('');
         }, 3);
     });
+
     $('.question-rating').on('ajax:success', '.rate-question-link', function(e) {
         var question_rating = e.detail[0];
 

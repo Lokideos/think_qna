@@ -19,9 +19,11 @@ div.answer-instance id="answer-info-#{answer.id}"
       .answer-rating-value
         p= "Rating: #{answer.rating.score}"
       - if !current_user&.author_of?(answer)
-        = link_to 'Like', like_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
+        - if answer.rating.ratable?(current_user, 'liked')
+          = link_to 'Like', like_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
         | |
-        = link_to 'Dislike', dislike_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
+        - if answer.rating.ratable?(current_user, 'disliked')
+          = link_to 'Dislike', dislike_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
