@@ -255,6 +255,24 @@ RSpec.describe AnswersController, type: :controller do
 
         expect(response).to have_http_status 200
       end
+
+      context 'second time in a row' do
+        before { patch :like, params: { id: answer, format: :json } }
+
+        it 'does not change answer rating score' do
+          rating_count = answer.rating.score
+          patch :like, params: { id: answer, format: :json }
+          answer.reload
+
+          expect(answer.rating.score).to eq rating_count
+        end
+
+        it 'returns Unprocessable Entity 422 status' do
+          patch :like, params: { id: answer, format: :json }
+
+          expect(response).to have_http_status 422
+        end
+      end
     end
 
     context 'used by Author of the answer' do
@@ -310,6 +328,24 @@ RSpec.describe AnswersController, type: :controller do
         patch :dislike, params: { id: answer, format: :json }
 
         expect(response).to have_http_status 200
+      end
+
+      context 'second time in a row' do
+        before { patch :dislike, params: { id: answer, format: :json } }
+
+        it 'does not change answer rating score' do
+          rating_count = answer.rating.score
+          patch :dislike, params: { id: answer, format: :json }
+          answer.reload
+
+          expect(answer.rating.score).to eq rating_count
+        end
+
+        it 'returns Unprocessable Entity 422 status' do
+          patch :dislike, params: { id: answer, format: :json }
+
+          expect(response).to have_http_status 422
+        end
       end
     end
 

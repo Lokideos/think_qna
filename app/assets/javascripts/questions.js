@@ -29,9 +29,11 @@ $(document).on('turbolinks:load', function() {
             $('.edit-question-form input[type="file"]').val('');
         }, 3);
     });
-    $('.question-rating').on('ajax:success', function(e) {
+    $('.question-rating').on('ajax:success', '.rate-question-link', function(e) {
         var question_rating = e.detail[0];
 
+        $('.question-rating .rate-question-link').show();
+        $(this).hide();
         $('.question-rating-value').html('<p>Rating: ' + question_rating.score + '</p>');
         $('.notice').html('<p>You have successfully rated the question.</p>')
     })

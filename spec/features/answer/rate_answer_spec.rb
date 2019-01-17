@@ -17,13 +17,13 @@ feature 'User can rate the answer', "
   context 'Authenticated user and not Author of the answer', js: true do
     background { sign_in(user) }
 
-    scenario 'rate up the answer' do
-      visit question_path(question)
+    background { visit question_path(question) }
 
+    scenario 'rate up the answer' do
       within '.answers .answer-rating' do
         click_on 'Like'
       end
-
+      wait_for_ajax
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: 1'
       end
@@ -32,17 +32,37 @@ feature 'User can rate the answer', "
     end
 
     scenario 'rate down the answer', js: true do
-      visit question_path(question)
-
       within '.answers .answer-rating' do
         click_on 'Dislike'
       end
-
+      wait_for_ajax
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: -1'
       end
 
       expect(page).to have_content 'You have successfully rated the answer.'
+    end
+
+    scenario 'tries to rate answer up second time', js: true do
+      within '.answers .answer-rating' do
+        click_on 'Like'
+      end
+      wait_for_ajax
+      within '.answers .answer-rating' do
+        expect(page).to have_content 'Rating: 1'
+        expect(page).to_not have_link 'Like'
+      end
+    end
+
+    scenario 'tries to rate answer down second time', js: true do
+      within '.answers .answer-rating' do
+        click_on 'Dislike'
+      end
+      wait_for_ajax
+      within '.answers .answer-rating' do
+        expect(page).to have_content 'Rating: -1'
+        expect(page).to_not have_link 'Dislike'
+      end
     end
   end
 

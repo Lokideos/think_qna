@@ -29,10 +29,13 @@ $(document).on('turbolinks:load', function(){
         }, 1);
     });
 
-    $('.answers').on('ajax:success', '.answer-instance', function(e) {
-        var answer_rating = e.detail[0]
+    $('.answers').on('ajax:success', '.answer-instance .rate-answer-link', function(e) {
+        var answer_rating = e.detail[0];
 
-        $(this).find('.answer-rating-value').html('<p>Rating: ' + answer_rating.score + '</p>');
+        $(this).parent().find('.rate-answer-link').show();
+        $(this).hide();
+
+        $(this).closest('.answer-instance').find('.answer-rating-value').html('<p>Rating: ' + answer_rating.score + '</p>');
         $('.notice').html('You have successfully rated the answer.');
     })
 });

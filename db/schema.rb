@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_195631) do
+ActiveRecord::Schema.define(version: 2019_01_17_001407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,16 @@ ActiveRecord::Schema.define(version: 2019_01_16_195631) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
+  create_table "rating_changes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "rating_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rating_id"], name: "index_rating_changes_on_rating_id"
+    t.index ["user_id", "rating_id"], name: "index_rating_changes_on_user_id_and_rating_id"
+    t.index ["user_id"], name: "index_rating_changes_on_user_id"
+  end
+
   create_table "ratings", force: :cascade do |t|
     t.bigint "score", default: 0, null: false
     t.string "ratable_type"
@@ -101,6 +111,8 @@ ActiveRecord::Schema.define(version: 2019_01_16_195631) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "users"
+  add_foreign_key "rating_changes", "ratings"
+  add_foreign_key "rating_changes", "users"
   add_foreign_key "rewards", "questions"
   add_foreign_key "rewards", "users"
 end

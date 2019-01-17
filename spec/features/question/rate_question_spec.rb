@@ -16,13 +16,13 @@ feature 'User can rate the question', "
   context 'Authenticated user and not author of the question' do
     background { sign_in(user) }
 
-    scenario 'rates up the question', js: true do
-      visit question_path(question)
+    background { visit question_path(question) }
 
+    scenario 'rates up the question', js: true do
       within '.question-rating' do
         click_on 'Like'
       end
-
+      wait_for_ajax
       within '.question-rating' do
         expect(page).to have_content 'Rating: 1'
       end
@@ -31,17 +31,37 @@ feature 'User can rate the question', "
     end
 
     scenario 'rates down the question', js: true do
-      visit question_path(question)
+      within '.question-rating' do
+        click_on 'Dislike'
+      end
+      wait_for_ajax
+      within '.question-rating' do
+        expect(page).to have_content 'Rating: -1'
+      end
 
+      expect(page).to have_content 'You have successfully rated the question.'
+    end
+
+    scenario 'tries to rate question up second time', js: true do
+      within '.question-rating' do
+        click_on 'Like'
+      end
+      wait_for_ajax
+      within '.question-rating' do
+        expect(page).to have_content 'Rating: 1'
+        expect(page).to_not have_link 'Like'
+      end
+    end
+
+    scenario 'tries to rate question down second time', js: true do
       within '.question-rating' do
         click_on 'Dislike'
       end
 
       within '.question-rating' do
         expect(page).to have_content 'Rating: -1'
+        expect(page).to_not have_link 'Dislike'
       end
-
-      expect(page).to have_content 'You have successfully rated the question.'
     end
   end
 

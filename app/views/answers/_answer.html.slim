@@ -14,12 +14,14 @@ div.answer-instance id="answer-info-#{answer.id}"
           = render link, resource: answer
 
   .answer-rating
-    - if answer.rating && !current_user&.author_of?(answer) && current_user
+    - if answer.rating &&  current_user
       h2 Answer Rating
       .answer-rating-value
         p= "Rating: #{answer.rating.score}"
-        = button_to 'Like', like_answer_path(answer), class: 'like-answer-link', method: :patch, data: { type: :json }, remote: true
-        = button_to 'Dislike', dislike_answer_path(answer), class: 'dislike-answer-link', method: :patch, data: { type: :json }, remote: true
+      - if !current_user&.author_of?(answer)
+        = link_to 'Like', like_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
+        | |
+        = link_to 'Dislike', dislike_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}
