@@ -23,6 +23,7 @@ feature 'User can rate the question', "
         click_on 'Like'
       end
       wait_for_ajax
+      sleep(1)
       within '.question-rating' do
         expect(page).to have_content 'Rating: 1'
       end
@@ -35,6 +36,7 @@ feature 'User can rate the question', "
         click_on 'Dislike'
       end
       wait_for_ajax
+      sleep(1)
       within '.question-rating' do
         expect(page).to have_content 'Rating: -1'
       end
@@ -47,6 +49,7 @@ feature 'User can rate the question', "
         click_on 'Like'
       end
       wait_for_ajax
+      sleep(1)
       within '.question-rating' do
         expect(page).to have_content 'Rating: 1'
         expect(page).to_not have_link 'Like'
@@ -57,6 +60,8 @@ feature 'User can rate the question', "
       within '.question-rating' do
         click_on 'Dislike'
       end
+      wait_for_ajax
+      sleep(1)
 
       within '.question-rating' do
         expect(page).to have_content 'Rating: -1'

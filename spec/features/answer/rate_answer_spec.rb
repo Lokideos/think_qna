@@ -14,16 +14,18 @@ feature 'User can rate the answer', "
   given(:answer) { create(:answer, question: question, user: answer_author) }
   given!(:rating) { create(:rating, ratable: answer) }
 
-  context 'Authenticated user and not Author of the answer', js: true do
+  context 'Authenticated user and not Author of the answer' do
     background { sign_in(user) }
 
     background { visit question_path(question) }
 
-    scenario 'rate up the answer' do
+    scenario 'rate up the answer', js: true do
       within '.answers .answer-rating' do
         click_on 'Like'
       end
       wait_for_ajax
+      sleep(1)
+
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: 1'
       end
@@ -36,6 +38,8 @@ feature 'User can rate the answer', "
         click_on 'Dislike'
       end
       wait_for_ajax
+      sleep(1)
+
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: -1'
       end
@@ -48,6 +52,8 @@ feature 'User can rate the answer', "
         click_on 'Like'
       end
       wait_for_ajax
+      sleep(1)
+
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: 1'
         expect(page).to_not have_link 'Like'
@@ -59,6 +65,8 @@ feature 'User can rate the answer', "
         click_on 'Dislike'
       end
       wait_for_ajax
+      sleep(1)
+
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: -1'
         expect(page).to_not have_link 'Dislike'

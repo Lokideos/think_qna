@@ -8,6 +8,7 @@ module Ratable
 
     private
 
+    # Should I test it?
     def create_rating
       Rating.create(ratable: self)
     end
