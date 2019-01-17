@@ -40,8 +40,6 @@ $(document).on('turbolinks:load', function() {
         $('.question-rating .rating-links .dislike-links').html(dislike_link);
 
         $('.question-rating-value').html('<p>Rating: ' + question_rating.score + '</p>');
-        $('.notice').html('<p>You have successfully rated the question.</p>');
-
     });
 
     $('.question-rating').on('ajax:success', '.dislike-link', function(e) {
@@ -51,7 +49,6 @@ $(document).on('turbolinks:load', function() {
         $('.question-rating .rating-links .dislike-links').html(unlike_link);
 
         $('.question-rating-value').html('<p>Rating: ' + question_rating.score + '</p>');
-        $('.notice').html('<p>You have successfully rated the question.</p>');
     });
 
     $('.question-rating').on('ajax:success', '.unlike-link', function(e) {
@@ -61,6 +58,5 @@ $(document).on('turbolinks:load', function() {
         $('.question-rating .rating-links .dislike-links').html(dislike_link);
 
         $('.question-rating-value').html('<p>Rating: ' + question_rating.score + '</p>');
-        $('.notice').html('<p>You have canceled your vote.</p>');
-    })
+    });
 });

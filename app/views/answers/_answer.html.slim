@@ -15,15 +15,25 @@ div.answer-instance id="answer-info-#{answer.id}"
 
   .answer-rating
     - if answer.rating &&  current_user
-      h2 Answer Rating
+      h2= t('.rating_section_headline')
       .answer-rating-value
-        p= "Rating: #{answer.rating.score}"
+        p= t('.rating_score', score: answer.rating.score)
       - if !current_user&.author_of?(answer)
-        - if answer.rating.ratable?(current_user, 'liked')
-          = link_to 'Like', like_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
-        | |
-        - if answer.rating.ratable?(current_user, 'disliked')
-          = link_to 'Dislike', dislike_answer_path(answer), class: 'rate-answer-link', method: :patch, data: { type: :json }, remote: true
+        .rating-links
+          - if answer.rating.ratable?(current_user, 'liked')
+            = link_to t('.like'), like_answer_path(answer), class: 'rate-answer-link like-link', method: :patch, data: { type: :json }, remote: true
+          - else
+            = link_to t('.like'), like_answer_path(answer), class: 'rate-answer-link like-link hidden', method: :patch, data: { type: :json }, remote: true
+          br
+          - if answer.rating.rated?(current_user) && (answer.rating.ratable?(current_user, 'disliked') || answer.rating.ratable?(current_user, 'liked'))
+            = link_to t('.unlike'), unlike_answer_path(answer), class: 'rate-answer-link unlike-answer-link unlike-link', method: :patch, data: {type: :json}, remote: true
+          - else
+            = link_to t('.unlike'), unlike_answer_path(answer), class: 'rate-answer-link unlike-answer-link unlike-link hidden', method: :patch, data: {type: :json}, remote: true
+          br
+          - if answer.rating.ratable?(current_user, 'disliked')
+            = link_to t('.dislike'), dislike_answer_path(answer), class: 'rate-answer-link dislike-link', method: :patch, data: { type: :json }, remote: true
+          - else
+            = link_to t('.dislike'), dislike_answer_path(answer), class: 'rate-answer-link dislike-link hidden', method: :patch, data: { type: :json }, remote: true
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}

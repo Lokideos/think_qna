@@ -29,8 +29,6 @@ feature 'User can rate the answer', "
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: 1'
       end
-
-      expect(page).to have_content 'You have successfully rated the answer.'
     end
 
     scenario 'rate down the answer', js: true do
@@ -43,8 +41,6 @@ feature 'User can rate the answer', "
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: -1'
       end
-
-      expect(page).to have_content 'You have successfully rated the answer.'
     end
 
     scenario 'tries to rate answer up second time', js: true do
@@ -73,39 +69,15 @@ feature 'User can rate the answer', "
       end
     end
 
-    context 'after reloading the page does not see rate link and see correct rating' do
-      scenario 'after liking the answer', js: true do
-        new_question = create(:question)
-        create(:answer, question: new_question)
-        visit question_path(new_question)
-
-        within '.answers .answer-rating' do
-          click_on 'Like'
-        end
+    scenario 'unlikes the answer', js: true do
+      within '.answers .answer-rating' do
+        click_on 'Like'
         wait_for_ajax
-        page.evaluate_script 'window.location.reload()'
-
-        within '.answers .answer-rating' do
-          expect(page).to have_content 'Rating: 1'
-          expect(page).to_not have_link 'Like'
-        end
+        click_on 'Unlike'
       end
 
-      scenario 'after disliking the answer', js: true do
-        another_new_question = create(:question)
-        create(:answer, question: another_new_question)
-        visit question_path(another_new_question)
-
-        within '.answers .answer-rating' do
-          click_on 'Dislike'
-        end
-        wait_for_ajax
-        page.evaluate_script 'window.location.reload()'
-
-        within '.answers .answer-rating' do
-          expect(page).to have_content 'Rating: -1'
-          expect(page).to_not have_link 'Dislike'
-        end
+      within '.answers .answer-rating' do
+        expect(page).to_not have_link 'Unlike'
       end
     end
   end

@@ -28,8 +28,6 @@ feature 'User can rate the question', "
       within '.question-rating .question-rating-value' do
         expect(page).to have_content 'Rating: 1'
       end
-
-      expect(page).to have_content 'You have successfully rated the question.'
     end
 
     scenario 'rates down the question', js: true do
@@ -42,8 +40,6 @@ feature 'User can rate the question', "
       within '.question-rating .question-rating-value' do
         expect(page).to have_content 'Rating: -1'
       end
-
-      expect(page).to have_content 'You have successfully rated the question.'
     end
 
     scenario 'tries to rate question up second time', js: true do
@@ -72,38 +68,6 @@ feature 'User can rate the question', "
       end
     end
 
-    context 'after reloading the page does not see rate link and see correct rating' do
-      scenario 'after liking the question', js: true do
-        new_question = create(:question)
-        visit question_path(new_question)
-
-        within '.question-rating' do
-          click_on 'Like'
-        end
-        page.evaluate_script 'window.location.reload()'
-
-        within '.question-rating .question-rating-value' do
-          expect(page).to have_content 'Rating: 1'
-          expect(page).to_not have_link 'Like'
-        end
-      end
-
-      scenario 'after disliking the question', js: true do
-        another_new_question = create(:question)
-        visit question_path(another_new_question)
-
-        within '.question-rating' do
-          click_on 'Dislike'
-        end
-        page.evaluate_script 'window.location.reload()'
-
-        within '.question-rating .question-rating-value' do
-          expect(page).to have_content 'Rating: -1'
-          expect(page).to_not have_link 'Dislike'
-        end
-      end
-    end
-
     scenario 'sees the unlike link after he rates the question', js: true do
       within '.question' do
         click_on 'Like'
@@ -124,8 +88,6 @@ feature 'User can rate the question', "
       within '.question-rating' do
         expect(page).to_not have_link 'Unlike'
       end
-
-      expect(page).to have_content 'You have canceled your vote.'
     end
   end
 
