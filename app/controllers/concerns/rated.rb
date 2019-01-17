@@ -4,13 +4,8 @@ module Rated
   extend ActiveSupport::Concern
 
   # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def like
-    if current_user&.author_of?(resource)
-      return respond_to do |format|
-        format.json { render json: "Can't be liked by author.", status: :unprocessable_entity }
-      end
-    end
+    return respond_with_error if current_user&.author_of?(resource)
 
     respond_to do |format|
       if !resource.rating.rated_by?(current_user)
@@ -23,11 +18,7 @@ module Rated
   end
 
   def dislike
-    if current_user&.author_of?(resource)
-      return respond_to do |format|
-        format.json { render json: "Can't be liked by author.", status: :unprocessable_entity }
-      end
-    end
+    return respond_with_error if current_user&.author_of?(resource)
 
     respond_to do |format|
       if !resource.rating.rated_by?(current_user)
@@ -39,9 +30,14 @@ module Rated
     end
   end
   # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
   private
+
+  def respond_with_error
+    respond_to do |format|
+      format.json { render json: "Can't be rated by author.", status: :unprocessable_entity }
+    end
+  end
 
   def resource
     controller_name.classify.constantize.with_attached_files.find(params[:id]) if params[:id]
