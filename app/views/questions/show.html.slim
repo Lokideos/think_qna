@@ -27,9 +27,8 @@ section.question
         h2 Question Rating
         .question-rating-value
           p= "Rating: #{question.rating.score}"
-          = link_to 'Like', like_question_path, class: 'like-question-link', method: :patch, data: { type: :json }, remote: true
-          |  |
-          = link_to 'Dislike', dislike_question_path, class: 'dislike-question-link', method: :patch, data: { type: :json }, remote: true
+          = button_to 'Like', like_question_path, class: 'like-question-link', method: :patch, data: { type: :json }, remote: true
+          = button_to 'Dislike', dislike_question_path, class: 'dislike-question-link', method: :patch, data: { type: :json }, remote: true
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
