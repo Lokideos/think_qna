@@ -29,6 +29,11 @@ RSpec.describe Rating, type: :model do
       rescue StandardError => e
         expect(e.message).to eq "User can't rate his resources"
       end
+
+      it 'changes status to liked' do
+        rating.score_up(user)
+        expect(rating.rating_changes.where(rating_id: rating, user_id: user).first.status).to eq 'liked'
+      end
     end
 
     describe '#score_down' do
@@ -45,6 +50,11 @@ RSpec.describe Rating, type: :model do
       rescue StandardError => e
         expect(e.message).to eq "User can't rate his resources"
       end
+
+      it 'changes status to unliked' do
+        rating.score_down(user)
+        expect(rating.rating_changes.where(rating_id: rating, user_id: user).first.status).to eq 'disliked'
+      end
     end
 
     describe '#rated_by?' do
@@ -58,6 +68,17 @@ RSpec.describe Rating, type: :model do
         rating.rated_by?(user)
       rescue ActiveRecord::RecordNotFound => e
         expect(e.message[0..27]).to eq "Couldn't find User with 'id'"
+      end
+    end
+
+    describe '#ratable?' do
+      it 'returns true if there is no records with given user and value' do
+        expect(rating).to be_ratable(user, 'liked')
+      end
+
+      it 'does not return true if there is a record with given user and value' do
+        rating.score_up(user)
+        expect(rating).to_not be_ratable(user, 'liked')
       end
     end
   end

@@ -5,6 +5,7 @@ class CreateRatingChanges < ActiveRecord::Migration[5.2]
     create_table :rating_changes do |t|
       t.belongs_to :user, foreign_key: true
       t.belongs_to :rating, foreign_key: true
+      t.string :status
 
       t.timestamps
     end

@@ -23,7 +23,8 @@ feature 'User can rate the question', "
         click_on 'Like'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
+
       within '.question-rating' do
         expect(page).to have_content 'Rating: 1'
       end
@@ -36,7 +37,8 @@ feature 'User can rate the question', "
         click_on 'Dislike'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
+
       within '.question-rating' do
         expect(page).to have_content 'Rating: -1'
       end
@@ -49,7 +51,8 @@ feature 'User can rate the question', "
         click_on 'Like'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
+
       within '.question-rating' do
         expect(page).to have_content 'Rating: 1'
         expect(page).to_not have_link 'Like'
@@ -61,10 +64,38 @@ feature 'User can rate the question', "
         click_on 'Dislike'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
 
       within '.question-rating' do
         expect(page).to have_content 'Rating: -1'
+        expect(page).to_not have_link 'Dislike'
+      end
+    end
+
+    scenario 'see rating and does not see link to like the question after liking it and reloading the page' do
+      within '.question-rating' do
+        click_on 'Like'
+      end
+      page.evaluate_script 'window.location.reload()'
+      wait_for_ajax
+      sleep(2)
+
+      within '.question-rating' do
+        expect(page).to_not have_content 'Rating: 1'
+        expect(page).to_not have_link 'Like'
+      end
+    end
+
+    scenario 'see rating and does not see link to dislike the question after disliking it and reloading the page' do
+      within '.question-rating' do
+        click_on 'Dislike'
+      end
+      page.evaluate_script 'window.location.reload()'
+      wait_for_ajax
+      sleep(2)
+
+      within '.question-rating' do
+        expect(page).to_not have_content 'Rating: -1'
         expect(page).to_not have_link 'Dislike'
       end
     end

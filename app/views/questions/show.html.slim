@@ -28,9 +28,11 @@ section.question
         .question-rating-value
           p= "Rating: #{question.rating.score}"
         - if !current_user&.author_of?(question)
-          = link_to 'Like', like_question_path, class: 'rate-question-link', method: :patch, data: { type: :json }, remote: true
+          - if question.rating.ratable?(current_user, 'liked')
+            = link_to 'Like', like_question_path, class: 'rate-question-link', method: :patch, data: { type: :json }, remote: true
           | |
-          = link_to 'Dislike', dislike_question_path, class: 'rate-question-link', method: :patch, data: { type: :json }, remote: true
+          - if question.rating.ratable?(current_user, 'disliked')
+            = link_to 'Dislike', dislike_question_path, class: 'rate-question-link', method: :patch, data: { type: :json }, remote: true
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'

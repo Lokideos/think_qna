@@ -24,7 +24,7 @@ feature 'User can rate the answer', "
         click_on 'Like'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
 
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: 1'
@@ -38,7 +38,7 @@ feature 'User can rate the answer', "
         click_on 'Dislike'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
 
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: -1'
@@ -52,7 +52,7 @@ feature 'User can rate the answer', "
         click_on 'Like'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
 
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: 1'
@@ -65,7 +65,7 @@ feature 'User can rate the answer', "
         click_on 'Dislike'
       end
       wait_for_ajax
-      sleep(1)
+      sleep(2)
 
       within '.answers .answer-rating' do
         expect(page).to have_content 'Rating: -1'

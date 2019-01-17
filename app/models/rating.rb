@@ -7,13 +7,18 @@ class Rating < ApplicationRecord
 
   validates :score, presence: true
 
+  RATED_UP = 'liked'
+  RATED_DOWN = 'disliked'
+
   def score_up(user)
     raise StandardError, "User can't rate his resources" if ratable_author == user
 
     Rating.transaction do
+      rating_change_value(user)&.destroy
+      users << user
+      rating_change_value(user).update(status: RATED_UP)
       increment(:score, 1)
       save
-      users << user
     end
   end
 
@@ -21,9 +26,11 @@ class Rating < ApplicationRecord
     raise StandardError, "User can't rate his resources" if ratable_author == user
 
     Rating.transaction do
+      rating_change_value(user)&.destroy
+      users << user
+      rating_change_value(user).update(status: RATED_DOWN)
       decrement(:score, 1)
       save
-      users << user
     end
   end
 
@@ -31,7 +38,15 @@ class Rating < ApplicationRecord
     users.find_by(id: user.id)
   end
 
+  def ratable?(user, value)
+    !rating_changes.where(rating_id: self, user_id: user, status: value).first
+  end
+
   private
+
+  def rating_change_value(user)
+    rating_changes.where(rating_id: self, user_id: user).first
+  end
 
   def ratable_author
     ratable_type.classify.constantize.find(ratable_id).user

@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2019_01_17_001407) do
   create_table "rating_changes", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "rating_id"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["rating_id"], name: "index_rating_changes_on_rating_id"
