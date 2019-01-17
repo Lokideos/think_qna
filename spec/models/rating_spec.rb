@@ -57,17 +57,40 @@ RSpec.describe Rating, type: :model do
       end
     end
 
-    describe '#rated_by?' do
-      it 'returns user if he rated the resource' do
+    describe '#rated?' do
+      it 'returns record_change object' do
         rating.score_up(user)
-        rated_user = rating.rated_by?(user)
-        expect(rated_user).to eq user
+        expect(rating.rated?(user)).to be_a(RatingChange)
       end
 
-      it 'throws exception if user did not rate the resource' do
-        rating.rated_by?(user)
-      rescue ActiveRecord::RecordNotFound => e
-        expect(e.message[0..27]).to eq "Couldn't find User with 'id'"
+      it 'does not return record_change if it does not exist' do
+        expect(rating).to_not be_rated(user)
+      end
+    end
+
+    describe '#score_delete' do
+      it 'decreases score value by 1 if it was previously liked' do
+        rating.score_up(user)
+        score = rating.score
+        rating.score_delete(user)
+        rating.reload
+
+        expect(rating.score).to eq score - 1
+      end
+
+      it 'increases score value by 1 if it was previously disliked' do
+        rating.score_down(user)
+        score = rating.score
+        rating.score_delete(user)
+        rating.reload
+
+        expect(rating.score).to eq score + 1
+      end
+
+      it 'deletes associated rating change' do
+        rating.score_up(user)
+        rating.score_delete(user)
+        expect(rating.rating_changes.where(rating_id: rating, user_id: user).first).to be_nil
       end
     end
 

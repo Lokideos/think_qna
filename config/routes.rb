@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     member do
       patch :like
       patch :dislike
+      patch :unlike
     end
   end
 

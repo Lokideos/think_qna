@@ -8,7 +8,7 @@ module Rated
     return respond_with_error if current_user&.author_of?(resource)
 
     respond_to do |format|
-      if !resource.rating.rated_by?(current_user) && resource.rating.ratable?(current_user, Rating::RATED_UP)
+      if resource.rating.ratable?(current_user, Rating::RATED_UP)
         resource.rating.score_up(current_user)
         format.json { render json: resource.rating }
       else
@@ -21,11 +21,24 @@ module Rated
     return respond_with_error if current_user&.author_of?(resource)
 
     respond_to do |format|
-      if !resource.rating.rated_by?(current_user) && resource.rating.ratable?(current_user, Rating::RATED_DOWN)
+      if resource.rating.ratable?(current_user, Rating::RATED_DOWN)
         resource.rating.score_down(current_user)
         format.json { render json: resource.rating }
       else
         format.json { render json: 'Already disliked.', status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def unlike
+    return respond_with_error if current_user&.author_of?(resource)
+
+    respond_to do |format|
+      if resource.rating.rated?(current_user)
+        resource.rating.score_delete(current_user)
+        format.json { render json: resource.rating }
+      else
+        format.json { render json: 'Not yet liked or disliked.', status: :unprocessable_entity }
       end
     end
   end

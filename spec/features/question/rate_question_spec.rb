@@ -103,6 +103,30 @@ feature 'User can rate the question', "
         end
       end
     end
+
+    scenario 'sees the unlike link after he rates the question', js: true do
+      within '.question' do
+        click_on 'Like'
+      end
+
+      within '.question-rating' do
+        expect(page).to have_link 'Unlike'
+      end
+    end
+
+    scenario 'unlikes the quesiton', js: true do
+      within '.question' do
+        click_on 'Like'
+        wait_for_ajax
+        click_on 'Unlike'
+      end
+
+      within '.question-rating' do
+        expect(page).to_not have_link 'Unlike'
+      end
+
+      expect(page).to have_content 'You have canceled your vote.'
+    end
   end
 
   scenario 'Author of the question tries to rate the question' do
