@@ -24,10 +24,7 @@ RSpec.describe Rating, type: :model do
       end
 
       it 'should throw exception if been updated by user, who is author of corresponding resource' do
-        rating.score_up(author)
-
-      rescue StandardError => e
-        expect(e.message).to eq "User can't rate his resources"
+        expect { rating.score_up(author) }.to raise_error(StandardError)
       end
 
       it 'changes status to liked' do
@@ -45,10 +42,7 @@ RSpec.describe Rating, type: :model do
       end
 
       it 'should throw exception if been updated by user, who is author of corresponding resource' do
-        rating.score_up(author)
-
-      rescue StandardError => e
-        expect(e.message).to eq "User can't rate his resources"
+        expect { rating.score_up(author) }.to raise_error(StandardError)
       end
 
       it 'changes status to unliked' do
@@ -88,10 +82,7 @@ RSpec.describe Rating, type: :model do
       end
 
       it 'should throw exception if been updated by user, who is author of corresponding resource' do
-        rating.score_delete(author)
-
-      rescue StandardError => e
-        expect(e.message).to eq "User can't rate his resources"
+        expect { rating.score_delete(author) }.to raise_error(StandardError)
       end
 
       it 'deletes associated rating change' do

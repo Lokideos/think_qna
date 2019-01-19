@@ -13,9 +13,7 @@ RSpec.describe RatingChange, type: :model do
     user = create(:user)
     rating = create(:rating)
     rating.users << user
-    rating.users << user
-  rescue ActiveRecord::RecordInvalid => e
-    expect(e.message).to eq 'Validation failed: User can like or dislike resource only once in a row.'
-    expect(rating.users.count).to eq 1
+
+    expect { rating.users << user }.to raise_error(ActiveRecord::RecordInvalid)
   end
 end
