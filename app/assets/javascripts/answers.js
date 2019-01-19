@@ -2,7 +2,9 @@ var attachedToAnswerFiles = '';
 var answerFilesAttachForm = '';
 
 $(document).on('turbolinks:load', function(){
-    $('.answers').on('click', '.edit-answer-link', function(e) {
+    var answers_list = $('.answers');
+
+    answers_list.on('click', '.edit-answer-link', function(e) {
         e.preventDefault();
         $(this).hide();
         var answerId = $(this).data('answerId');
@@ -27,13 +29,5 @@ $(document).on('turbolinks:load', function(){
         setTimeout(function() {
             $('.edit-answer-form input[type="file"]').val('');
         }, 1);
-    });
-
-    $('.answers').on('ajax:success', '.rate-answer-link', function(e){
-        var answer_rating = e.detail[0];
-        $(this).closest('.answer-instance').find('.answer-rating-value').html('<p>Rating: ' + answer_rating.score + '</p>');
-
-        $(this).parent().children().removeClass('hidden');
-        $(this).addClass('hidden');
     });
 });
