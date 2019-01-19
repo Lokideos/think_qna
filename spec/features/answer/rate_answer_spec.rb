@@ -65,7 +65,7 @@ feature 'User can rate the answer', "
       end
     end
 
-    scenario 'unlikes the answer', js: true do
+    scenario 'unlikes the answer, see rating and does not see unlike link', js: true do
       within '.answers .answer-rating' do
         click_on 'Like'
         wait_for_ajax
@@ -74,6 +74,10 @@ feature 'User can rate the answer', "
 
       within '.answers .answer-rating' do
         expect(page).to_not have_link 'Unlike'
+      end
+
+      within '.answers .answer-rating' do
+        expect(page).to have_content 'Rating: 0'
       end
     end
   end

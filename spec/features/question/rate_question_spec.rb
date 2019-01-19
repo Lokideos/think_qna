@@ -74,7 +74,7 @@ feature 'User can rate the question', "
       end
     end
 
-    scenario 'unlikes the quesiton', js: true do
+    scenario 'unlikes the quesiton, see rating and does not see unlike link', js: true do
       within '.question' do
         click_on 'Like'
         wait_for_ajax
@@ -83,6 +83,7 @@ feature 'User can rate the question', "
 
       within '.question-rating' do
         expect(page).to_not have_link 'Unlike'
+        expect(page).to have_content 'Rating: 0'
       end
     end
   end
