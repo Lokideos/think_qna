@@ -18,6 +18,7 @@ class Rating < ApplicationRecord
     if rating_change_value(user)
       increment(:score, 1) if rating_change_value(user).status == RATED_DOWN
       rating_change_value(user).destroy
+      @rating_change_value = nil
     end
 
     Rating.transaction do
@@ -34,6 +35,7 @@ class Rating < ApplicationRecord
     if rating_change_value(user)
       decrement(:score, 1) if rating_change_value(user).status == RATED_UP
       rating_change_value(user).destroy
+      @rating_change_value = nil
     end
 
     Rating.transaction do
@@ -63,7 +65,7 @@ class Rating < ApplicationRecord
   # rubocop:enable Metrics/MethodLength
 
   def rated?(user)
-    rating_changes.where(rating_id: self, user_id: user).first
+    rating_change_value(user)
   end
 
   def not_been_rated_this_way?(user, value)
@@ -77,6 +79,6 @@ class Rating < ApplicationRecord
   end
 
   def rating_change_value(user)
-    rating_changes.where(rating_id: self, user_id: user).first
+    @rating_change_value ||= rating_changes.where(rating_id: self, user_id: user).first
   end
 end
