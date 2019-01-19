@@ -237,8 +237,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #like' do
-    let!(:rating) { create(:rating, ratable: answer) }
-
     context 'used by Authenticated user, who is not author of the answer' do
       before { login(non_author) }
 
@@ -257,7 +255,10 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'second time in a row' do
-        before { patch :like, params: { id: answer, format: :json } }
+        before do
+          patch :like, params: { id: answer, format: :json }
+          answer.reload
+        end
 
         it 'does not change answer rating score' do
           rating_count = answer.rating.score
@@ -311,8 +312,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #dislike' do
-    let!(:rating) { create(:rating, ratable: answer) }
-
     context 'used by Authenticated user, who is not author of the answer' do
       before { login(non_author) }
 
@@ -331,7 +330,10 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'second time in a row' do
-        before { patch :dislike, params: { id: answer, format: :json } }
+        before do
+          patch :dislike, params: { id: answer, format: :json }
+          answer.reload
+        end
 
         it 'does not change answer rating score' do
           rating_count = answer.rating.score
@@ -385,13 +387,12 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #unlike' do
-    let!(:rating) { create(:rating, ratable: answer) }
-
     context 'used by Authenticated user, who is not author of the answer' do
       before { login(non_author) }
 
       it 'decreases answer ratings score by 1 if was previously liked' do
         patch :like, params: { id: answer, format: :json }
+        answer.reload
         rating_count = answer.rating.score
         patch :unlike, params: { id: answer, format: :json }
         answer.reload
@@ -401,6 +402,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'increases answer ratings score by 1 if was previously disliked' do
         patch :dislike, params: { id: answer, format: :json }
+        answer.reload
         rating_count = answer.rating.score
         patch :unlike, params: { id: answer, format: :json }
         answer.reload
@@ -419,6 +421,7 @@ RSpec.describe AnswersController, type: :controller do
         before do
           patch :like, params: { id: answer, format: :json }
           patch :unlike, params: { id: answer, format: :json }
+          answer.reload
         end
 
         it 'does not increase change answer rating' do

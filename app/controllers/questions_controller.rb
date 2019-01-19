@@ -27,7 +27,6 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
 
     if question.save
-      # Rating.new(ratable: question).save
       redirect_to question, notice: I18n.t('notifications.created', resource: question.class.model_name.human)
     else
       render :new

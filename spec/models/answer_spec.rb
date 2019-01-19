@@ -72,6 +72,20 @@ RSpec.describe Answer, type: :model do
         end
       end
     end
+
+    describe '#create_rating' do
+      let!(:question) { create(:question) }
+
+      it 'creates rating after answer creation' do
+        expect { create(:answer, question: question) }.to change(Rating, :count).by(1)
+      end
+
+      it 'creates association to new rating for answer after creating answer' do
+        answer = create(:answer, question: question)
+
+        expect(answer.rating).to be_a(Rating)
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

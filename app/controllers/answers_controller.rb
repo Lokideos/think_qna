@@ -9,7 +9,7 @@ class AnswersController < ApplicationController
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
-    Rating.create(ratable: answer) if @answer.save
+    @answer.save
   end
 
   def update

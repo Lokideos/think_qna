@@ -3,14 +3,13 @@
 module Ratable
   extend ActiveSupport::Concern
   included do
-    after_save :create_rating
+    after_save :create_related_rating
     has_one :rating, dependent: :destroy, as: :ratable
 
     private
 
-    # Should I test it?
-    def create_rating
-      Rating.create(ratable: self)
+    def create_related_rating
+      create_rating
     end
   end
 end
