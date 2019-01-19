@@ -101,14 +101,14 @@ RSpec.describe Rating, type: :model do
       end
     end
 
-    describe '#ratable?' do
+    describe '#not_been_rated_this_way?' do
       it 'returns true if there is no records with given user and value' do
-        expect(rating).to be_ratable(user, 'liked')
+        expect(rating).to be_not_been_rated_this_way(user, 'liked')
       end
 
       it 'does not return true if there is a record with given user and value' do
         rating.score_up(user)
-        expect(rating).to_not be_ratable(user, 'liked')
+        expect(rating).to_not be_not_been_rated_this_way(user, 'liked')
       end
     end
   end

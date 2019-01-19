@@ -8,7 +8,7 @@ module Rated
     return respond_with_error if current_user&.author_of?(resource)
 
     respond_to do |format|
-      if resource.rating.ratable?(current_user, Rating::RATED_UP)
+      if resource.rating.not_been_rated_this_way?(current_user, Rating::RATED_UP)
         resource.rating.score_up(current_user)
         format.json { render json: resource.rating }
       else
@@ -21,7 +21,7 @@ module Rated
     return respond_with_error if current_user&.author_of?(resource)
 
     respond_to do |format|
-      if resource.rating.ratable?(current_user, Rating::RATED_DOWN)
+      if resource.rating.not_been_rated_this_way?(current_user, Rating::RATED_DOWN)
         resource.rating.score_down(current_user)
         format.json { render json: resource.rating }
       else

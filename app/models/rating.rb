@@ -22,9 +22,9 @@ class Rating < ApplicationRecord
 
     Rating.transaction do
       users << user
-      rating_change_value(user).update(status: RATED_UP)
-      increment(:score, 1)
-      save
+      rating_change_value(user).update!(status: RATED_UP)
+      increment!(:score, 1)
+      save!
     end
   end
 
@@ -38,9 +38,9 @@ class Rating < ApplicationRecord
 
     Rating.transaction do
       users << user
-      rating_change_value(user).update(status: RATED_DOWN)
-      decrement(:score, 1)
-      save
+      rating_change_value(user).update!(status: RATED_DOWN)
+      decrement!(:score, 1)
+      save!
     end
   end
 
@@ -66,7 +66,7 @@ class Rating < ApplicationRecord
     rating_changes.where(rating_id: self, user_id: user).first
   end
 
-  def ratable?(user, value)
+  def not_been_rated_this_way?(user, value)
     !rating_changes.where(rating_id: self, user_id: user, status: value).first
   end
 
