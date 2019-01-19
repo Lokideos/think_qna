@@ -28,21 +28,7 @@ section.question
         .question-rating-value
           p= t('.rating_score', score: question.rating.score )
         - if !current_user&.author_of?(question)
-          .rating-links
-            - if question.rating.not_been_rated_this_way?(current_user, 'liked')
-              = link_to t('.like'), like_question_path(question), class: 'rate-link like-link', method: :patch, data: {type: :json}, remote: true
-            - else
-              = link_to t('.like'), like_question_path(question), class: 'rate-link like-link hidden', method: :patch, data: {type: :json}, remote: true
-            br
-            - if question.rating.rated?(current_user) && (question.rating.not_been_rated_this_way?(current_user, 'disliked') || question.rating.not_been_rated_this_way?(current_user, 'liked'))
-              = link_to t('.unlike'), unlike_question_path(question), class: 'rate-link unlike-link', method: :patch, data: {type: :json}, remote: true
-            - else
-              = link_to t('.unlike'), unlike_question_path(question), class: 'rate-link unlike-link hidden', method: :patch, data: {type: :json}, remote: true
-            br
-            - if question.rating.not_been_rated_this_way?(current_user, 'disliked')
-              = link_to t('.dislike'), dislike_question_path(question), class: 'rate-link dislike-link', method: :patch, data: {type: :json}, remote: true
-            - else
-              = link_to t('.dislike'), dislike_question_path(question), class: 'rate-link dislike-link hidden', method: :patch, data: {type: :json}, remote: true
+          = render 'shared/rate_links', resource: question
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'

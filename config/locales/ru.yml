@@ -25,8 +25,12 @@ ru:
       sign_in: 'Войти'
       sign_out: 'Выйти'
     link_fields:
-        remove_link: 'удалить ссылку'
-        add_link: 'добавить ссылку'
+      remove_link: 'удалить ссылку'
+      add_link: 'добавить ссылку'
+    rate_links:
+      like: 'Нравится'
+      dislike: 'Не нравится'
+      unlike: 'Отозвать лайк'
 
   helpers:
     label:
@@ -60,9 +64,6 @@ ru:
       best_answer_section_headline: 'Награда за Лучший Ответ'
       rating_section_headline: 'Рейтинг Вопроса'
       rating_score: "Рейтинг: %{score}"
-      like: 'Нравится'
-      dislike: 'Не нравится'
-      unlike: 'Отозвать лайк'
     update:
       links_section_headline: 'Ссылки:'
       delete_attachment: 'Удалить вложение'
@@ -85,9 +86,6 @@ ru:
       attached_files_section_headline: 'Прикрепленные файлы'
       rating_section_headline: 'Рейтинг Ответа'
       rating_score: "Рейтинг: %{score}"
-      like: 'Нравится'
-      dislike: 'Не нравится'
-      unlike: 'Отозвать лайк'
     best_answer:
       best_answer: 'Лучший Ответ'
 

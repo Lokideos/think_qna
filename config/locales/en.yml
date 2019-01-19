@@ -56,6 +56,10 @@ en:
     link_fields:
       remove_link: 'remove link'
       add_link: 'add link'
+    rate_links:
+      like: 'Like'
+      dislike: 'Dislike'
+      unlike: 'Unlike'
 
   helpers:
     label:
@@ -89,9 +93,6 @@ en:
       best_answer_section_headline: 'Best Answer Reward'
       rating_section_headline: 'Question Rating'
       rating_score: "Rating: %{score}"
-      like: 'Like'
-      dislike: 'Dislike'
-      unlike: 'Unlike'
     update:
       gist_headline: 'Gist Content:'
       links_section_headline: 'Links:'
@@ -115,9 +116,6 @@ en:
       attached_files_section_headline: 'Attached files'
       rating_section_headline: 'Answer Rating'
       rating_score: "Rating: %{score}"
-      like: 'Like'
-      dislike: 'Dislike'
-      unlike: 'Unlike'
     best_answer:
       best_answer: 'Best Answer'
 
