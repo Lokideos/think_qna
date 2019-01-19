@@ -13,7 +13,7 @@ class Rating < ApplicationRecord
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def score_up(user)
-    raise StandardError, "User can't rate his resources" if ratable_author == user
+    do_not_allow_author_to_rate(user)
 
     if rating_change_value(user)
       increment(:score, 1) if rating_change_value(user).status == RATED_DOWN
@@ -29,7 +29,7 @@ class Rating < ApplicationRecord
   end
 
   def score_down(user)
-    raise StandardError, "User can't rate his resources" if ratable_author == user
+    do_not_allow_author_to_rate(user)
 
     if rating_change_value(user)
       decrement(:score, 1) if rating_change_value(user).status == RATED_UP
@@ -45,6 +45,8 @@ class Rating < ApplicationRecord
   end
 
   def score_delete(user)
+    do_not_allow_author_to_rate(user)
+
     status = rating_changes.where(rating_id: self, user_id: user).first.status
 
     if status == RATED_UP
@@ -70,11 +72,11 @@ class Rating < ApplicationRecord
 
   private
 
-  def rating_change_value(user)
-    rating_changes.where(rating_id: self, user_id: user).first
+  def do_not_allow_author_to_rate(user)
+    raise StandardError, "User can't rate his resources" if user.author_of?(ratable)
   end
 
-  def ratable_author
-    ratable_type.classify.constantize.find(ratable_id).user
+  def rating_change_value(user)
+    rating_changes.where(rating_id: self, user_id: user).first
   end
 end

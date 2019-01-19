@@ -87,6 +87,13 @@ RSpec.describe Rating, type: :model do
         expect(rating.score).to eq score + 1
       end
 
+      it 'should throw exception if been updated by user, who is author of corresponding resource' do
+        rating.score_delete(author)
+
+      rescue StandardError => e
+        expect(e.message).to eq "User can't rate his resources"
+      end
+
       it 'deletes associated rating change' do
         rating.score_up(user)
         rating.score_delete(user)
