@@ -65,7 +65,7 @@ class Rating < ApplicationRecord
   # rubocop:enable Metrics/MethodLength
 
   def rated?(user)
-    rating_change_value(user)
+    rating_change_value(user).present?
   end
 
   def not_been_rated_this_way?(user, value)

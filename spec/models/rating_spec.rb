@@ -52,12 +52,12 @@ RSpec.describe Rating, type: :model do
     end
 
     describe '#rated?' do
-      it 'returns record_change object' do
+      it 'returns true if ratable object exists' do
         rating.score_up(user)
-        expect(rating.rated?(user)).to be_a(RatingChange)
+        expect(rating).to be_rated(user)
       end
 
-      it 'does not return record_change if it does not exist' do
+      it 'returns false if ratable object does not exist' do
         expect(rating).to_not be_rated(user)
       end
     end
