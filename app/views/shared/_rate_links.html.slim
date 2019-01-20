@@ -1,0 +1,9 @@
+.rating-links
+  - add_hidden_class = !resource.rating.not_been_rated_this_way?(current_user, 'liked') ? 'hidden' : ''
+  = link_to t('.like'), polymorphic_path(resource, action: :like), class: "rate-link like-link #{add_hidden_class}", method: :patch, data: { type: :json }, remote: true
+
+  - add_hidden_class = !resource.rating.rated?(current_user) ? 'hidden' : ''
+  = link_to t('.unlike'), polymorphic_path(resource, action: :unlike), class: "rate-link unlike-link #{add_hidden_class}", method: :patch, data: {type: :json}, remote: true
+
+  - add_hidden_class = !resource.rating.not_been_rated_this_way?(current_user, 'disliked') ? 'hidden' : ''
+  = link_to t('.dislike'), polymorphic_path(resource, action: :dislike), class: "rate-link dislike-link #{add_hidden_class}", method: :patch, data: { type: :json }, remote: true

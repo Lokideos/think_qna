@@ -1,6 +1,5 @@
 var attachedToQuestionFiles = '';
 var questionFilesAttachForm = '';
-
 $(document).on('turbolinks:load', function() {
     questionFilesAttachForm = $('.edit-question-form .question-file-upload-section').children();
 

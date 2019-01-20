@@ -2,7 +2,9 @@ var attachedToAnswerFiles = '';
 var answerFilesAttachForm = '';
 
 $(document).on('turbolinks:load', function(){
-    $('.answers').on('click', '.edit-answer-link', function(e) {
+    var answers_list = $('.answers');
+
+    answers_list.on('click', '.edit-answer-link', function(e) {
         e.preventDefault();
         $(this).hide();
         var answerId = $(this).data('answerId');

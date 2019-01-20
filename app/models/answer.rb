@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Answer < ApplicationRecord
+  include Ratable
+
   default_scope { order(created_at: :asc) }
 
   has_many :links, dependent: :destroy, as: :linkable

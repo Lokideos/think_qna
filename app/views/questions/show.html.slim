@@ -1,5 +1,5 @@
 section.question
-  .question-info
+  .question-info id="question-info-#{question.id}"
     h1= question.title
     p.question-info-body= question.body
 
@@ -21,6 +21,14 @@ section.question
         h2= t('.best_answer_section_headline')
         p= question.reward.title
         = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
+
+    .question-rating
+      - if question.rating && current_user
+        h2= t('.rating_section_headline')
+        .question-rating-value
+          p= t('.rating_score', score: question.rating.score )
+        - if !current_user&.author_of?(question)
+          = render 'shared/rate_links', resource: question
 
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'

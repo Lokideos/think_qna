@@ -56,6 +56,10 @@ en:
     link_fields:
       remove_link: 'remove link'
       add_link: 'add link'
+    rate_links:
+      like: 'Like'
+      dislike: 'Dislike'
+      unlike: 'Unlike'
 
   helpers:
     label:
@@ -87,6 +91,8 @@ en:
       all_answers_section_headline: 'Answers on question'
       new_answer_section_headline: 'New Answer Creation'
       best_answer_section_headline: 'Best Answer Reward'
+      rating_section_headline: 'Question Rating'
+      rating_score: "Rating: %{score}"
     update:
       gist_headline: 'Gist Content:'
       links_section_headline: 'Links:'
@@ -108,6 +114,8 @@ en:
       delete: 'Delete Answer'
       update: 'Update'
       attached_files_section_headline: 'Attached files'
+      rating_section_headline: 'Answer Rating'
+      rating_score: "Rating: %{score}"
     best_answer:
       best_answer: 'Best Answer'
 

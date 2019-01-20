@@ -1,4 +1,4 @@
-div.answer-instance id="answer-info-#{answer.id}"
+.answer-instance id="answer-info-#{answer.id}"
   = answer.body
   .answer-attached-files
     p= t('.attached_files_section_headline')
@@ -12,6 +12,14 @@ div.answer-instance id="answer-info-#{answer.id}"
       - answer.links.each do |link|
         - if link.persisted?
           = render link, resource: answer
+
+  .answer-rating
+    - if answer.rating &&  current_user
+      h2= t('.rating_section_headline')
+      .answer-rating-value
+        p= t('.rating_score', score: answer.rating.score)
+      - if !current_user&.author_of?(answer)
+        = render 'shared/rate_links', resource: answer
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}

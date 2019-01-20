@@ -28,6 +28,11 @@ RSpec.describe AnswersController, type: :controller do
         expect(assigns(:answer).user_id).to eq user.id
       end
 
+      it 'creates rating for the answer' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question, user: user, format: :js }
+        expect(assigns(:answer).rating).to be_a(Rating)
+      end
+
       it 'render the create view' do
         post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
         expect(response).to render_template :create
@@ -227,6 +232,245 @@ RSpec.describe AnswersController, type: :controller do
       it 'returns unauthorized 401 status code' do
         patch :choose_best, params: { id: answer, format: :js }
         expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+  describe 'PATCH #like' do
+    context 'used by Authenticated user, who is not author of the answer' do
+      before { login(non_author) }
+
+      it 'increases answer ratings score by 1' do
+        rating_count = answer.rating.score
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count + 1
+      end
+
+      it 'returns 200 status' do
+        patch :like, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 200
+      end
+
+      context 'second time in a row' do
+        before do
+          patch :like, params: { id: answer, format: :json }
+          answer.reload
+        end
+
+        it 'does not change answer rating score' do
+          rating_count = answer.rating.score
+          patch :like, params: { id: answer, format: :json }
+          answer.reload
+
+          expect(answer.rating.score).to eq rating_count
+        end
+
+        it 'returns Unprocessable Entity 422 status' do
+          patch :like, params: { id: answer, format: :json }
+
+          expect(response).to have_http_status 422
+        end
+      end
+    end
+
+    context 'used by Author of the answer' do
+      before { login(user) }
+
+      it 'does not increase answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unprocessable Entity 422 status' do
+        patch :like, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 422
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not increase answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :like, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 401
+      end
+    end
+  end
+
+  describe 'PATCH #dislike' do
+    context 'used by Authenticated user, who is not author of the answer' do
+      before { login(non_author) }
+
+      it 'decreases answer ratings score by 1' do
+        rating_count = answer.rating.score
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count - 1
+      end
+
+      it 'returns OK 200 status' do
+        patch :dislike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 200
+      end
+
+      context 'second time in a row' do
+        before do
+          patch :dislike, params: { id: answer, format: :json }
+          answer.reload
+        end
+
+        it 'does not change answer rating score' do
+          rating_count = answer.rating.score
+          patch :dislike, params: { id: answer, format: :json }
+          answer.reload
+
+          expect(answer.rating.score).to eq rating_count
+        end
+
+        it 'returns Unprocessable Entity 422 status' do
+          patch :dislike, params: { id: answer, format: :json }
+
+          expect(response).to have_http_status 422
+        end
+      end
+    end
+
+    context 'used by Author of the answer' do
+      before { login(user) }
+
+      it 'does not decrease answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unprocessable Entity 422 status' do
+        patch :dislike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 422
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not decrease answer rating score by 1' do
+        rating_count = answer.rating.score
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :dislike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 401
+      end
+    end
+  end
+
+  describe 'PATCH #unlike' do
+    context 'used by Authenticated user, who is not author of the answer' do
+      before { login(non_author) }
+
+      it 'decreases answer ratings score by 1 if was previously liked' do
+        patch :like, params: { id: answer, format: :json }
+        answer.reload
+        rating_count = answer.rating.score
+        patch :unlike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count - 1
+      end
+
+      it 'increases answer ratings score by 1 if was previously disliked' do
+        patch :dislike, params: { id: answer, format: :json }
+        answer.reload
+        rating_count = answer.rating.score
+        patch :unlike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count + 1
+      end
+
+      it 'returns OK 200 status' do
+        patch :like, params: { id: answer, format: :json }
+        patch :unlike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 200
+      end
+
+      context 'second time in a row' do
+        before do
+          patch :like, params: { id: answer, format: :json }
+          patch :unlike, params: { id: answer, format: :json }
+          answer.reload
+        end
+
+        it 'does not increase change answer rating' do
+          rating_count = answer.rating.score
+          patch :unlike, params: { id: answer, format: :json }
+          answer.reload
+
+          expect(answer.rating.score).to eq rating_count
+        end
+
+        it 'returns Unprocessable Entity 422 status' do
+          patch :unlike, params: { id: answer, format: :json }
+
+          expect(response).to have_http_status 422
+        end
+      end
+    end
+
+    context 'used by Author of the answer' do
+      before { login(user) }
+
+      it 'does not change answer rating' do
+        rating_count = answer.rating.score
+        patch :unlike, params: { id: answer, format: :json }
+        answer.reload
+
+        expect(answer.rating.score).to eq rating_count
+      end
+
+      it 'returns Unprocessable Entity 422 status' do
+        patch :unlike, params: { id: answer, format: :json }
+
+        expect(response).to have_http_status 422
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not decrease answer rating score by 1' do
+        rating_count = question.rating.score
+        patch :unlike, params: { id: question, format: :json }
+        question.reload
+
+        expect(question.rating.score).to eq rating_count
+      end
+
+      it 'returns Unauthorized 401 status' do
+        patch :unlike, params: { id: question, format: :json }
+
+        expect(response).to have_http_status 401
       end
     end
   end
