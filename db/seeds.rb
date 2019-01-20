@@ -25,10 +25,24 @@ questions = Question.create([{ title: 'Galactic Empire Weapon',
                                body: 'Where is JoJo?',
                                user: users[1] }])
 
-Answer.create([{ body: "It's stormtrooper", user: users[1], question: questions[0] },
-               { body: "It's the Death Star", user: users[2], question: questions[0], best: true },
-               { body: 'Try Ruby', user: users[2], question: questions[1] },
-               { body: "It's green", user: users[0], question: questions[2] },
-               { body: 'Or orange', user: users[0], question: questions[2] },
-               { body: "It's obviously red", user: users[2], question: questions[2] },
-               { body: 'Behind you', user: users[2], question: questions[3] }])
+answers = Answer.create([{ body: "It's stormtrooper", user: users[1], question: questions[0] },
+                         { body: "It's the Death Star", user: users[2], question: questions[0], best: true },
+                         { body: 'Try Ruby', user: users[2], question: questions[1] },
+                         { body: "It's green", user: users[0], question: questions[2] },
+                         { body: 'Or orange', user: users[0], question: questions[2] },
+                         { body: "It's obviously red", user: users[2], question: questions[2] },
+                         { body: 'Behind you', user: users[2], question: questions[3] }])
+
+# Question Ratings
+questions[0].rating.score_up(users[1])
+questions[0].rating.score_up(users[2])
+questions[3].rating.score_down(users[0])
+
+# Answer Ratings
+answers[0].rating.score_down(users[0])
+answers[0].rating.score_down(users[2])
+answers[1].rating.score_up(users[1])
+answers[2].rating.score_up(users[0])
+answers[2].rating.score_up(users[1])
+answers[4].rating.score_up(users[1])
+answers[4].rating.score_down(users[2])
