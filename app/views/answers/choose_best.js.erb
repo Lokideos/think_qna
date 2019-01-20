@@ -1,16 +1,19 @@
 var answerId = <%= answer.id %>;
-var previousAnswerId = '';
 var previousBestAnswer = $('.best-answer .best-answer-info');
+var thisAnswerContainer = $('.answers-list #answer-info-' + answerId);
+
+if (previousBestAnswer.length > 0) {
+    if ( !document.querySelector('.last-best-answer') ) {
+        $('.answers-list').append('<li class="last-best-answer"></li>');
+    }
+    var lastBestAnswer = $('.last-best-answer');
+    lastBestAnswer.append(previousBestAnswer.children());
+    $('.last-best-answer .best-answer-link').removeClass('hidden');
+    lastBestAnswer.removeAttr("class");
+}
 
 $('.notice').html('<%= I18n.t('notifications.best_answer') %>');
 $('.best-answer').html('<%= j render 'best_answer' %>');
-$('.answers-list #answer-info-' + answerId).parent().remove();
 
-if (previousBestAnswer) {
-  $('.answers-list').append('<li class="previous-best-answer"></li>');
-  $('.previous-best-answer').attr('id', 'list-element-answer-info-'+ previousAnswerId);
-  $('.previous-best-answer').removeClass('previous-best-answer');
-  $('#list-element-answer-info-' + previousAnswerId).append(previousBestAnswer.children());
-  $('.all-answers .best-answer-link').removeClass('hidden');
-    $('.all-answers .best-answer-link').removeClass('best-answer-link');
-}
+thisAnswerContainer.parent().addClass('last-best-answer hidden');
+thisAnswerContainer.parent().children().remove();
