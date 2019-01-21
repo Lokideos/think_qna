@@ -62,5 +62,35 @@ feature 'User can create answer for the question', "
 
     expect(page).to_not have_selector 'textarea'
   end
+
+  context 'multiple sessions' do
+    scenario "on question's page user sees newly created by other user answer", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.new-answer' do
+          fill_in 'Body', with: 'Answer text'
+          click_on 'Answer to question'
+        end
+
+        within '.answers' do
+          expect(page).to have_content 'Answer text'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.answers' do
+          expect(page).to have_content 'Answer text'
+        end
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

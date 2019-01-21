@@ -5,8 +5,10 @@ html
     title Q&A
     meta name='keywords' content='questions answers help'
     meta name='description' content='Here you can ask your questions and receive answers on your questions!'
+    = Gon::Base.render_data
     = csrf_meta_tags
     = csp_meta_tag
+    = action_cable_meta_tag
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body

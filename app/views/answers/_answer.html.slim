@@ -14,7 +14,7 @@
           = render link, resource: answer
 
   .answer-rating
-    - if answer.rating &&  current_user
+    - if answer.rating && current_user
       h2= t('.rating_section_headline')
       .answer-rating-value
         p= t('.rating_score', score: answer.rating.score)
