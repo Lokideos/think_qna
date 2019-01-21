@@ -39,7 +39,7 @@ section.question
 
       - if current_user
         .new-comment
-          = render 'shared/errors', resource: @comment
+          .comment-errors
           = form_with model: [question, @comment], class: 'create-comment-form' do |f|
             p
               = f.label :body

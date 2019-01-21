@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 feature 'User can create comments for questions', "
   In order to add reaction to questions
   As Authenticated
@@ -10,18 +11,32 @@ feature 'User can create comments for questions', "
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario 'Authenticated user creates comment', js: true do
-    sign_in(user)
-    visit question_path(question)
-
-    within '.question-comments .new-comment' do
-      fill_in 'Body', with: 'New comment'
-
-      click_on 'Create'
+  context 'Authenticated user' do
+    background do
+      sign_in(user)
+      visit question_path(question)
     end
 
-    within '.question-comments' do
-      expect(page).to have_content 'New comment'
+    scenario 'creates comment', js: true do
+      within '.question-comments .new-comment' do
+        fill_in 'Body', with: 'New comment'
+
+        click_on 'Create'
+      end
+
+      within '.question-comments' do
+        expect(page).to have_content 'New comment'
+      end
+    end
+
+    scenario 'tries to create comment with invalid attributes', js: true do
+      within '.question-comments .new-comment' do
+        click_on 'Create'
+      end
+
+      within '.question-comments' do
+        expect(page).to have_content "Body can't be blank"
+      end
     end
   end
 
@@ -33,3 +48,4 @@ feature 'User can create comments for questions', "
     end
   end
 end
+# rubocop:enable Metrics/BlockLength#
