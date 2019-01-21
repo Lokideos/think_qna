@@ -58,5 +58,38 @@ feature 'User can create question', "
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
+
+  context 'multiple sessions' do
+    scenario "on all questions' page user sees newly created by other user question", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit questions_path
+      end
+
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('user') do
+        click_on 'Ask question'
+
+        within '.question-info' do
+          fill_in 'Title', with: 'Test question'
+          fill_in 'Body', with: 'text text text'
+        end
+
+        click_on 'Ask'
+
+        within '.question-info' do
+          expect(page).to have_content 'Test question'
+          expect(page).to have_content 'text text text'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Test question'
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

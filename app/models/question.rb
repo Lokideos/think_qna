@@ -3,6 +3,8 @@
 class Question < ApplicationRecord
   include Ratable
 
+  after_create_commit { QuestionBroadcastJob.perform_later self }
+
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
   has_one :reward, dependent: :destroy
