@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
+  it { should have_many(:comments).dependent(:destroy) }
   it { should have_one(:reward).dependent(:destroy) }
   it { should have_one(:rating).dependent(:destroy) }
   it { should belong_to :user }

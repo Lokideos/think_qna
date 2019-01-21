@@ -20,11 +20,14 @@ feature 'User can create answer for the question', "
     end
 
     scenario 'create answer for the question', js: true do
-      fill_in 'Body', with: 'Answer text'
-      click_on 'Answer to question'
+      within '.new-answer' do
+        fill_in 'Body', with: 'Answer text'
+        click_on 'Answer to question'
+      end
 
       expect(page).to have_content 'Your Answer has been successfully created.'
       expect(current_path).to eq question_path(question)
+
       within '.answers' do
         expect(page).to have_content 'Answer text'
         expect(page).to have_content 'Edit Answer'
@@ -36,17 +39,23 @@ feature 'User can create answer for the question', "
     end
 
     scenario 'tries to create answer with wrong parameters for the question', js: true do
-      click_on 'Answer to question'
+      within '.new-answer' do
+        click_on 'Answer to question'
+      end
 
       expect(page).to have_content "Answer wasn't created; check your input."
-      expect(page).to have_content "Body can't be blank"
+
+      within '.new-answer' do
+        expect(page).to have_content "Body can't be blank"
+      end
     end
 
     scenario 'create answer with attached files for the question', js: true do
-      fill_in 'Body', with: 'Answer text'
-
       within '.new-answer' do
+        fill_in 'Body', with: 'Answer text'
+
         attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
         click_on 'Answer to question'
       end
 

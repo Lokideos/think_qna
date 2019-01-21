@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   def show
     @answer = question.answers.new
+    @comment = question.comments.new
     question.links.build
     question.answers.each { |answer| answer.links.build }
     gon.current_user_id = current_user.id if current_user

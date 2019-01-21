@@ -30,6 +30,24 @@ section.question
         - if !current_user&.author_of?(question)
           = render 'shared/rate_links', resource: question
 
+    .question-comments
+      h2 Question Comments
+      ul.question-comments-list
+        - question.comments.each do |comment|
+          - if comment.persisted?
+            = render comment
+
+      - if current_user
+        .new-comment
+          = render 'shared/errors', resource: @comment
+          = form_with model: [question, @comment], class: 'create-comment-form' do |f|
+            p
+              = f.label :body
+              = f.text_field :body
+
+            p
+              = f.submit 'Create', class: 'create-comment-btn'
+
   - if current_user&.author_of?(question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors

@@ -2,6 +2,7 @@
 
 class Question < ApplicationRecord
   include Ratable
+  include Commentable
 
   after_create_commit { QuestionBroadcastJob.perform_later self }
 

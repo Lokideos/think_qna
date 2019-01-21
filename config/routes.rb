@@ -9,14 +9,18 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :commentable do
+    resources :comments, shallow: true, only: %i[create]
+  end
+
   scope '(:lang)', lang: /en|ru/, defaults: { lang: 'en' } do
     devise_for :users
-    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
     resources :users, only: [] do
       get :rewards, on: :member
     end
 
-    resources :questions, concerns: %i[ratable] do
+    resources :questions, concerns: %i[ratable commentable] do
       resources :answers, concerns: %i[ratable], shallow: true, only: %i[create update destroy] do
         patch :choose_best, on: :member
       end
