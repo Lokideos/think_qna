@@ -13,4 +13,8 @@ $(document).on('turbolinks:load', function(){
                 $('.question-comments .new-comment .comment-errors .errors-list').append('<li>' + error + '</li>');
             });
         });
+
+    $('.comment-delete-link').on('click', function() {
+        $(this).parent().remove();
+    });
 });

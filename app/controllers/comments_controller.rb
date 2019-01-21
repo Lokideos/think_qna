@@ -16,6 +16,12 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    return redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(comment)
+
+    comment.destroy
+  end
+
   private
 
   def commentable

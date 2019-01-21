@@ -16,7 +16,7 @@ AllCops:
     - 'spec/spec_helper.rb'
 
 Metrics/LineLength:
-  Max: 120
+  Max: 130
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes

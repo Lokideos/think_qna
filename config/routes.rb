@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
 
   concern :commentable do
-    resources :comments, shallow: true, only: %i[create]
+    resources :comments, shallow: true, only: %i[create destroy]
   end
 
   scope '(:lang)', lang: /en|ru/, defaults: { lang: 'en' } do
