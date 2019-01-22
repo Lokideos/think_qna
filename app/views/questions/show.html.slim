@@ -95,7 +95,7 @@ section.answers
     - if question.answers.find_by(best: true)
       h3= t('answers.answer.best_answer')
       .best-answer-info
-        = render question.answers.find_by(best: true)
+        = render question.answers.find_by(best: true), comment: question.answers.find_by(best: true).comments.build
   .all-answers
     h2= t('.all_answers_section_headline')
     ul.answers-list
