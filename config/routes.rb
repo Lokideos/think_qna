@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     end
 
     resources :questions, concerns: %i[ratable commentable] do
-      resources :answers, concerns: %i[ratable], shallow: true, only: %i[create update destroy] do
+      resources :answers, concerns: %i[ratable commentable], shallow: true, only: %i[create update destroy] do
         patch :choose_best, on: :member
       end
     end

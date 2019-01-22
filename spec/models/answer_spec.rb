@@ -6,6 +6,7 @@ require 'rails_helper'
 RSpec.describe Answer, type: :model do
   context 'Associations' do
     it { should have_many(:links).dependent(:destroy) }
+    it { should have_many(:comments).dependent(:destroy) }
     it { should have_one(:rating).dependent(:destroy) }
 
     it { should belong_to :question }

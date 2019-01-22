@@ -30,9 +30,9 @@ section.question
         - if !current_user&.author_of?(question)
           = render 'shared/rate_links', resource: question
 
-    .question-comments
+    .question-comments.comments-section
       h2 Question Comments
-      ul.question-comments-list
+      ul.comments-list
         - question.comments.each do |comment|
           - if comment.persisted?
             = render comment
@@ -101,7 +101,7 @@ section.answers
     ul.answers-list
       - question.answers.each do |answer|
         - if answer.persisted? && !answer.best
-          li = render answer
+          li = render answer, comment: answer.comments.build
 
 section.new-answer
   h2= t('.new_answer_section_headline')

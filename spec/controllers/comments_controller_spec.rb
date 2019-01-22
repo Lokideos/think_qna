@@ -8,58 +8,117 @@ RSpec.describe CommentsController, type: :controller do
   let(:non_author) { create(:user) }
 
   describe 'POST #create' do
-    let(:question) { create(:question) }
+    context 'for question' do
+      let(:question) { create(:question) }
 
-    context 'used by Authenticated user' do
-      before { login(user) }
+      context 'used by Authenticated user' do
+        before { login(user) }
 
-      context 'with valid attributes' do
-        it 'creates comment in the database' do
-          expect do
+        context 'with valid attributes' do
+          it 'creates comment in the database' do
+            expect do
+              post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
+            end.to change(Comment, :count).by(1)
+          end
+
+          it 'saves correct association to the commentable' do
             post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
-          end.to change(Comment, :count).by(1)
+            expect(assigns(:comment).commentable_id).to eq question.id
+          end
+
+          it 'saves correct association to the user' do
+            post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
+            expect(assigns(:comment).user_id).to eq user.id
+          end
+
+          it 'returns http 200 Success status code' do
+            post :create, params: { comment: attributes_for(:comment), question_id: question.id, format: :json }
+            expect(response).to have_http_status 200
+          end
         end
 
-        it 'saves correct association to the commentable' do
-          post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
-          expect(assigns(:comment).commentable_id).to eq question.id
-        end
+        context 'with invalid attributes' do
+          it 'does not create comment in the database' do
+            expect do
+              post :create, params: { comment: attributes_for(:comment, :invalid), question_id: question, format: :json }
+            end.to_not change(Comment, :count)
+          end
 
-        it 'saves correct association to the user' do
-          post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
-          expect(assigns(:comment).user_id).to eq user.id
-        end
-
-        it 'returns http 200 Success status code' do
-          post :create, params: { comment: attributes_for(:comment), question_id: question.id, format: :json }
-          expect(response).to have_http_status 200
+          it 'returns http 422 Unprocessable Entity status' do
+            post :create, params: { comment: attributes_for(:comment, :invalid), question_id: question, format: :json }
+            expect(response).to have_http_status 422
+          end
         end
       end
 
-      context 'with invalid attributes' do
+      context 'used by Unauthenticated user' do
         it 'does not create comment in the database' do
           expect do
-            post :create, params: { comment: attributes_for(:comment, :invalid), question_id: question, format: :json }
+            post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
           end.to_not change(Comment, :count)
         end
 
-        it 'returns http 422 Unprocessable Entity status' do
-          post :create, params: { comment: attributes_for(:comment, :invalid), question_id: question, format: :json }
-          expect(response).to have_http_status 422
+        it 'returns http 401 Unauthorized status code' do
+          post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
+          expect(response).to have_http_status 401
         end
       end
     end
 
-    context 'used by Unauthenticated user' do
-      it 'does not create comment in the database' do
-        expect do
-          post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
-        end.to_not change(Comment, :count)
+    context 'for answer' do
+      let(:answer) { create(:answer) }
+
+      context 'used by Authenticated user' do
+        before { login(user) }
+
+        context 'with valid attributes' do
+          it 'creates comment in the database' do
+            expect do
+              post :create, params: { comment: attributes_for(:comment), answer_id: answer, format: :json }
+            end.to change(Comment, :count).by(1)
+          end
+
+          it 'saves correct association to the commentable' do
+            post :create, params: { comment: attributes_for(:comment), answer_id: answer, format: :json }
+            expect(assigns(:comment).commentable_id).to eq answer.id
+          end
+
+          it 'saves correct association to the user' do
+            post :create, params: { comment: attributes_for(:comment), answer_id: answer, format: :json }
+            expect(assigns(:comment).user_id).to eq user.id
+          end
+
+          it 'returns http 200 Success status code' do
+            post :create, params: { comment: attributes_for(:comment), answer_id: answer, format: :json }
+            expect(response).to have_http_status 200
+          end
+        end
+
+        context 'with invalid attributes' do
+          it 'does not create comment in the database' do
+            expect do
+              post :create, params: { comment: attributes_for(:comment, :invalid), answer_id: answer, format: :json }
+            end.to_not change(Comment, :count)
+          end
+
+          it 'returns http 422 Unprocessable Entity status' do
+            post :create, params: { comment: attributes_for(:comment, :invalid), answer_id: answer, format: :json }
+            expect(response).to have_http_status 422
+          end
+        end
       end
 
-      it 'returns http 401 Unauthorized status code' do
-        post :create, params: { comment: attributes_for(:comment), question_id: question, format: :json }
-        expect(response).to have_http_status 401
+      context 'used by Unauthenticated user' do
+        it 'does not create comment in the database' do
+          expect do
+            post :create, params: { comment: attributes_for(:comment), answer_id: answer, format: :json }
+          end.to_not change(Comment, :count)
+        end
+
+        it 'returns http 401 Unauthorized status code' do
+          post :create, params: { comment: attributes_for(:comment), answer_id: answer, format: :json }
+          expect(response).to have_http_status 401
+        end
       end
     end
   end

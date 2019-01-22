@@ -8,6 +8,7 @@ class Answer < ApplicationRecord
   after_create_commit { AnswerBroadcastJob.perform_later prepared_answer_data }
 
   has_many :links, dependent: :destroy, as: :linkable
+  has_many :comments, dependent: :destroy, as: :commentable
 
   belongs_to :question
   belongs_to :user

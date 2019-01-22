@@ -1,16 +1,24 @@
 $(document).on('turbolinks:load', function(){
     $(document).on('ajax:success', '.create-comment-form', function(e) {
         var comment = e.detail[0];
-        $('.question-comments .question-comments-list').append('<li class="comment">' + comment.body + '</li>');
-        $('.question-comments .new-comment .create-comment-form #comment_body').val('');
-        $('.question-comments .new-comment .comment-errors').html('');
+
+        var inputField = $(this).closest('.comments-section').find('.new-comment #comment_body');
+        var commentsList = $(this).closest('.comments-section').find('.comments-list');
+        commentsList.append(JST["templates/comment"]({ data: comment }));
+        inputField.val('');
+
+        $('.comment-delete-link').on('click', function() {
+            $(this).parent().remove();
+        });
     })
         .on('ajax:error', '.create-comment-form', function(e) {
             var errors = e.detail[0];
-            console.log(errors);
-            $('.question-comments .new-comment .comment-errors').html('<p>There are errors in your input:</p><ul class="errors-list"></ul>');
+            var errorsField = $(this).closest('.comments-section').find('.new-comment .comment-errors');
+
+            errorsField.html('<p>There are errors in your input:</p><ul class="errors-list"></ul>');
+
             $.each(errors, function(index, error) {
-                $('.question-comments .new-comment .comment-errors .errors-list').append('<li>' + error + '</li>');
+                errorsField.find('.errors-list').append('<li>' + error + '</li>');
             });
         });
 

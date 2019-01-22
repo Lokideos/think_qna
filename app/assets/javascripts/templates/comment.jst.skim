@@ -1,0 +1,5 @@
+- comment = @data
+
+li.comment
+    p= comment.body
+    a.comment-delete-link data-type='json' data-remote='true' rel='nofollow' data-method='delete' href="/comments/#{comment.id}" Delete Comment
