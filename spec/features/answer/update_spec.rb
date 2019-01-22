@@ -93,6 +93,7 @@ feature 'User can update his answer', "
 
         scenario 'then reload page and see attached files', js: true do
           wait_for_ajax
+          sleep(2)
 
           page.evaluate_script 'window.location.reload()'
 

@@ -49,7 +49,7 @@ feature 'User can create comments for questions', "
   end
 
   context 'multiple sessions' do
-    scenario "on question's page user sees newly created by other user comment", js: true do
+    scenario "on question's page user sees newly created by other user comment for question", js: true do
       Capybara.using_session('user') do
         sign_in(user)
         visit question_path(question)

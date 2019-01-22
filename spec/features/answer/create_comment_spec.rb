@@ -49,5 +49,36 @@ feature 'User can create comments for answers', "
       expect(page).to_not have_link 'Create'
     end
   end
+
+  context 'multiple sessions' do
+    scenario "on question's page user sees newly created by other user comment for answer", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.answers .answers-list .answer-comments .new-comment' do
+          fill_in 'Body', with: 'Comment Body Text'
+
+          click_on 'Create'
+        end
+
+        within '.answers .answers-list .answer-comments .comments-list' do
+          expect(page).to have_content 'Comment Body Text'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.answers .answers-list .answer-comments .comments-list' do
+          expect(page).to have_content 'Comment Body Text'
+        end
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

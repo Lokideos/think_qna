@@ -4,7 +4,7 @@
 - rating = @data['data']['rating']
 - current_user_id = gon.current_user_id
 
-- if current_user_id == answer.user_id
+- unless current_user_id == answer.user_id
   li
     .answer-instance id="answer-info-#{answer.id}"
       = answer.body

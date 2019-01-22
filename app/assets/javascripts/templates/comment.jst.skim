@@ -1,5 +1,5 @@
 - comment = @data
-- comment = @data['comment'] if @data['comment']
+- comment = @data['data']['comment'] if @data['data'] && @data['data']['comment']
 
 li.comment
     p= comment.body
