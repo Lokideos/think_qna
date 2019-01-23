@@ -49,7 +49,7 @@ class Rating < ApplicationRecord
   def score_delete(user)
     check_user(user)
 
-    status = rating_changes.where(rating_id: self, user_id: user).first.status
+    status = rating_changes.find_by(user: user).status
 
     if status == RATED_UP
       decrement(:score, 1)
@@ -59,7 +59,7 @@ class Rating < ApplicationRecord
       save
     end
 
-    rating_changes.where(rating_id: self, user_id: user).first.delete
+    rating_changes.where(user: user).first.delete
   end
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
@@ -69,7 +69,7 @@ class Rating < ApplicationRecord
   end
 
   def not_been_rated_this_way?(user, value)
-    !rating_changes.where(rating_id: self, user_id: user, status: value).first
+    !rating_changes.where(user: user, status: value).first
   end
 
   private
@@ -79,6 +79,6 @@ class Rating < ApplicationRecord
   end
 
   def rating_change_value(user)
-    @rating_change_value ||= rating_changes.where(rating_id: self, user_id: user).first
+    @rating_change_value ||= rating_changes.find_by(user: user)
   end
 end
