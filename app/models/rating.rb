@@ -15,13 +15,13 @@ class Rating < ApplicationRecord
   def score_up(user)
     check_user(user)
 
-    if rating_change_value(user)
-      increment(:score, 1) if rating_change_value(user).status == RATED_DOWN
-      rating_change_value(user).destroy
-      @rating_change_value = nil
-    end
-
     Rating.transaction do
+      if rating_change_value(user)
+        increment!(:score, 1) if rating_change_value(user).status == RATED_DOWN
+        rating_change_value(user).destroy!
+        @rating_change_value = nil
+      end
+
       users << user
       rating_change_value(user).update!(status: RATED_UP)
       increment!(:score, 1)
@@ -32,13 +32,13 @@ class Rating < ApplicationRecord
   def score_down(user)
     check_user(user)
 
-    if rating_change_value(user)
-      decrement(:score, 1) if rating_change_value(user).status == RATED_UP
-      rating_change_value(user).destroy
-      @rating_change_value = nil
-    end
-
     Rating.transaction do
+      if rating_change_value(user)
+        decrement!(:score, 1) if rating_change_value(user).status == RATED_UP
+        rating_change_value(user).destroy!
+        @rating_change_value = nil
+      end
+
       users << user
       rating_change_value(user).update!(status: RATED_DOWN)
       decrement!(:score, 1)
