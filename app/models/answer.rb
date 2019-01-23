@@ -5,7 +5,7 @@ class Answer < ApplicationRecord
 
   default_scope { order(created_at: :asc) }
 
-  after_create_commit { AnswerBroadcastJob.perform_later prepared_answer_data }
+  after_create_commit :broadcast_answer
 
   has_many :links, dependent: :destroy, as: :linkable
   has_many :comments, dependent: :destroy, as: :commentable
@@ -33,6 +33,10 @@ class Answer < ApplicationRecord
   # rubocop:enable Style/SafeNavigation
 
   private
+
+  def broadcast_answer
+    ActionCable.server.broadcast "question_#{question_id}", data: prepared_answer_data
+  end
 
   def true_best_answer_uniqueness
     errors.add(:best, I18n.t('errors.best_answer_uniqueness')) if best && question.answers.find_by(best: true)

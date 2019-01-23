@@ -88,5 +88,11 @@ RSpec.describe Answer, type: :model do
       end
     end
   end
+
+  it 'triggers :broadcast_answer on create & commit' do
+    answer = build(:answer)
+    expect(answer).to receive :broadcast_answer
+    answer.save
+  end
 end
 # rubocop:enable Metrics/BlockLength

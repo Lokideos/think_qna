@@ -3,7 +3,7 @@
 class Comment < ApplicationRecord
   default_scope { order(created_at: :asc) }
 
-  after_create_commit { CommentBroadcastJob.perform_later prepared_comment_data }
+  after_create_commit :broadcast_comment
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user
@@ -11,6 +11,10 @@ class Comment < ApplicationRecord
   validates :body, presence: true
 
   private
+
+  def broadcast_comment
+    ActionCable.server.broadcast "comments_#{prepared_comment_data[:question_id]}", data: prepared_comment_data
+  end
 
   def prepared_comment_data
     prepared_data = {}
