@@ -11,8 +11,7 @@ feature 'User can rate the answer', "
   given(:user) { create(:user) }
   given(:answer_author) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question, user: answer_author) }
-  given!(:rating) { create(:rating, ratable: answer) }
+  given!(:answer) { create(:answer, question: question, user: answer_author) }
 
   context 'Authenticated user and not Author of the answer' do
     background { sign_in(user) }
