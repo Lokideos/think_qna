@@ -6,4 +6,5 @@ App.question = App.cable.subscriptions.create { channel: "QuestionChannel", ques
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-    $('.all-answers .answers-list').append(JST["templates/answer"]({ data: data }))
+    if data['data']['answer'].user_id != gon.current_user_id
+      $('.all-answers .answers-list').append(JST["templates/answer"]({ data: data }))
