@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GistReadService
+class Services::GistReadService
   GIST_ID_REGEXP = /\w*$/.freeze
 
   def initialize(gist_address, client: nil)

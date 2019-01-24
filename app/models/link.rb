@@ -18,7 +18,7 @@ class Link < ApplicationRecord
 
   def gist_content
     self.body = ''
-    service = GistReadService.new(url)
+    service = Services::GistReadService.new(url)
     service.call.files.each { |file| self.body += "#{file.first}\n\n#{file.last.content}\n\n" }
   end
 end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GistReadService do
+RSpec.describe Services::GistReadService do
   describe '#call' do
     let(:gist_id) { 'c6af77d52547287a49d9c140e9816391' }
     let(:bad_gist_id) { 'bad_gist_id' }
