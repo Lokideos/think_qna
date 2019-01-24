@@ -17,4 +17,4 @@ before_install:
   - rm config/storage.yml
   - mv config/storage.yml.travis config/storage.yml
 script:
-  - xvfb-run -a bundle exec rspec
+  - xvfb-run -a bundle exec rspec --color --tty

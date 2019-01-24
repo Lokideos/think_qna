@@ -2,6 +2,9 @@
 
 class Question < ApplicationRecord
   include Ratable
+  include Commentable
+
+  after_create_commit :broadcast_question
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
@@ -15,4 +18,10 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+  private
+
+  def broadcast_question
+    ActionCable.server.broadcast 'all_questions', data: self
+  end
 end

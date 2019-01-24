@@ -14,12 +14,30 @@
           = render link, resource: answer
 
   .answer-rating
-    - if answer.rating &&  current_user
+    - if answer.rating && current_user
       h2= t('.rating_section_headline')
       .answer-rating-value
         p= t('.rating_score', score: answer.rating.score)
       - if !current_user&.author_of?(answer)
         = render 'shared/rate_links', resource: answer
+
+  .answer-comments.comments-section
+    h2 Answer Comments
+    ul.comments-list
+      - answer.comments.each do |comment|
+        - if comment.persisted?
+          = render comment, resource: answer
+
+    - if current_user
+      .new-comment
+        .comment-errors
+        = form_with model: [answer, comment], class: 'create-comment-form' do |f|
+          p
+            = f.label :body
+            = f.text_field :body
+
+          p
+            = f.submit 'Create', class: 'create-comment-btn'
 
 - if current_user&.author_of?(answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}

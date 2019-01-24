@@ -5,7 +5,7 @@ var answerErrors = document.querySelector('#answer-info-' + answerId + '~ .answe
 $(answerErrors).html('<%= render 'shared/errors', resource: answer %>');
 
 <% if !answer.errors.present? %>
-  $(answerInfo).parent().html('<%= j render answer %>');
+  $(answerInfo).parent().html('<%= j render answer, comment: answer.comments.build %>');
   $(answerInfo).show();
   $('.edit-answer-link').show();
   $('form#edit-answer-' + answerId).addClass('hidden');

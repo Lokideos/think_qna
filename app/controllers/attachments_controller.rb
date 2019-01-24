@@ -2,8 +2,6 @@
 
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
-
-  # rubocop:disable Metrics/LineLength
   def destroy
     @attachment_id = params[:id]
     attachment = ActiveStorage::Attachment.find(@attachment_id)
@@ -12,5 +10,4 @@ class AttachmentsController < ApplicationController
 
     attachment.purge
   end
-  # rubocop:enable Metrics/LineLength
 end

@@ -34,6 +34,14 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question).links.first).to be_a_new(Link)
     end
 
+    it 'assigns a new Comment to @comment' do
+      expect(assigns(:comment)).to be_a_new(Comment)
+    end
+
+    it 'assigns new comment to question' do
+      expect(assigns(:comment)).to be_a_new(Comment)
+    end
+
     it 'renders show view' do
       expect(response).to render_template :show
     end

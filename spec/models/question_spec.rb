@@ -2,9 +2,11 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
+  it { should have_many(:comments).dependent(:destroy) }
   it { should have_one(:reward).dependent(:destroy) }
   it { should have_one(:rating).dependent(:destroy) }
   it { should belong_to :user }
@@ -30,4 +32,11 @@ RSpec.describe Question, type: :model do
       expect(question.rating).to be_a(Rating)
     end
   end
+
+  it 'triggers :broadcast_question after create & commit' do
+    question = build(:question)
+    expect(question).to receive :broadcast_question
+    question.save
+  end
 end
+# rubocop:enable Metrics/BlockLength

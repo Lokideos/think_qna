@@ -1,0 +1,6 @@
+- comment = @data
+- comment = @data['data']['comment'] if @data['data'] && @data['data']['comment']
+
+li.comment
+    p= comment.body
+    a.comment-delete-link data-type='json' data-remote='true' rel='nofollow' data-method='delete' href="/comments/#{comment.id}" Delete Comment

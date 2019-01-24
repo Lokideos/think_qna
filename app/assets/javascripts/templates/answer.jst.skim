@@ -1,0 +1,27 @@
+- answer = @data['data']['answer']
+- files = @data['data']['files']
+- links = @data['data']['links']
+- rating = @data['data']['rating']
+- current_user_id = gon.current_user_id
+
+li
+  .answer-instance id="answer-info-#{answer.id}"
+    = answer.body
+    p Attached Files
+    - $.each files, (index, file) =>
+      a class='attached-file-link' href="#{file['file_url']}" #{file['filename']}
+
+    h2 Links:
+    .answer-links
+      ul
+        - $.each links, (index, link) =>
+          li id="link-#{link['link_id']}"
+            a href="#{link['link_url']}" #{link['link_name']}
+            - if (link['link_body'])
+              p Gist:
+              pre = link['link_body']
+
+    .answer-rating
+    h2 Answer Rating
+    .answer-rating-value
+      p Rating: #{rating}

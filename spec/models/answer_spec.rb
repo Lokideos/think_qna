@@ -6,6 +6,7 @@ require 'rails_helper'
 RSpec.describe Answer, type: :model do
   context 'Associations' do
     it { should have_many(:links).dependent(:destroy) }
+    it { should have_many(:comments).dependent(:destroy) }
     it { should have_one(:rating).dependent(:destroy) }
 
     it { should belong_to :question }
@@ -86,6 +87,12 @@ RSpec.describe Answer, type: :model do
         expect(answer.rating).to be_a(Rating)
       end
     end
+  end
+
+  it 'triggers :broadcast_answer on create & commit' do
+    answer = build(:answer)
+    expect(answer).to receive :broadcast_answer
+    answer.save
   end
 end
 # rubocop:enable Metrics/BlockLength

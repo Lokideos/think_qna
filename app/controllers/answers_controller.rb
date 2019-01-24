@@ -28,6 +28,10 @@ class AnswersController < ApplicationController
 
   private
 
+  def load_new_comment
+    @comment = answer.comments.build
+  end
+
   def filter_answer_non_author_users
     redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(answer)
   end

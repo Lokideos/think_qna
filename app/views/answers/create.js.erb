@@ -2,7 +2,7 @@ $('.new-answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
 var answerNotice = '';
 
 <% if answer.persisted? %>
-  $('.answers-list').append('<li><%= j render answer %></li>');
+  $('.answers-list').append('<li><%= j render answer, comment: answer.comments.build %></li>');
   $('.new-answer #answer_body').val('');
   $('.new-answer #answer_links_attributes_0_name').val('');
   $('.new-answer #answer_links_attributes_0_url').val('');

@@ -11,7 +11,6 @@ feature 'User can rate the question', "
   given(:user) { create(:user) }
   given(:question_author) { create(:user) }
   given(:question) { create(:question, user: question_author) }
-  given!(:rating) { create(:rating, ratable: question) }
 
   context 'Authenticated user and not author of the question' do
     background { sign_in(user) }

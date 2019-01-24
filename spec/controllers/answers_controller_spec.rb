@@ -194,14 +194,15 @@ RSpec.describe AnswersController, type: :controller do
       context 'on answer to question with reward for best answer' do
         let(:question_with_reward) { create(:question) }
         let!(:reward) { create(:reward, question: question_with_reward) }
-        let(:answer_on_question_with_reward) { create(:answer, question: question_with_reward, user: user) }
+        let!(:answer_on_question_with_reward) { create(:answer, question: question_with_reward, user: user) }
 
         it 'add reward to user' do
           expect { patch :choose_best, params: { id: answer_on_question_with_reward, format: :js } }.to change(user.rewards, :count).by(1)
         end
 
-        it 'does not add reward to user if user already has reward' do
+        it 'does not add reward to user if user already has reward for this question' do
           patch :choose_best, params: { id: answer_on_question_with_reward, format: :js }
+
           expect { patch :choose_best, params: { id: answer_on_question_with_reward, format: :js } }.to_not change(user.rewards, :count)
         end
       end

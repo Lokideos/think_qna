@@ -64,7 +64,8 @@ feature 'User can update his answer', "
         end
 
         scenario 'successfully', js: true do
-          sleep(3)
+          wait_for_ajax
+          sleep(2)
 
           within '.answers' do
             expect(page).to have_link 'rails_helper.rb'
@@ -74,7 +75,7 @@ feature 'User can update his answer', "
 
         scenario 'does not see attached to this answer files when tries to update other answer', js: true do
           other_answer = create(:answer, question: question, user: user)
-          sleep(2)
+          wait_for_ajax
 
           page.evaluate_script 'window.location.reload()'
 
@@ -91,7 +92,9 @@ feature 'User can update his answer', "
         end
 
         scenario 'then reload page and see attached files', js: true do
+          wait_for_ajax
           sleep(2)
+
           page.evaluate_script 'window.location.reload()'
 
           within '.answers' do

@@ -1,0 +1,4 @@
+- question = @data['data']
+
+li
+  a href="/questions/#{question.id}" #{question.title}
