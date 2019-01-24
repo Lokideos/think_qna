@@ -45,6 +45,8 @@ gem 'octokit', '~> 4.0'
 gem 'image_processing', '~> 1.2'
 gem 'gon'
 gem 'skim'
+gem 'omniauth'
+gem 'omniauth-github'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

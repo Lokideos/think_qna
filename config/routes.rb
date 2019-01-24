@@ -13,8 +13,10 @@ Rails.application.routes.draw do
     resources :comments, shallow: true, only: %i[create destroy]
   end
 
+  devise_for :users, only: :omniauth_callbacks, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+
   scope '(:lang)', lang: /en|ru/, defaults: { lang: 'en' } do
-    devise_for :users
+    devise_for :users, skip: :omniauth_callbacks
 
     resources :users, only: [] do
       get :rewards, on: :member
