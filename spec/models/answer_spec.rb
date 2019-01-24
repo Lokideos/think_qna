@@ -90,8 +90,12 @@ RSpec.describe Answer, type: :model do
   end
 
   it 'triggers :broadcast_answer on create & commit' do
-    answer = build(:answer)
-    expect(answer).to receive :broadcast_answer
+    answer_broadcast_data = double('Prepared answer hash for broadcasting')
+    question = create(:question)
+    answer = build(:answer, question: question)
+    expect(answer).to receive(:broadcast_answer).and_return(
+      ActionCable.server.broadcast("question_#{question.id}", data: answer_broadcast_data)
+    )
     answer.save
   end
 end
