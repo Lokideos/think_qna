@@ -7,6 +7,7 @@ FactoryBot.define do
 
   factory :user do
     email
+    confirmed_at DateTime.new(2018, 12, 12, 1, 1, 1)
     password { '12345678' }
     password_confirmation { '12345678' }
   end
