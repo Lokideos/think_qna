@@ -23,11 +23,27 @@ class User < ApplicationRecord
     rewards << reward
   end
 
-  def self.find_for_oauth(auth)
-    Services::FindForOauth.new(auth).call
-  end
-
   def create_authorization(auth)
     authorizations.create(provider: auth.provider, uid: auth.uid)
+  end
+
+  def save_user_for_oauth
+    self.password = Devise.friendly_token[0, 20]
+    self.password_confirmation = password
+    save
+  end
+
+  class << self
+    def find_for_oauth(auth)
+      Services::FindForOauth.new(auth).call
+    end
+
+    def create_authorization_with_email(email, provider, uid)
+      User.find_by(email: email)&.authorizations&.create!(provider: provider, uid: uid)
+    end
+
+    def exists_with_email?(email)
+      true if User.find_by(email: email)
+    end
   end
 end

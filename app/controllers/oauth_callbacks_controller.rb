@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/AbcSize
 class OauthCallbacksController < Devise::OmniauthCallbacksController
   def github
     @user = User.find_for_oauth(request.env['omniauth.auth'])
@@ -8,7 +9,10 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect @user, event: :authorization
       set_flash_message(:notice, :success, kind: 'Github') if is_navigational_format?
     else
-      redirect_to root_path, alert: 'Something went wrong.'
+      session['devise.provider'] = request.env['omniauth.auth'][:provider]
+      session['devise.uid'] = request.env['omniauth.auth'][:uid]
+      redirect_to create_email_show_path
     end
   end
 end
+# rubocop:enable Metrics/AbcSize

@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   scope '(:lang)', lang: /en|ru/, defaults: { lang: 'en' } do
     devise_for :users, skip: :omniauth_callbacks
 
+    get 'create_email/show'
+    post 'create_email/create'
+
     resources :users, only: [] do
       get :rewards, on: :member
     end

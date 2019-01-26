@@ -59,6 +59,64 @@ RSpec.describe User, type: :model do
         User.find_for_oauth(auth)
       end
     end
+
+    describe '.create_authorization_with_email' do
+      let!(:user) { create(:user, email: 'test@test.com') }
+      let(:email) { 'test@test.com' }
+      let(:bad_email) { 'not_test@test.com' }
+      let(:oauth_credentials) { { provider: 'github', uid: '111' } }
+
+      it 'creates authorization for user with provided email' do
+        expect do
+          User.create_authorization_with_email(email, oauth_credentials[:provider], oauth_credentials[:uid])
+        end.to change(Authorization, :count).by(1)
+      end
+
+      it 'does not create authorization if email was not provided' do
+        expect do
+          User.create_authorization_with_email(bad_email, oauth_credentials[:provider], oauth_credentials[:uid])
+        end.to_not change(Authorization, :count)
+      end
+    end
+
+    describe '.exists_with_email?' do
+      let!(:user) { create(:user, email: 'test@test.com') }
+      let(:good_email) { 'test@test.com' }
+      let(:bad_email) { 'bad@email.com' }
+
+      it 'returns true if user with this email exists' do
+        expect(User).to be_exists_with_email(good_email)
+      end
+
+      it 'returns false if user with this email does not exist' do
+        expect(User).to_not be_exists_with_email(bad_email)
+      end
+    end
+
+    describe '#save_user_for_oauth' do
+      let(:user) { build(:user, password: '123456') }
+      let!(:password) { user.password }
+
+      it 'assigns password to user' do
+        user.save_user_for_oauth
+        expect(user.password).to_not eq password
+      end
+
+      it 'assigns password confirmation to user' do
+        user.save_user_for_oauth
+        expect(user.password_confirmation).to_not eq password
+      end
+
+      it 'saves the user in the database' do
+        expect { user.save_user_for_oauth }.to change(User, :count).by(1)
+      end
+    end
+
+    def save_user_for_oauth
+      self.password = Devise.friendly_token[0, 20]
+      self.password_confirmation = password
+      save
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

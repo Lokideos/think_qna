@@ -34,7 +34,11 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
 
     context 'with non existing user' do
+      let!(:user) { build(:user) }
+
       before do
+        allow(request.env).to receive(:[]).and_call_original
+        allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
         allow(User).to receive(:find_for_oauth)
         get :github
       end
@@ -43,8 +47,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
         expect(subject.current_user).to_not be
       end
 
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path
+      it 'redirects to email creation page' do
+        expect(response).to redirect_to create_email_show_path
       end
     end
   end

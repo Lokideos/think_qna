@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OmniauthMacros
-  def mock_auth_hash
+  def github_mock_auth_hash
     OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(
       provider: 'github',
       uid: '123456',
@@ -10,6 +10,16 @@ module OmniauthMacros
       },
       credentials: {
         token: 'mock_token'
+      }
+    )
+  end
+
+  def github_no_email_auth_hash
+    OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(
+      provider: 'github',
+      uid: '123456',
+      credentials: {
+        token: 'mock_token_2'
       }
     )
   end

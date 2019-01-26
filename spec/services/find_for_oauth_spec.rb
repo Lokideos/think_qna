@@ -15,7 +15,7 @@ RSpec.describe Services::GistReadService do
     end
   end
 
-  context 'user has not authorization' do
+  context 'user has no authorization' do
     context 'user already exists' do
       let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: user.email }) }
 
@@ -66,6 +66,18 @@ RSpec.describe Services::GistReadService do
         expect(authorization.provider).to eq auth.provider
         expect(authorization.uid).to eq auth.uid
       end
+    end
+  end
+
+  context 'provider did not provide email' do
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
+
+    it 'returns new user object' do
+      expect(subject.call).to be_a(User)
+    end
+
+    it 'returns non persisted user object' do
+      expect(subject.call).to_not be_persisted
     end
   end
 end

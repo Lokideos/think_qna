@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
 class Services::FindForOauth
   attr_reader :auth
 
@@ -12,7 +13,9 @@ class Services::FindForOauth
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
-    email = auth.info[:email]
+    email = auth.info[:email] if auth.info && auth.info[:email]
+    return User.new unless email
+
     user = User.find_by(email: email)
 
     unless user
@@ -25,3 +28,4 @@ class Services::FindForOauth
   end
 end
 # rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength
