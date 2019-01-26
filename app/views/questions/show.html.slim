@@ -31,7 +31,7 @@ section.question
           = render 'shared/rate_links', resource: question
 
     .question-comments.comments-section
-      h2 Question Comments
+      h2= t('.comment_section_headline')
       ul.comments-list
         - question.comments.each do |comment|
           - if comment.persisted?

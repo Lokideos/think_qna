@@ -22,7 +22,7 @@
         = render 'shared/rate_links', resource: answer
 
   .answer-comments.comments-section
-    h2 Answer Comments
+    h2= t('.comment_section_headline')
     ul.comments-list
       - answer.comments.each do |comment|
         - if comment.persisted?

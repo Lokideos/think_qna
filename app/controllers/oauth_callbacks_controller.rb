@@ -11,7 +11,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     else
       session['devise.provider'] = request.env['omniauth.auth'][:provider]
       session['devise.uid'] = request.env['omniauth.auth'][:uid]
-      redirect_to create_email_show_path
+      redirect_to create_email_show_path, notice: I18n.t('notifications.oauth_no_email_provided')
     end
   end
 end

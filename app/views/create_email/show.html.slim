@@ -1,4 +1,4 @@
-h1 No email was provided by GitHub. Please provide your email
+h1= t('.headline')
 
 = render 'shared/errors', resource: @user
 = form_for @user, url: create_email_create_path do |f|
@@ -6,7 +6,7 @@ h1 No email was provided by GitHub. Please provide your email
     = f.label :email
     = f.text_field :email
   p
-    = f.submit 'Confirm Email'
+    = f.submit t('.confirm')
 
 
 

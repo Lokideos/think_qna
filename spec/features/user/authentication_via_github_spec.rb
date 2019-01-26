@@ -27,11 +27,11 @@ feature 'User can authenticate via github', "
       github_no_email_auth_hash
       click_on 'Sign in with GitHub'
 
-      expect(page).to have_content 'No email was provided by GitHub. Please provide your email'
+      expect(page).to have_content 'No email was provided by Github. Please provide your email'
       expect(page).to_not have_link 'Sign out'
 
       fill_in 'Email', with: 'existing_email@email.com'
-      click_on 'Confirm Email'
+      click_on 'Confirm'
 
       expect(page).to have_content 'You account has been link to your Github account.'
       expect(page).to_not have_link 'Sign out'
@@ -47,11 +47,11 @@ feature 'User can authenticate via github', "
       github_no_email_auth_hash
       click_on 'Sign in with GitHub'
 
-      expect(page).to have_content 'No email was provided by GitHub. Please provide your email'
+      expect(page).to have_content 'No email was provided by Github. Please provide your email'
       expect(page).to_not have_link 'Sign out'
 
       fill_in 'Email', with: 'goodemail@test.com'
-      click_on 'Confirm Email'
+      click_on 'Confirm'
 
       open_email('goodemail@test.com')
       current_email.click_link 'Confirm my account'

@@ -18,6 +18,7 @@ ru:
     forbidden_for_non_author: "Вы не можете просматривать награды других пользователей."
     oauth_linked: 'Ваш аккаунт был успешно связан с аккаунтом на Github.'
     oauth_email_confirmation: 'Пожалуйста, подтвердите ваш аккаунт.'
+    oauth_no_email_provided: 'Пожалуйста введите ваш адрес электронной почты, так как Github не предоставил её.'
 
   shared:
     errors:
@@ -69,6 +70,7 @@ ru:
       best_answer_section_headline: 'Награда за Лучший Ответ'
       rating_section_headline: 'Рейтинг Вопроса'
       rating_score: "Рейтинг: %{score}"
+      comment_section_headline: 'Комментарии к Вопросу'
     update:
       links_section_headline: 'Ссылки:'
       delete_attachment: 'Удалить вложение'
@@ -91,6 +93,7 @@ ru:
       attached_files_section_headline: 'Прикрепленные файлы'
       rating_section_headline: 'Рейтинг Ответа'
       rating_score: "Рейтинг: %{score}"
+      comment_section_headline: 'Комментарии к Ответу'
     best_answer:
       best_answer: 'Лучший Ответ'
 
@@ -106,3 +109,12 @@ ru:
     link:
       gist_headline: 'Gist:'
       delete: 'Удалить ссылку'
+
+  comments:
+    comment:
+      delete: 'Удалить комментарий'
+
+  create_email:
+    show:
+      headline: 'Подтверждение электронной почты'
+      confirm: 'Подтвердить'
