@@ -7,11 +7,11 @@
 li
   .answer-instance id="answer-info-#{answer.id}"
     = answer.body
-    p Attached Files
+    p= I18n.t('js.templates.answer.attached_files_section_headline')
     - $.each files, (index, file) =>
       a class='attached-file-link' href="#{file['file_url']}" #{file['filename']}
 
-    h2 Links:
+    h2= I18n.t('js.templates.answer.links_section_headline')
     .answer-links
       ul
         - $.each links, (index, link) =>
@@ -22,6 +22,6 @@ li
               pre = link['link_body']
 
     .answer-rating
-    h2 Answer Rating
+    h2= I18n.t('js.templates.answer.rating_section_headline')
     .answer-rating-value
       p Rating: #{rating}

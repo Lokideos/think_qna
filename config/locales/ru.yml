@@ -20,6 +20,19 @@ ru:
     oauth_email_confirmation: 'Пожалуйста, подтвердите ваш аккаунт.'
     oauth_no_email_provided: 'Пожалуйста введите ваш адрес электронной почты, так как Github не предоставил её.'
 
+  js:
+    rate:
+      rating: 'Рейтинг:'
+    comments:
+      errors_headline: 'В введенных данных были обнаружены ошибки:'
+    templates:
+      answer:
+        attached_files_section_headline: 'Прикрепленные файлы'
+        links_section_headline: 'Ссылки:'
+        rating_section_headline: 'Рейтинг Ответа'
+      comment:
+        delete: 'Удалить комментарий'
+
   shared:
     errors:
       errors_counter:
