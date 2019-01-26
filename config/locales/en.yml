@@ -33,6 +33,9 @@ en:
   errors:
     best_answer_uniqueness: 'flag has to be unique for each question'
     best_answer_duplicate: 'There can be only one best answer for each question.'
+    corret_url_address: 'should be correct url address.'
+    resource_ownership: "User can't rate his resources."
+    like_duplicate: 'can like or dislike resource only once in a row.'
   notifications:
     created: 'Your %{resource} has been successfully created.'
     updated: 'Your %{resource} has been successfully updated.'
@@ -44,6 +47,8 @@ en:
     delete_attachment: 'You have successfully deleted attachment.'
     delete_link: 'You have successfully deleted link.'
     forbidden_for_non_author: "You can't check other user's rewards."
+    oauth_linked: 'You account has been link to your Github account.'
+    oauth_email_confirmation: 'Please confirm your account.'
 
   shared:
     errors:

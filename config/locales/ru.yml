@@ -2,6 +2,9 @@ ru:
   errors:
     best_answer_uniqueness: 'значение должно быть уникально для вопроса.'
     best_answer_duplicate: 'Для каждого вопроса может существовать только один Лучший Ответ.'
+    corret_url_address: 'должно быть корректным url-адресом.'
+    resource_ownership: 'Пользователь не может оценивать собственные ресурсы.'
+    like_duplicate: 'может голосовать за или против только один раз подряд.'
   notifications:
     created: 'Ваш %{resource} был успешно создан.'
     updated: 'Ваш %{resource} был успешно отредактирован.'
@@ -13,6 +16,8 @@ ru:
     delete_attachment: 'Вы успешно удалили вложение.'
     delete_link: 'Вы успешно удалили ссылку.'
     forbidden_for_non_author: "Вы не можете просматривать награды других пользователей."
+    oauth_linked: 'Ваш аккаунт был успешно связан с аккаунтом на Github.'
+    oauth_email_confirmation: 'Пожалуйста, подтвердите ваш аккаунт.'
 
   shared:
     errors:

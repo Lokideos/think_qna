@@ -5,6 +5,9 @@ ru:
       answer: 'Ответ'
       link: 'Ссылка'
       reward: 'Награда'
+      comment: 'Комментарий'
+      rating: 'Рейтинг'
+      rating_change: 'Изменение Рейтинга'
 
     attributes:
       question:
@@ -18,6 +21,12 @@ ru:
       reward:
         title: 'Название'
         image: 'Иконка'
+      comment:
+        body: 'Содержание'
+      rating:
+        score: 'Репутация'
+      rating_change:
+        status: 'Статус'
 
     errors:
       messages:

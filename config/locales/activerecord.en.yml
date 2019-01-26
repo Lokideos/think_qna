@@ -5,6 +5,9 @@ en:
       answer: 'Answer'
       link: 'Link'
       reward: 'Reward'
+      comment: 'Comment'
+      rating: 'Rating'
+      rating_change: 'Rating Change'
 
     attributes:
       question:
@@ -18,6 +21,12 @@ en:
       reward:
         title: 'Title'
         image: 'Image'
+      comment:
+        body: 'Body'
+      rating:
+        score: 'Score'
+      rating_change:
+        status: 'Status'
 
     errors:
       messages:

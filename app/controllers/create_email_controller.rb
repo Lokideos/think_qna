@@ -12,14 +12,14 @@ class CreateEmailController < ApplicationController
 
     if User.exists_with_email?(@user.email)
       User.create_authorization_with_email(@user.email, session['devise.provider'], session['devise.uid'])
-      return redirect_to new_user_session_path, notice: 'You account has been link to your Github account.'
+      return redirect_to new_user_session_path, notice: I18n.t('notifications.oauth_linked')
     end
 
     if @user.save_user_for_oauth
       @user.create_authorization(
         OmniAuth::AuthHash.new(provider: session['devise.provider'].to_sym, uid: session['devise.uid'])
       )
-      redirect_to root_path, notice: 'Please confirm your account'
+      redirect_to root_path, notice: I18n.t('notifications.oauth_email_confirmation')
     else
       render :show
     end
