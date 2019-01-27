@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :filter_answer_non_author_users, only: %i[update destroy]
 
+  authorize_resource
+
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user

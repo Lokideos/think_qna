@@ -2,6 +2,8 @@
 
 # rubocop:disable Metrics/AbcSize
 class OauthCallbacksController < Devise::OmniauthCallbacksController
+  authorize_resource
+
   def github
     @user = User.find_for_oauth(request.env['omniauth.auth'])
 

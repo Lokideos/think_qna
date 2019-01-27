@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :filter_non_author_users, only: %i[update destroy]
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end

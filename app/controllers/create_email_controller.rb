@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CreateEmailController < ApplicationController
+  authorize_resource
+
   def show
     @user = User.new
   end
