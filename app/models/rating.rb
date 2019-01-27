@@ -75,7 +75,7 @@ class Rating < ApplicationRecord
   private
 
   def check_user(user)
-    raise StandardError, "User can't rate his resources" if user.author_of?(ratable)
+    raise StandardError, I18n.t('errors.resource_ownership') if user.author_of?(ratable)
   end
 
   def rating_change_value(user)

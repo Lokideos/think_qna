@@ -21,6 +21,8 @@ module ThinkQna
     config.i18n.default_locale = :en
     config.time_zone = 'Moscow'
 
+    config.autoload_paths += [config.root.join('app')]
+
     config.generators do |g|
       g.test_framework :rspec,
                        view_specs: false,

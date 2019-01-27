@@ -8,9 +8,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-users = User.create([{ email: 'test@test.com', password: '111111' },
-                     { email: 'dio@theworld.com', password: 'theworld' },
-                     { email: 'shaper@atlas.com', password: 'theatlas' }])
+users = User.create([{ email: 'test@test.com', password: '111111', confirmed_at: DateTime.now },
+                     { email: 'dio@theworld.com', password: 'theworld', confirmed_at: DateTime.now },
+                     { email: 'shaper@atlas.com', password: 'theatlas', confirmed_at: DateTime.now }])
 
 questions = Question.create([{ title: 'Galactic Empire Weapon',
                                body: "What's Galactic Empire most dangerous weapon?",

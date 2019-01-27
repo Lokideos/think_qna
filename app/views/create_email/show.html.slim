@@ -1,0 +1,13 @@
+h1= t('.headline')
+
+= render 'shared/errors', resource: @user
+= form_for @user, url: create_email_create_path do |f|
+  p
+    = f.label :email
+    = f.text_field :email
+  p
+    = f.submit t('.confirm')
+
+
+
+

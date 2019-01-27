@@ -33,6 +33,9 @@ en:
   errors:
     best_answer_uniqueness: 'flag has to be unique for each question'
     best_answer_duplicate: 'There can be only one best answer for each question.'
+    corret_url_address: 'should be correct url address.'
+    resource_ownership: "User can't rate his resources."
+    like_duplicate: 'can like or dislike resource only once in a row.'
   notifications:
     created: 'Your %{resource} has been successfully created.'
     updated: 'Your %{resource} has been successfully updated.'
@@ -44,6 +47,23 @@ en:
     delete_attachment: 'You have successfully deleted attachment.'
     delete_link: 'You have successfully deleted link.'
     forbidden_for_non_author: "You can't check other user's rewards."
+    oauth_linked: 'You account has been link to your Github account.'
+    oauth_email_confirmation: 'Please confirm your account.'
+    oauth_no_email_provided: 'No email was provided by Github. Please provide your email'
+
+  js:
+    rate:
+      rating: 'Rating:'
+    comments:
+      errors_headline: 'There are errors in your input:'
+    templates:
+      answer:
+        attached_files_section_headline: 'Attached files'
+        links_section_headline: 'Links:'
+        rating_section_headline: 'Answer Rating'
+      comment:
+        delete: 'Delete Comment'
+
 
   shared:
     errors:
@@ -93,6 +113,7 @@ en:
       best_answer_section_headline: 'Best Answer Reward'
       rating_section_headline: 'Question Rating'
       rating_score: "Rating: %{score}"
+      comment_section_headline: 'Question Comments'
     update:
       gist_headline: 'Gist Content:'
       links_section_headline: 'Links:'
@@ -116,6 +137,7 @@ en:
       attached_files_section_headline: 'Attached files'
       rating_section_headline: 'Answer Rating'
       rating_score: "Rating: %{score}"
+      comment_section_headline: 'Answer Comments'
     best_answer:
       best_answer: 'Best Answer'
 
@@ -131,3 +153,12 @@ en:
     link:
       gist_headline: 'Gist Content:'
       delete: 'Delete Link'
+
+  comments:
+    comment:
+      delete: 'Delete Comment'
+
+  create_email:
+    show:
+      headline: 'Email confirmation'
+      confirm: 'Confirm'

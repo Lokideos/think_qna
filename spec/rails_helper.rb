@@ -8,6 +8,8 @@ require File.expand_path('../../config/environment', __FILE__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+# Testing email functionality - capybara-email spec
+require 'capybara/email/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -39,6 +41,7 @@ RSpec.configure do |config|
   config.include FeatureHelpers, type: :feature
   config.include ActiveStorageHelpers
   config.include WaitForAjax, type: :feature
+  config.include OmniauthMacros
 
   Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.default_max_wait_time = 5
@@ -82,3 +85,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+OmniAuth.config.test_mode = true

@@ -16,5 +16,7 @@ before_install:
   - cp config/database.yml.travis config/database.yml
   - rm config/storage.yml
   - mv config/storage.yml.travis config/storage.yml
+  - rm config/initializers/devise.rb
+  - mv config/devise.rb.travis config/initializers/devise.rb
 script:
   - xvfb-run -a bundle exec rspec --color --tty

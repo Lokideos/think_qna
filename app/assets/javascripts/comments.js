@@ -15,7 +15,7 @@ $(document).on('turbolinks:load', function(){
             var errors = e.detail[0];
             var errorsField = $(this).closest('.comments-section').find('.new-comment .comment-errors');
 
-            errorsField.html('<p>There are errors in your input:</p><ul class="errors-list"></ul>');
+            errorsField.html('<p>' + I18n.t('js.comments.errors_headline') + '</p><ul class="errors-list"></ul>');
 
             $.each(errors, function(index, error) {
                 errorsField.find('.errors-list').append('<li>' + error + '</li>');

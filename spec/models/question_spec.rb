@@ -34,8 +34,11 @@ RSpec.describe Question, type: :model do
   end
 
   it 'triggers :broadcast_question after create & commit' do
+    question_broadcast_data = 'Prepared question hash for broadcasting'
     question = build(:question)
-    expect(question).to receive :broadcast_question
+    expect(question).to receive(:broadcast_question).and_return(
+      ActionCable.server.broadcast('all_questions', data: question_broadcast_data)
+    )
     question.save
   end
 end
