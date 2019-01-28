@@ -19,13 +19,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  check_authorization unless: :skip_authorization?
+  check_authorization unless: :devise_controller?
 
   private
-
-  def skip_authorization?
-    respond_to?(:devise_controller?) || respond_to?(:attachments_controller?) || respond_to?(:users_controller?)
-  end
 
   def set_locale
     I18n.locale = I18n.locale_available?(params[:lang]) ? params[:lang] : I18n.default_locale

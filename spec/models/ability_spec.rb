@@ -30,6 +30,8 @@ describe Ability do
     let(:other_user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let(:non_author_question) { create(:question, user: other_user) }
+    let(:author_attachment_resource) { create(:question, user: user) }
+    let(:attachment_resource) { create(:question) }
 
     it { should be_able_to :read, :all }
 
@@ -71,6 +73,16 @@ describe Ability do
 
     it { should be_able_to :check_rewards, user }
     it { should_not be_able_to :check_rewards, other_user }
+
+    context 'attachment tests' do
+      before do
+        attachment_resource.files.attach(create_file_blob)
+        author_attachment_resource.files.attach(create_file_blob)
+      end
+
+      it { should be_able_to :destroy, author_attachment_resource.files.last }
+      it { should_not be_able_to :destroy, attachment_resource.files.last }
+    end
   end
 
   describe '#ratable??' do

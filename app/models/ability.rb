@@ -37,6 +37,10 @@ class Ability
       user.author_of?(item.linkable)
     end
 
+    can :destroy, ActiveStorage::Attachment do |attachment|
+      attachment.record.user_id == user.id
+    end
+
     can :like, [Question, Answer] do |item|
       ratable?(item)
     end
