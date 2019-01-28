@@ -30,9 +30,9 @@ RSpec.describe LinksController, type: :controller do
         expect { delete :destroy, params: { id: link, format: :js } }.to_not change(Link, :count)
       end
 
-      it 'redirects to root path' do
+      it 'returns 302 status code' do
         delete :destroy, params: { id: link, format: :js }
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 302
       end
     end
 

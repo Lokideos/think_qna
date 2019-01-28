@@ -8,12 +8,20 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    respond_to do |format|
+      format.js { redirect_to root_url, alert: exception.message }
+      format.json { render json: exception.message, status: :forbidden }
+      format.html { redirect_to root_url, alert: exception.message }
+    end
   end
 
-  check_authorization unless: :devise_controller?
+  check_authorization unless: :skip_authorization?
 
   private
+
+  def skip_authorization?
+    respond_to?(:devise_controller?) || respond_to?(:attachments_controller?)
+  end
 
   def set_locale
     I18n.locale = I18n.locale_available?(params[:lang]) ? params[:lang] : I18n.default_locale

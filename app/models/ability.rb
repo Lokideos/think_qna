@@ -31,6 +31,9 @@ class Ability
     can :create, [Question, Answer, Comment]
     can :update, [Question, Answer, Comment], user_id: user.id
     can :destroy, [Question, Answer, Comment], user_id: user.id
+    can :destroy, Link do |item|
+      user.author_of?(item.linkable)
+    end
 
     can :like, [Question, Answer] do |item|
       ratable?(item)

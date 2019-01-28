@@ -42,9 +42,11 @@ describe Ability do
     it { should be_able_to :destroy, create(:question, user: user) }
     it { should be_able_to :destroy, create(:answer, user: user) }
     it { should be_able_to :destroy, create(:comment, user: user) }
+    it { should be_able_to :destroy, create(:link, linkable: create(:question, user: user)) }
     it { should_not be_able_to :destroy, create(:question, user: other_user) }
     it { should_not be_able_to :destroy, create(:answer, user: other_user) }
     it { should_not be_able_to :destroy, create(:comment, user: other_user) }
+    it { should_not be_able_to :destroy, create(:link, linkable: create(:question, user: other_user)) }
 
     it { should be_able_to :like, create(:question, user: other_user) }
     it { should be_able_to :like, create(:answer, user: other_user) }

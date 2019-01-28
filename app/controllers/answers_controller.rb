@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   include Rated
 
   before_action :authenticate_user!
-  before_action :filter_answer_non_author_users, only: %i[update destroy]
 
   authorize_resource
 
@@ -15,16 +14,17 @@ class AnswersController < ApplicationController
   end
 
   def update
+    authorize! :update, answer
     answer.update(answer_params)
   end
 
   def destroy
+    authorize! :destroy, answer
     answer.destroy
   end
 
   def choose_best
-    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
-
+    authorize! :choose_best, answer
     answer.choose_best_answer
   end
 
@@ -32,10 +32,6 @@ class AnswersController < ApplicationController
 
   def load_new_comment
     @comment = answer.comments.build
-  end
-
-  def filter_answer_non_author_users
-    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(answer)
   end
 
   def question
