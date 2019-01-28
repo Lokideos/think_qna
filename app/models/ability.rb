@@ -19,6 +19,8 @@ class Ability
 
   def guest_abilities
     can :read, :all
+    can :create, :create_email
+    can :authenticate, :oauth_provider
   end
 
   def admin_abilities

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CreateEmailController < ApplicationController
-  authorize_resource
+  authorize_resource class: false
 
   def show
     @user = User.new
@@ -10,6 +10,8 @@ class CreateEmailController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def create
+    unauthorized! if cannot? :create, :create_email
+
     @user = User.new(user_params)
 
     if User.exists_with_email?(@user.email)

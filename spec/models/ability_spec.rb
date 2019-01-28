@@ -14,6 +14,9 @@ describe Ability do
     it { should be_able_to :read, Comment }
 
     it { should_not be_able_to :manage, :all }
+
+    it { should be_able_to :create, :create_email }
+    it { should be_able_to :authenticate, :oauth_provider }
   end
 
   context 'as admin user' do

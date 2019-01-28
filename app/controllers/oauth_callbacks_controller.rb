@@ -2,9 +2,9 @@
 
 # rubocop:disable Metrics/AbcSize
 class OauthCallbacksController < Devise::OmniauthCallbacksController
-  authorize_resource
-
   def github
+    unauthorized! if cannot? :authenticate, :oauth_provider
+
     @user = User.find_for_oauth(request.env['omniauth.auth'])
 
     if @user&.persisted?
