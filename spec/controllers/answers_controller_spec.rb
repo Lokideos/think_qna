@@ -100,9 +100,14 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq correct_answer_body
       end
 
-      it 'returns 302 status code' do
+      it 'renders exception_alert template' do
         patch :choose_best, params: { id: answer, format: :js }
-        expect(response).to have_http_status 302
+        expect(response).to render_template :exception_alert
+      end
+
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 
@@ -146,9 +151,14 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
       end
 
-      it 'returns 302 status code' do
+      it 'renders exception_alert template' do
         patch :choose_best, params: { id: answer, format: :js }
-        expect(response).to have_http_status 302
+        expect(response).to render_template :exception_alert
+      end
+
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 
@@ -217,9 +227,14 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).to_not be_best
       end
 
-      it 'returns 302 status code' do
+      it 'renders exception_alert template' do
         patch :choose_best, params: { id: answer, format: :js }
-        expect(response).to have_http_status 302
+        expect(response).to render_template :exception_alert
+      end
+
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 

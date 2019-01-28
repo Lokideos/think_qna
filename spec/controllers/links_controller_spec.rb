@@ -30,9 +30,14 @@ RSpec.describe LinksController, type: :controller do
         expect { delete :destroy, params: { id: link, format: :js } }.to_not change(Link, :count)
       end
 
-      it 'returns 302 status code' do
-        delete :destroy, params: { id: link, format: :js }
-        expect(response).to have_http_status 302
+      it 'renders exception_alert template' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to render_template :exception_alert
+      end
+
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 
