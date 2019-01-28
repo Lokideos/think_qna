@@ -48,7 +48,7 @@ section.question
             p
               = f.submit 'Create', class: 'create-comment-btn'
 
-  - if current_user&.author_of?(question)
+  - if can?(:update, question)
     p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
     .question-update-errors
       = render 'shared/errors', resource: question

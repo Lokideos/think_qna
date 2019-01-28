@@ -3,6 +3,6 @@ li id="link-#{link.id}"
   - if link.body
     p= t('.gist_headline')
     pre= link.body
-  - if current_user&.author_of?(resource)
+  - if can?(:destroy, link)
     p= link_to t('.delete'), link_path(id: link.id), data: { link_id: link.id },
             method: :delete, class: 'attached-link-destroy', remote: true
