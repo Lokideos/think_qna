@@ -146,9 +146,9 @@ RSpec.describe CommentsController, type: :controller do
         expect { delete :destroy, params: { id: comment, format: :json } }.to_not change(Comment, :count)
       end
 
-      it 'redirects to root path' do
+      it 'returns 403 Forbidden status code' do
         delete :destroy, params: { id: comment, format: :json }
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 403
       end
     end
 
