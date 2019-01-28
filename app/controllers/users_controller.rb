@@ -3,11 +3,9 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-  authorize_resource
-
   def rewards
     user = User.find(params[:id])
-    return redirect_to root_path, notice: t('notifications.forbidden_for_non_author') unless current_user == user
+    authorize! :check_rewards, user
 
     @rewards = user.rewards
   end

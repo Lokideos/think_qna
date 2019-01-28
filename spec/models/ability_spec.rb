@@ -65,6 +65,9 @@ describe Ability do
 
     it { should be_able_to :choose_best, create(:answer, question: question) }
     it { should_not be_able_to :choose_best, create(:answer, question: non_author_question) }
+
+    it { should be_able_to :check_rewards, user }
+    it { should_not be_able_to :check_rewards, other_user }
   end
 
   describe '#ratable??' do

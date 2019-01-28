@@ -50,6 +50,8 @@ class Ability
     can :choose_best, Answer do |answer|
       user.author_of?(answer.question)
     end
+
+    can :check_rewards, User, id: user.id
   end
 
   def ratable?(item)

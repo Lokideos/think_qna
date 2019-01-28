@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   private
 
   def skip_authorization?
-    respond_to?(:devise_controller?) || respond_to?(:attachments_controller?)
+    respond_to?(:devise_controller?) || respond_to?(:attachments_controller?) || respond_to?(:users_controller?)
   end
 
   def set_locale
