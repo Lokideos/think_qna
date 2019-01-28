@@ -2,6 +2,7 @@
 
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authorize_action_for_instance, only: :destroy
 
   authorize_resource
 
@@ -19,7 +20,6 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, comment
     comment.destroy
   end
 
@@ -37,5 +37,9 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def authorize_action_for_instance
+    authorize! action_name.to_sym, comment
   end
 end

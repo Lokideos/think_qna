@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   include Rated
 
   before_action :authenticate_user!, except: %i[index show]
+  before_action :authorize_action_for_instance, only: %i[update destroy]
 
   authorize_resource
 
@@ -40,12 +41,10 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    authorize! :update, question
     question.update(question_params)
   end
 
   def destroy
-    authorize! :destroy, question
     question.destroy
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
@@ -62,4 +61,8 @@ class QuestionsController < ApplicationController
   end
 
   helper_method :question
+
+  def authorize_action_for_instance
+    authorize! action_name.to_sym, question
+  end
 end

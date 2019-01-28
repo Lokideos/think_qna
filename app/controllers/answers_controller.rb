@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   include Rated
 
   before_action :authenticate_user!
+  before_action :authorize_action_for_instance, only: %i[update destroy choose_best]
 
   authorize_resource
 
@@ -14,17 +15,14 @@ class AnswersController < ApplicationController
   end
 
   def update
-    authorize! :update, answer
     answer.update(answer_params)
   end
 
   def destroy
-    authorize! :destroy, answer
     answer.destroy
   end
 
   def choose_best
-    authorize! :choose_best, answer
     answer.choose_best_answer
   end
 
@@ -46,5 +44,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: %i[name url])
+  end
+
+  def authorize_action_for_instance
+    authorize! action_name.to_sym, answer
   end
 end
