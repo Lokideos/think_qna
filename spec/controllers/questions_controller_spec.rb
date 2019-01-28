@@ -149,9 +149,14 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.title).to eq correct_question_title
       end
 
-      it 'redirects to root path' do
+      it 'returns 200 OK status code' do
         patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 200
+      end
+
+      it 'renders exception_alert template' do
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
+        expect(response).to render_template :exception_alert
       end
     end
 

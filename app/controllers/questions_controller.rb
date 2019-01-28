@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   include Rated
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :filter_non_author_users, only: %i[update destroy]
 
   authorize_resource
 
@@ -41,19 +40,17 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    authorize! :update, question
     question.update(question_params)
   end
 
   def destroy
+    authorize! :destroy, question
     question.destroy
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
 
   private
-
-  def filter_non_author_users
-    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
-  end
 
   def question_params
     params.require(:question).permit(:title, :body,
