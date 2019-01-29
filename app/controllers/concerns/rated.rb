@@ -3,10 +3,12 @@
 module Rated
   extend ActiveSupport::Concern
 
+  included do
+    before_action :authorize_rating_action, only: %i[like unlike dislike]
+  end
+
   # rubocop:disable Metrics/AbcSize
   def like
-    authorize_rating_action
-
     respond_to do |format|
       if resource.rating.not_been_rated_this_way?(current_user, Rating::RATED_UP)
         resource.rating.score_up(current_user)
@@ -18,8 +20,6 @@ module Rated
   end
 
   def dislike
-    authorize_rating_action
-
     respond_to do |format|
       if resource.rating.not_been_rated_this_way?(current_user, Rating::RATED_DOWN)
         resource.rating.score_down(current_user)
@@ -31,8 +31,6 @@ module Rated
   end
 
   def unlike
-    authorize_rating_action
-
     respond_to do |format|
       if resource.rating.rated?(current_user)
         resource.rating.score_delete(current_user)

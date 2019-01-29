@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  include Rated
-
   before_action :authenticate_user!, except: %i[index show]
+
   include Authorized
+  include Rated
 
   def index
     @questions = Question.all

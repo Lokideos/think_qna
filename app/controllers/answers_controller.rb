@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  include Rated
-
   before_action :authenticate_user!
+
   include Authorized
+  include Rated
 
   def create
     @answer = question.answers.new(answer_params)
