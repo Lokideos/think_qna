@@ -42,15 +42,15 @@ class Ability
     end
 
     can :like, [Question, Answer] do |item|
-      ratable?(item)
+      ratable?(item) && item.rating.not_been_rated_this_way?(user, Rating::RATED_UP)
     end
 
     can :dislike, [Question, Answer] do |item|
-      ratable?(item)
+      ratable?(item) && item.rating.not_been_rated_this_way?(user, Rating::RATED_DOWN)
     end
 
     can :unlike, [Question, Answer] do |item|
-      ratable?(item)
+      ratable?(item) && item.rating.rated?(user)
     end
 
     can :choose_best, Answer do |answer|

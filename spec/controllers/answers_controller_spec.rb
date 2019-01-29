@@ -284,10 +284,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :like, params: { id: answer, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -303,10 +303,10 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :like, params: { id: answer, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 
@@ -359,10 +359,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :dislike, params: { id: answer, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -378,10 +378,10 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :dislike, params: { id: answer, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 
@@ -448,10 +448,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :unlike, params: { id: answer, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -467,10 +467,10 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :unlike, params: { id: answer, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 

@@ -5,7 +5,7 @@ module Rated
 
   # rubocop:disable Metrics/AbcSize
   def like
-    return respond_with_error if current_user&.author_of?(resource)
+    authorize_rating_action
 
     respond_to do |format|
       if resource.rating.not_been_rated_this_way?(current_user, Rating::RATED_UP)
@@ -18,7 +18,7 @@ module Rated
   end
 
   def dislike
-    return respond_with_error if current_user&.author_of?(resource)
+    authorize_rating_action
 
     respond_to do |format|
       if resource.rating.not_been_rated_this_way?(current_user, Rating::RATED_DOWN)
@@ -31,7 +31,7 @@ module Rated
   end
 
   def unlike
-    return respond_with_error if current_user&.author_of?(resource)
+    authorize_rating_action
 
     respond_to do |format|
       if resource.rating.rated?(current_user)
@@ -45,6 +45,10 @@ module Rated
   # rubocop:enable Metrics/AbcSize
 
   private
+
+  def authorize_rating_action
+    authorize! action_name.to_sym, resource
+  end
 
   def respond_with_error
     respond_to do |format|

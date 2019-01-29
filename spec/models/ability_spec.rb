@@ -32,6 +32,8 @@ describe Ability do
     let(:non_author_question) { create(:question, user: other_user) }
     let(:author_attachment_resource) { create(:question, user: user) }
     let(:attachment_resource) { create(:question) }
+    let(:rated_question) { create(:question, user: other_user) }
+    let(:rated_answer) { create(:answer, user: other_user) }
 
     it { should be_able_to :read, :all }
 
@@ -63,8 +65,16 @@ describe Ability do
     it { should_not be_able_to :dislike, create(:question, user: user) }
     it { should_not be_able_to :dislike, create(:answer, user: user) }
 
-    it { should be_able_to :unlike, create(:question, user: other_user) }
-    it { should be_able_to :unlike, create(:answer, user: other_user) }
+    it do
+      rated_question.rating.score_up(user)
+      should be_able_to :unlike, rated_question
+    end
+
+    it do
+      rated_answer.rating.score_up(user)
+      should be_able_to :unlike, rated_answer
+    end
+
     it { should_not be_able_to :unlike, create(:question, user: user) }
     it { should_not be_able_to :unlike, create(:answer, user: user) }
 
