@@ -4,9 +4,7 @@ class QuestionsController < ApplicationController
   include Rated
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :authorize_action_for_instance, only: %i[update destroy]
-
-  authorize_resource
+  include Authorized
 
   def index
     @questions = Question.all
@@ -61,8 +59,4 @@ class QuestionsController < ApplicationController
   end
 
   helper_method :question
-
-  def authorize_action_for_instance
-    authorize! action_name.to_sym, question
-  end
 end

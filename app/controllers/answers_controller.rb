@@ -4,9 +4,7 @@ class AnswersController < ApplicationController
   include Rated
 
   before_action :authenticate_user!
-  before_action :authorize_action_for_instance, only: %i[update destroy choose_best]
-
-  authorize_resource
+  include Authorized
 
   def create
     @answer = question.answers.new(answer_params)
@@ -44,9 +42,5 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: %i[name url])
-  end
-
-  def authorize_action_for_instance
-    authorize! action_name.to_sym, answer
   end
 end
