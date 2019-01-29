@@ -38,7 +38,7 @@ class Ability
     end
 
     can :destroy, ActiveStorage::Attachment do |attachment|
-      attachment.record.user_id == user.id
+      user.author_of?(attachment.record)
     end
 
     can :like, [Question, Answer] do |item|
