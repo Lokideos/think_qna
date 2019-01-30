@@ -10,7 +10,8 @@
 
 users = User.create([{ email: 'test@test.com', password: '111111', confirmed_at: DateTime.now },
                      { email: 'dio@theworld.com', password: 'theworld', confirmed_at: DateTime.now },
-                     { email: 'shaper@atlas.com', password: 'theatlas', confirmed_at: DateTime.now }])
+                     { email: 'shaper@atlas.com', password: 'theatlas', confirmed_at: DateTime.now },
+                     { email: 'jojo@bizzare.com', password: 'bizzare', confirmed_at: DateTime.now, admin: true }])
 
 questions = Question.create([{ title: 'Galactic Empire Weapon',
                                body: "What's Galactic Empire most dangerous weapon?",

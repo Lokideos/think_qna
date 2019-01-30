@@ -100,10 +100,14 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq correct_answer_body
       end
 
-      it 'redirects to root path' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, body: 'Other users body'), format: :js }
+      it 'renders exception_alert template' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to render_template :exception_alert
+      end
 
-        expect(response).to redirect_to root_path
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 
@@ -147,10 +151,14 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
       end
 
-      it 'redirects to root_path' do
-        delete :destroy, params: { id: answer, format: :js }
+      it 'renders exception_alert template' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to render_template :exception_alert
+      end
 
-        expect(response).to redirect_to root_path
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 
@@ -192,12 +200,14 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'on answer to question with reward for best answer' do
-        let(:question_with_reward) { create(:question) }
+        let(:question_with_reward) { create(:question, user: user) }
         let!(:reward) { create(:reward, question: question_with_reward) }
-        let!(:answer_on_question_with_reward) { create(:answer, question: question_with_reward, user: user) }
+        let!(:answer_on_question_with_reward) { create(:answer, question: question_with_reward, user: non_author) }
 
         it 'add reward to user' do
-          expect { patch :choose_best, params: { id: answer_on_question_with_reward, format: :js } }.to change(user.rewards, :count).by(1)
+          expect do
+            patch :choose_best, params: { id: answer_on_question_with_reward, format: :js }
+          end.to change(non_author.rewards, :count).by(1)
         end
 
         it 'does not add reward to user if user already has reward for this question' do
@@ -217,9 +227,14 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).to_not be_best
       end
 
-      it 'redirect to root path' do
+      it 'renders exception_alert template' do
         patch :choose_best, params: { id: answer, format: :js }
-        expect(response).to redirect_to root_path
+        expect(response).to render_template :exception_alert
+      end
+
+      it 'returns 200 status code' do
+        patch :choose_best, params: { id: answer, format: :js }
+        expect(response).to have_http_status 200
       end
     end
 
@@ -269,10 +284,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :like, params: { id: answer, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -288,10 +303,10 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :like, params: { id: answer, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 
@@ -344,10 +359,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :dislike, params: { id: answer, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -363,10 +378,10 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :dislike, params: { id: answer, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 
@@ -433,10 +448,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :unlike, params: { id: answer, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -452,10 +467,10 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :unlike, params: { id: answer, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 

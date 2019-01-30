@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  include Rated
-
   before_action :authenticate_user!
-  before_action :filter_answer_non_author_users, only: %i[update destroy]
+
+  include Authorized
+  include Rated
 
   def create
     @answer = question.answers.new(answer_params)
@@ -21,8 +21,6 @@ class AnswersController < ApplicationController
   end
 
   def choose_best
-    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
-
     answer.choose_best_answer
   end
 
@@ -30,10 +28,6 @@ class AnswersController < ApplicationController
 
   def load_new_comment
     @comment = answer.comments.build
-  end
-
-  def filter_answer_non_author_users
-    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(answer)
   end
 
   def question

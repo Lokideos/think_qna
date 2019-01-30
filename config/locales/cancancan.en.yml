@@ -1,0 +1,8 @@
+en:
+  unauthorized:
+    choose_best:
+      answer: 'You can choose best answer only for your questions'
+    update:
+      answer: 'You can modify or delete only your resources.'
+    check_rewards:
+      user: "You can't check other user's rewards."

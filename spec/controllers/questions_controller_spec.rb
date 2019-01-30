@@ -149,9 +149,14 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.title).to eq correct_question_title
       end
 
-      it 'redirects to root path' do
+      it 'returns 200 OK status code' do
         patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 200
+      end
+
+      it 'renders exception_alert template' do
+        patch :update, params: { id: question, question: attributes_for(:question, title: 'Other users title'), format: :js }
+        expect(response).to render_template :exception_alert
       end
     end
 
@@ -246,10 +251,10 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :like, params: { id: question, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -265,10 +270,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :like, params: { id: question, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 
@@ -321,10 +326,10 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :dislike, params: { id: question, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -340,10 +345,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :dislike, params: { id: question, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 
@@ -410,10 +415,10 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.rating.score).to eq rating_count
         end
 
-        it 'returns Unprocessable Entity 422 status' do
+        it 'returns Forbidden 403 status' do
           patch :unlike, params: { id: question, format: :json }
 
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -429,10 +434,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.rating.score).to eq rating_count
       end
 
-      it 'returns Unprocessable Entity 422 status' do
+      it 'returns Forbidden 403 status' do
         patch :unlike, params: { id: question, format: :json }
 
-        expect(response).to have_http_status 422
+        expect(response).to have_http_status 403
       end
     end
 

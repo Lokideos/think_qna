@@ -1,4 +1,4 @@
 li.comment
   p= comment.body
-  - if current_user&.author_of?(comment)
+  - if can?(:destroy, comment)
     = link_to t('.delete'), comment_path(comment), class: 'comment-delete-link', method: :delete, data: { type: :json }, remote: true

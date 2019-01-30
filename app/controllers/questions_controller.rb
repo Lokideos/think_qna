@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  include Rated
-
   before_action :authenticate_user!, except: %i[index show]
-  before_action :filter_non_author_users, only: %i[update destroy]
+
+  include Authorized
+  include Rated
 
   def index
     @questions = Question.all
@@ -48,10 +48,6 @@ class QuestionsController < ApplicationController
   end
 
   private
-
-  def filter_non_author_users
-    redirect_to root_path, notice: I18n.t('notifications.cherry_request_stub') unless current_user.author_of?(question)
-  end
 
   def question_params
     params.require(:question).permit(:title, :body,
