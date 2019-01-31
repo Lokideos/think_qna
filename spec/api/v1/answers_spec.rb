@@ -12,16 +12,9 @@ describe 'Answers API' do
   let(:answer) { create(:answer) }
 
   describe 'GET /api/v1/answers/:id' do
-    context 'unauthorized' do
-      it 'returns 401 Unauthorized status if there is no access token' do
-        get "/api/v1/answers/#{answer.id}", headers: headers
-        expect(response).to have_http_status 401
-      end
-
-      it 'returns 401 Unauthorized status if access token is invalid' do
-        get '/api/v1/questions', params: { access_token: '1234' }, headers: headers
-        expect(response).to have_http_status 401
-      end
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
     end
 
     context 'authorized' do
