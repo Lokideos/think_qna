@@ -17,6 +17,8 @@ describe Ability do
 
     it { should be_able_to :create, :create_email }
     it { should be_able_to :authenticate, :oauth_provider }
+    it { should be_able_to :access, :profile_public_api_call }
+    it { should be_able_to :access, :questions_public_api_call }
   end
 
   context 'as admin user' do
