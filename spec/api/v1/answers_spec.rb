@@ -37,65 +37,19 @@ describe 'Answers API' do
         end
       end
 
-      context 'comments' do
-        let(:comments_response) { answer_response['comments'] }
-
-        it 'contains comments' do
-          expect(comments_response.first['id']).to eq comment.id
-        end
-
-        it 'contains all comments' do
-          expect(comments_response.size).to eq 3
-        end
-
-        it 'returns all public fields of comments' do
-          %w[id body created_at updated_at].each do |attr|
-            expect(comments_response.first[attr]).to eq comment.send(attr).as_json
-          end
-        end
+      it_behaves_like 'API Commentable' do
+        let(:resource_response_with_comments) { answer_response['comments'] }
       end
 
-      context 'file links' do
-        let(:files_response) { answer_response['files'] }
-
-        before { answer.files.attach(create_file_blob) }
-        before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers }
-
-        it 'contains files' do
-          expect(files_response.first['id']).to eq answer.files.first.id
-        end
-
-        it 'contains link for files' do
-          %w[id service_url].each do |attr|
-            expect(files_response.first[attr]).to eq answer.files.first.send(attr).as_json
-          end
-        end
-
-        it 'contains only allowed data' do
-          expect(files_response.first.size).to eq 2
-        end
+      it_behaves_like 'API Filable' do
+        let(:resource_response_with_files) { answer_response['files'] }
+        let(:resource) { answer }
+        let(:method) { :get }
+        let(:api_path) { "/api/v1/answers/#{answer.id}" }
       end
 
-      context 'links' do
-        let(:links_response) { answer_response['links'] }
-
-        it 'contains links' do
-          expect(links_response.first['id']).to eq link.id
-        end
-
-        it 'contain all related to question links' do
-          expect(links_response.size).to eq 2
-        end
-
-        it 'contains url for links' do
-          %w[id url].each do |attr|
-            expect(links_response.first[attr]).to eq link.send(attr).as_json
-          end
-        end
-
-        it 'contains only allowed data' do
-          expect(links_response.first.size).to eq 2
-        end
+      it_behaves_like 'API Linkable' do
+        let(:resource_response_with_links) { answer_response['links'] }
       end
     end
   end
