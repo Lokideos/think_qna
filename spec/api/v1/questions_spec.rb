@@ -101,7 +101,25 @@ describe 'Questions API' do
         end
       end
 
-      it 'contains url links to files'
+      context 'file links' do
+        before { question.files.attach(create_file_blob) }
+        before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
+
+        it 'contains files' do
+          expect(question_response['files'].first['id']).to eq question.files.first.id
+        end
+
+        it 'contains link for files' do
+          %w[id service_url].each do |attr|
+            expect(question_response['files'].first[attr]).to eq question.files.first.send(attr).as_json
+          end
+        end
+
+        it 'contains only allowed data' do
+          expect(question_response['files'].first.size).to eq 2
+        end
+      end
+
       it 'contains url links'
     end
   end
