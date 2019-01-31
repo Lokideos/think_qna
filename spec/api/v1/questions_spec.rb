@@ -67,6 +67,8 @@ describe 'Questions API' do
 
     context 'authorized' do
       let!(:comments) { create_list(:comment, 3, commentable: question) }
+      let!(:links) { create_list(:link, 2, linkable: question) }
+      let(:link) { links.last }
       let(:comment) { comments.first }
       let(:access_token) { create(:access_token) }
       let(:question_response) { json['question'] }
@@ -120,7 +122,25 @@ describe 'Questions API' do
         end
       end
 
-      it 'contains url links'
+      context 'links' do
+        it 'contains links' do
+          expect(question_response['links'].first['id']).to eq link.id
+        end
+
+        it 'contain all related to question links' do
+          expect(question_response['links'].size).to eq 2
+        end
+
+        it 'contains url for links' do
+          %w[id url].each do |attr|
+            expect(question_response['links'].first[attr]).to eq link.send(attr).as_json
+          end
+        end
+
+        it 'contains only allowed data' do
+          expect(question_response['links'].first.size).to eq 2
+        end
+      end
     end
   end
 end
