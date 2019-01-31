@@ -34,6 +34,14 @@ Rails.application.routes.draw do
 
     resources :attachments, only: %i[destroy]
     resources :links, only: %i[destroy]
+
+    namespace :api do
+      namespace :v1 do
+        resources :profiles, only: [] do
+          get :me, on: :collection
+        end
+      end
+    end
   end
 
   get '/:lang' => 'questions#index'
