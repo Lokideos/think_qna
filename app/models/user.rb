@@ -7,6 +7,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:github]
 
+  delegate :can?, :cannot?, to: :ability
+
   has_many :questions
   has_many :answers
   has_many :rewards
@@ -31,6 +33,10 @@ class User < ApplicationRecord
     self.password = Devise.friendly_token[0, 20]
     self.password_confirmation = password
     save
+  end
+
+  def ability
+    @ability ||= Ability.new(self)
   end
 
   class << self

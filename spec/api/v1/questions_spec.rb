@@ -121,5 +121,43 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST /api/v1/questions' do
+    it_behaves_like 'API Authorizable' do
+      let(:headers) { nil }
+      let(:method) { :post }
+      let(:api_path) { '/api/v1/questions' }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      context 'with valid attributes' do
+        it 'returns 200 status' do
+          post '/api/v1/questions',
+               params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
+          expect(response).to be_successful
+        end
+
+        it 'create new question in the database' do
+          expect do
+            post '/api/v1/questions',
+                 params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
+          end.to change(Question, :count).by(1)
+        end
+
+        it 'creates question with correct attributes' do
+          post '/api/v1/questions',
+               params: {
+                 question: { title: 'Q-Title', body: 'Q-Body' },
+                 access_token: access_token.token,
+                 format: :json
+               }
+          expect(Question.last.title).to eq 'Q-Title'
+          expect(Question.last.body).to eq 'Q-Body'
+        end
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
