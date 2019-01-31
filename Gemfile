@@ -48,6 +48,7 @@ gem 'skim'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'cancancan'
+gem 'doorkeeper'
 
 # LOCALIZATION
 gem 'rails-i18n', '~> 5.0.0'
