@@ -23,6 +23,7 @@ class Ability
     can :authenticate, :oauth_provider
     can :access, :profile_public_api_call
     can :access, :questions_public_api_call
+    can :access, :answers_public_api_call
   end
 
   def admin_abilities
