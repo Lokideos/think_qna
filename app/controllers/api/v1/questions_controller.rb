@@ -17,4 +17,11 @@ class Api::V1::QuestionsController < ApplicationController
     @question = Question.find(params[:id])
     render json: @question
   end
+
+  def answers
+    unauthorized! if cannot? :access, :questions_public_api_call
+
+    @answers = Question.find(params[:id]).answers
+    render json: @answers
+  end
 end
