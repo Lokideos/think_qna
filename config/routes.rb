@@ -41,7 +41,7 @@ Rails.application.routes.draw do
           get :me, on: :collection
         end
 
-        resources :questions, only: %i[index show create] do
+        resources :questions, only: %i[index show create update] do
           get :answers, on: :member
 
           resources :answers, shallow: true, only: %i[show]

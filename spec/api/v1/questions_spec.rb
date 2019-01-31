@@ -161,7 +161,11 @@ describe 'Questions API' do
       context 'with invalid attributes' do
         it 'returns 422 Unprocessable entity status' do
           post '/api/v1/questions',
-               params: { question: attributes_for(:question, :invalid), access_token: access_token.token, format: :json }
+               params: {
+                 question: attributes_for(:question, :invalid),
+                 access_token: access_token.token,
+                 format: :json
+               }
           expect(response).to have_http_status 422
         end
 
@@ -173,6 +177,58 @@ describe 'Questions API' do
               format: :json
             }
           end.to_not change(Question, :count)
+        end
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:headers) { nil }
+      let(:method) { :patch }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      context 'with valid attributes' do
+        it 'returns 200 status' do
+          patch "/api/v1/questions/#{question.id}",
+                params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
+          expect(response).to be_successful
+        end
+
+        it 'updates the question' do
+          patch "/api/v1/questions/#{question.id}",
+                params: { question: { title: 'Updated Title' }, access_token: access_token.token, format: :json }
+          question.reload
+
+          expect(question.title).to eq 'Updated Title'
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'returns 422 status' do
+          patch "/api/v1/questions/#{question.id}",
+                params: {
+                  question: attributes_for(:question, :invalid),
+                  access_token: access_token.token,
+                  format: :json
+                }
+          expect(response).to have_http_status 422
+        end
+
+        it 'does not update the question' do
+          correct_title = question.title
+          patch "/api/v1/questions/#{question.id}",
+                params: { question: { title: nil }, access_token: access_token.token, format: :json }
+          question.reload
+
+          expect(question.title).to eq correct_title
         end
       end
     end

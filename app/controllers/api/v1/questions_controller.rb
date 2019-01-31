@@ -12,10 +12,17 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    unauthorized! if current_resource_owner.cannot?(:create, Question)
+    unauthorized! if current_resource_owner.cannot? :create, Question
 
     @question = Question.new(question_params.merge(user: current_resource_owner))
     head :unprocessable_entity unless @question.save
+  end
+
+  def update
+    @question = Question.find(params[:id])
+
+    unauthorized! if current_resource_owner.cannot? :update, @question
+    head :unprocessable_entity unless @question.update(question_params)
   end
 
   def answers
