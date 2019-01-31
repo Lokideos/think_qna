@@ -15,7 +15,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     unauthorized! if current_resource_owner.cannot?(:create, Question)
 
     @question = Question.new(question_params.merge(user: current_resource_owner))
-    @question.save
+    head :unprocessable_entity unless @question.save
   end
 
   def answers

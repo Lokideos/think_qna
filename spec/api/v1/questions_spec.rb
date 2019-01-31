@@ -157,6 +157,24 @@ describe 'Questions API' do
           expect(Question.last.body).to eq 'Q-Body'
         end
       end
+
+      context 'with invalid attributes' do
+        it 'returns 422 Unprocessable entity status' do
+          post '/api/v1/questions',
+               params: { question: attributes_for(:question, :invalid), access_token: access_token.token, format: :json }
+          expect(response).to have_http_status 422
+        end
+
+        it 'does not save question in the database' do
+          expect do
+            post '/api/v1/questions', params: {
+              question: attributes_for(:question, :invalid),
+              access_token: access_token.token,
+              format: :json
+            }
+          end.to_not change(Question, :count)
+        end
+      end
     end
   end
 end
