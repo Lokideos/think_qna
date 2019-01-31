@@ -43,6 +43,7 @@ RSpec.configure do |config|
   config.include ActiveStorageHelpers
   config.include WaitForAjax, type: :feature
   config.include OmniauthMacros
+  config.include ApiHelpers, type: :request
 
   Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.default_max_wait_time = 5

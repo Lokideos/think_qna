@@ -21,6 +21,7 @@ class Ability
     can :read, :all
     can :create, :create_email
     can :authenticate, :oauth_provider
+    can :access_profile, :me
   end
 
   def admin_abilities
