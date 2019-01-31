@@ -104,41 +104,45 @@ describe 'Questions API' do
       end
 
       context 'file links' do
+        let(:files_response) { question_response['files'] }
+
         before { question.files.attach(create_file_blob) }
         before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
 
         it 'contains files' do
-          expect(question_response['files'].first['id']).to eq question.files.first.id
+          expect(files_response.first['id']).to eq question.files.first.id
         end
 
         it 'contains link for files' do
           %w[id service_url].each do |attr|
-            expect(question_response['files'].first[attr]).to eq question.files.first.send(attr).as_json
+            expect(files_response.first[attr]).to eq question.files.first.send(attr).as_json
           end
         end
 
         it 'contains only allowed data' do
-          expect(question_response['files'].first.size).to eq 2
+          expect(files_response.first.size).to eq 2
         end
       end
 
       context 'links' do
+        let(:links_response) { question_response['links'] }
+
         it 'contains links' do
-          expect(question_response['links'].first['id']).to eq link.id
+          expect(links_response.first['id']).to eq link.id
         end
 
         it 'contain all related to question links' do
-          expect(question_response['links'].size).to eq 2
+          expect(links_response.size).to eq 2
         end
 
         it 'contains url for links' do
           %w[id url].each do |attr|
-            expect(question_response['links'].first[attr]).to eq link.send(attr).as_json
+            expect(links_response.first[attr]).to eq link.send(attr).as_json
           end
         end
 
         it 'contains only allowed data' do
-          expect(question_response['links'].first.size).to eq 2
+          expect(links_response.first.size).to eq 2
         end
       end
     end
