@@ -178,24 +178,10 @@ describe 'Answers API' do
       let(:api_path) { "/api/v1/answers/#{answer.id}" }
     end
 
-    context 'authorized' do
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
-      it 'returns 200 status' do
-        delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token, format: :json }
-        expect(response).to be_successful
-      end
-
-      it 'deletes answer from the database' do
-        expect do
-          delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token, format: :json }
-        end.to change(Answer, :count).by(-1)
-      end
-
-      it 'deletes correct answer from the database' do
-        delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token, format: :json }
-        expect { answer.reload }.to raise_error ActiveRecord::RecordNotFound
-      end
+    it_behaves_like 'API Deletable' do
+      let(:method) { :delete }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
+      let(:resource) { answer }
     end
   end
 end
