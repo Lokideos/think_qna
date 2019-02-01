@@ -167,5 +167,36 @@ describe 'Answers API' do
       end
     end
   end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    let(:user) { create(:user) }
+    let!(:answer) { create(:answer, user: user) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:headers) { nil }
+      let(:method) { :delete }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      it 'returns 200 status' do
+        delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token, format: :json }
+        expect(response).to be_successful
+      end
+
+      it 'deletes answer from the database' do
+        expect do
+          delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token, format: :json }
+        end.to change(Answer, :count).by(-1)
+      end
+
+      it 'deletes correct answer from the database' do
+        delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token, format: :json }
+        expect { answer.reload }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

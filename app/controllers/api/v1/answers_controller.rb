@@ -19,6 +19,12 @@ class Api::V1::AnswersController < Api::V1::BaseController
     head :unprocessable_entity unless answer.update(answer_params)
   end
 
+  def destroy
+    unauthorized! if current_resource_owner.cannot? :destroy, answer
+
+    answer.destroy
+  end
+
   private
 
   def answer_params
