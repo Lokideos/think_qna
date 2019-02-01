@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
 class Api::V1::AnswersController < Api::V1::BaseController
+  authorize_resource class: Answer
+
+  def index
+    @answers = question.answers
+    render json: @answers
+  end
+
   def show
-    @answer = Answer.find(params[:id])
-    render json: @answer
+    render json: answer
   end
 
   def create
-    unauthorized! if current_resource_owner.cannot? :create, Answer
-
     @answer = question.answers.new(answer_params.merge(user: current_resource_owner))
     head :unprocessable_entity unless @answer.save
   end
 
   def update
-    unauthorized! if current_resource_owner.cannot? :update, answer
-
     head :unprocessable_entity unless answer.update(answer_params)
   end
 
   def destroy
-    unauthorized! if current_resource_owner.cannot? :destroy, answer
-
     answer.destroy
   end
 
