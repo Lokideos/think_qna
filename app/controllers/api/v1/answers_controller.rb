@@ -14,11 +14,19 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def create
     @answer = question.answers.new(answer_params.merge(user: current_resource_owner))
-    head :unprocessable_entity unless @answer.save
+    if @answer.save
+      render json: @answer, status: 201
+    else
+      head :unprocessable_entity
+    end
   end
 
   def update
-    head :unprocessable_entity unless answer.update(answer_params)
+    if answer.update(answer_params)
+      render json: answer, status: 201
+    else
+      head :unprocessable_entity
+    end
   end
 
   def destroy

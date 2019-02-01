@@ -101,10 +101,10 @@ describe 'Answers API' do
       let(:access_token) { create(:access_token) }
 
       context 'with valid attributes' do
-        it 'returns 200 status' do
+        it 'returns 201 status' do
           post "/api/v1/questions/#{question.id}/answers",
                params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
-          expect(response).to be_successful
+          expect(response).to have_http_status 201
         end
 
         it 'create new answer in the database' do
@@ -123,6 +123,17 @@ describe 'Answers API' do
                }
           expect(question.answers.last.body).to eq 'A-Body'
           expect(Answer.last.question_id).to eq question.id
+        end
+
+        it 'returns created object' do
+          post "/api/v1/questions/#{question.id}/answers",
+               params: {
+                 answer: attributes_for(:answer),
+                 access_token: access_token.token,
+                 format: :json
+               }
+
+          expect(Answer.find(json['answer']['id'])).to be_a(Answer)
         end
       end
 
@@ -176,6 +187,13 @@ describe 'Answers API' do
           answer.reload
 
           expect(answer.body).to eq 'Updated Body'
+        end
+
+        it 'returns updated object' do
+          patch "/api/v1/answers/#{answer.id}",
+                params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
+
+          expect(Answer.find(json['answer']['id'])).to be_a(Answer)
         end
       end
 
