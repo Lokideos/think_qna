@@ -7,8 +7,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    @question = Question.find(params[:id])
-    render json: @question
+    render json: question
   end
 
   def create
@@ -19,10 +18,15 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
-    @question = Question.find(params[:id])
+    unauthorized! if current_resource_owner.cannot? :update, question
 
-    unauthorized! if current_resource_owner.cannot? :update, @question
-    head :unprocessable_entity unless @question.update(question_params)
+    head :unprocessable_entity unless question.update(question_params)
+  end
+
+  def destroy
+    unauthorized! if current_resource_owner.cannot? :destroy, question
+
+    question.destroy
   end
 
   def answers
@@ -36,5 +40,9 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def question_params
     params.require(:question).permit(:title, :body)
+  end
+
+  def question
+    @question ||= Question.find(params[:id]) if params[:id]
   end
 end
