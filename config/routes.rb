@@ -44,7 +44,7 @@ Rails.application.routes.draw do
         resources :questions, except: %i[new edit] do
           get :answers, on: :member
 
-          resources :answers, shallow: true, only: %i[show create]
+          resources :answers, shallow: true, only: %i[show create update]
         end
       end
     end

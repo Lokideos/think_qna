@@ -13,6 +13,12 @@ class Api::V1::AnswersController < Api::V1::BaseController
     head :unprocessable_entity unless @answer.save
   end
 
+  def update
+    unauthorized! if current_resource_owner.cannot? :update, answer
+
+    head :unprocessable_entity unless answer.update(answer_params)
+  end
+
   private
 
   def answer_params
@@ -21,5 +27,9 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def question
     @question ||= Question.find(params[:question_id]) if params[:question_id]
+  end
+
+  def answer
+    @answer ||= Answer.find(params[:id]) if params[:id]
   end
 end
