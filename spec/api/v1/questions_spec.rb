@@ -10,9 +10,10 @@ describe 'Questions API' do
   end
 
   describe 'GET /api/v1/questions' do
+    let(:api_path) { '/api/v1/questions' }
+
     it_behaves_like 'API Authorizable' do
       let(:method) { :get }
-      let(:api_path) { '/api/v1/questions' }
     end
 
     context 'authorized' do
@@ -21,7 +22,7 @@ describe 'Questions API' do
       let(:questions_response) { json['questions'] }
       let(:access_token) { create(:access_token) }
 
-      before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 OK status' do
         expect(response).to be_successful
@@ -46,9 +47,9 @@ describe 'Questions API' do
   describe 'GET /api/v1/questions/:id' do
     let!(:question) { create(:question) }
 
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
     it_behaves_like 'API Authorizable' do
       let(:method) { :get }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
     end
 
     context 'authorized' do
@@ -59,7 +60,7 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token) }
       let(:question_response) { json['question'] }
 
-      before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 OK status' do
         expect(response).to be_successful
@@ -79,7 +80,6 @@ describe 'Questions API' do
         let(:resource_response_with_files) { question_response['files'] }
         let(:resource) { question }
         let(:method) { :get }
-        let(:api_path) { "/api/v1/questions/#{question.id}" }
       end
 
       it_behaves_like 'API Linkable' do
@@ -89,10 +89,10 @@ describe 'Questions API' do
   end
 
   describe 'POST /api/v1/questions' do
+    let(:api_path) { '/api/v1/questions' }
     it_behaves_like 'API Authorizable' do
       let(:headers) { nil }
       let(:method) { :post }
-      let(:api_path) { '/api/v1/questions' }
     end
 
     context 'authorized' do
@@ -100,20 +100,20 @@ describe 'Questions API' do
 
       context 'with valid attributes' do
         it 'returns 201 status' do
-          post '/api/v1/questions',
+          post api_path,
                params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
           expect(response).to have_http_status 201
         end
 
         it 'create new question in the database' do
           expect do
-            post '/api/v1/questions',
+            post api_path,
                  params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
           end.to change(Question, :count).by(1)
         end
 
         it 'creates question with correct attributes' do
-          post '/api/v1/questions',
+          post api_path,
                params: {
                  question: { title: 'Q-Title', body: 'Q-Body' },
                  access_token: access_token.token,
@@ -124,7 +124,7 @@ describe 'Questions API' do
         end
 
         it 'returns created object' do
-          post '/api/v1/questions',
+          post api_path,
                params: {
                  question: { title: 'Q-Title', body: 'Q-Body' },
                  access_token: access_token.token,
@@ -137,7 +137,7 @@ describe 'Questions API' do
 
       context 'with invalid attributes' do
         it 'returns 422 Unprocessable entity status' do
-          post '/api/v1/questions',
+          post api_path,
                params: {
                  question: attributes_for(:question, :invalid),
                  access_token: access_token.token,
@@ -148,7 +148,7 @@ describe 'Questions API' do
 
         it 'does not save question in the database' do
           expect do
-            post '/api/v1/questions', params: {
+            post api_path, params: {
               question: attributes_for(:question, :invalid),
               access_token: access_token.token,
               format: :json
@@ -163,10 +163,10 @@ describe 'Questions API' do
     let(:user) { create(:user) }
     let!(:question) { create(:question, user: user) }
 
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
     it_behaves_like 'API Authorizable' do
       let(:headers) { nil }
       let(:method) { :patch }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
     end
 
     context 'authorized' do
@@ -174,13 +174,13 @@ describe 'Questions API' do
 
       context 'with valid attributes' do
         it 'returns 201 status' do
-          patch "/api/v1/questions/#{question.id}",
+          patch api_path,
                 params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
           expect(response).to have_http_status 201
         end
 
         it 'updates the question' do
-          patch "/api/v1/questions/#{question.id}",
+          patch api_path,
                 params: { question: { title: 'Updated Title' }, access_token: access_token.token, format: :json }
           question.reload
 
@@ -188,7 +188,7 @@ describe 'Questions API' do
         end
 
         it 'returns updated object' do
-          patch "/api/v1/questions/#{question.id}",
+          patch api_path,
                 params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
 
           expect(Question.find(json['question']['id'])).to be_a(Question)
@@ -197,7 +197,7 @@ describe 'Questions API' do
 
       context 'with invalid attributes' do
         it 'returns 422 status' do
-          patch "/api/v1/questions/#{question.id}",
+          patch api_path,
                 params: {
                   question: attributes_for(:question, :invalid),
                   access_token: access_token.token,
@@ -208,7 +208,7 @@ describe 'Questions API' do
 
         it 'does not update the question' do
           correct_title = question.title
-          patch "/api/v1/questions/#{question.id}",
+          patch api_path,
                 params: { question: { title: nil }, access_token: access_token.token, format: :json }
           question.reload
 
@@ -222,15 +222,14 @@ describe 'Questions API' do
     let(:user) { create(:user) }
     let!(:question) { create(:question, user: user) }
 
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
     it_behaves_like 'API Authorizable' do
       let(:headers) { nil }
       let(:method) { :delete }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
     end
 
     it_behaves_like 'API Deletable' do
       let(:method) { :delete }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
       let(:resource) { question }
     end
   end
