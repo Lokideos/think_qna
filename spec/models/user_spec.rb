@@ -112,14 +112,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#ability' do
-      let(:user) { create(:user) }
-
-      it 'returns instance of Ability class' do
-        expect(user.ability).to be_a(Ability)
-      end
-    end
-
     def save_user_for_oauth
       self.password = Devise.friendly_token[0, 20]
       self.password_confirmation = password
