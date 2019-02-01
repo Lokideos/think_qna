@@ -99,10 +99,10 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token) }
 
       context 'with valid attributes' do
-        it 'returns 200 status' do
+        it 'returns 201 status' do
           post '/api/v1/questions',
                params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
-          expect(response).to be_successful
+          expect(response).to have_http_status 201
         end
 
         it 'create new question in the database' do
@@ -121,6 +121,17 @@ describe 'Questions API' do
                }
           expect(Question.last.title).to eq 'Q-Title'
           expect(Question.last.body).to eq 'Q-Body'
+        end
+
+        it 'returns created object' do
+          post '/api/v1/questions',
+               params: {
+                 question: { title: 'Q-Title', body: 'Q-Body' },
+                 access_token: access_token.token,
+                 format: :json
+               }
+
+          expect(Question.find(json['question']['id'])).to be_a(Question)
         end
       end
 
@@ -162,10 +173,10 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       context 'with valid attributes' do
-        it 'returns 200 status' do
+        it 'returns 201 status' do
           patch "/api/v1/questions/#{question.id}",
                 params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
-          expect(response).to be_successful
+          expect(response).to have_http_status 201
         end
 
         it 'updates the question' do
@@ -174,6 +185,13 @@ describe 'Questions API' do
           question.reload
 
           expect(question.title).to eq 'Updated Title'
+        end
+
+        it 'returns updated object' do
+          patch "/api/v1/questions/#{question.id}",
+                params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
+
+          expect(Question.find(json['question']['id'])).to be_a(Question)
         end
       end
 

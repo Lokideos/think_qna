@@ -175,10 +175,10 @@ describe 'Answers API' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       context 'with valid attributes' do
-        it 'returns 200 status' do
+        it 'returns 201 status' do
           patch "/api/v1/answers/#{answer.id}",
                 params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
-          expect(response).to be_successful
+          expect(response).to have_http_status 201
         end
 
         it 'updates the answer' do
