@@ -54,11 +54,11 @@ describe 'Questions API' do
 
     context 'authorized' do
       let!(:comments) { create_list(:comment, 3, commentable: question) }
-      let!(:links) { create_list(:link, 2, linkable: question) }
-      let(:link) { links.last }
       let(:comment) { comments.first }
       let(:access_token) { create(:access_token) }
       let(:question_response) { json['question'] }
+      let!(:links) { create_list(:link, 2, linkable: question) }
+      let(:link) { question.links.order(created_at: :desc).first }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 

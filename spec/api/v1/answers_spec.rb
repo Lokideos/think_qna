@@ -58,7 +58,7 @@ describe 'Answers API' do
       let!(:comments) { create_list(:comment, 3, commentable: answer) }
       let(:comment) { comments.first }
       let!(:links) { create_list(:link, 2, linkable: answer) }
-      let(:link) { links.last }
+      let(:link) { answer.links.order(created_at: :desc).first }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
