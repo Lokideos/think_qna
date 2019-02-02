@@ -109,9 +109,20 @@ describe 'Answers API' do
 
         it 'create new answer in the database' do
           expect do
-            post api_path,
-                 params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
+            post api_path, params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
           end.to change(Answer, :count).by(1)
+        end
+
+        it 'assign correct user association to newly created answer' do
+          post api_path, params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
+          expect(Answer.first.user_id). to eq access_token.resource_owner_id
+        end
+
+        it 'assign correct question association to newly created answer' do
+          post api_path, params: {
+            answer: attributes_for(:answer, question: question), access_token: access_token.token, format: :json
+          }
+          expect(Answer.first.question_id).to eq question.id
         end
 
         it 'creates answer with correct attributes' do

@@ -112,6 +112,12 @@ describe 'Questions API' do
           end.to change(Question, :count).by(1)
         end
 
+        it 'assign correct user association to newly created answer' do
+          post api_path,
+               params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
+          expect(Question.first.user_id). to eq access_token.resource_owner_id
+        end
+
         it 'creates question with correct attributes' do
           post api_path,
                params: {
