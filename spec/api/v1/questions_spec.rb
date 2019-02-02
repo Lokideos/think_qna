@@ -155,6 +155,13 @@ describe 'Questions API' do
             }
           end.to_not change(Question, :count)
         end
+
+        it 'returns error messages' do
+          post api_path,
+               params: { question: { title: nil }, access_token: access_token.token, format: :json }
+
+          expect(json).to include "Title can't be blank"
+        end
       end
     end
   end
@@ -213,6 +220,13 @@ describe 'Questions API' do
           question.reload
 
           expect(question.title).to eq correct_title
+        end
+
+        it 'returns error messages' do
+          patch api_path,
+                params: { question: { title: nil }, access_token: access_token.token, format: :json }
+
+          expect(json).to include "Title can't be blank"
         end
       end
     end

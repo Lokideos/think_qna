@@ -16,7 +16,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if @question.save
       render json: @question, status: 201
     else
-      head :unprocessable_entity
+      render json: @question.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -24,7 +24,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if question.update(question_params)
       render json: question, status: 201
     else
-      head :unprocessable_entity
+      render json: question.errors.full_messages, status: :unprocessable_entity
     end
   end
 

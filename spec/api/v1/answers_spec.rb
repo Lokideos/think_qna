@@ -157,6 +157,13 @@ describe 'Answers API' do
             }
           end.to_not change(Answer, :count)
         end
+
+        it 'returns error messages' do
+          post api_path,
+               params: { answer: { body: nil }, access_token: access_token.token, format: :json }
+
+          expect(json).to include "Body can't be blank"
+        end
       end
     end
   end
@@ -215,6 +222,13 @@ describe 'Answers API' do
           answer.reload
 
           expect(answer.body).to eq correct_body
+        end
+
+        it 'returns error messages' do
+          patch api_path,
+                params: { answer: { body: nil }, access_token: access_token.token, format: :json }
+
+          expect(json).to include "Body can't be blank"
         end
       end
     end
