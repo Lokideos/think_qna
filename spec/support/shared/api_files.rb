@@ -7,10 +7,6 @@ shared_examples_for 'API Filable' do
     before { resource.files.attach(create_file_blob) }
     before { do_request(method, api_path, params: { access_token: access_token.token }, headers: headers) }
 
-    it 'contains files' do
-      expect(resource_response_with_files.first['id']).to eq resource.files.first.id
-    end
-
     it 'contains link for files' do
       %w[id service_url].each do |attr|
         expect(resource_response_with_files.first[attr]).to eq resource.files.first.send(attr).as_json

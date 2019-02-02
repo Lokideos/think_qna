@@ -14,10 +14,5 @@ shared_examples_for 'API Deletable' do
         do_request(method, api_path, params: { access_token: access_token.token, format: :json })
       end.to change(resource.class, :count).by(-1)
     end
-
-    it 'deletes correct answer from the database' do
-      do_request(method, api_path, params: { access_token: access_token.token, format: :json })
-      expect { resource.reload }.to raise_error ActiveRecord::RecordNotFound
-    end
   end
 end
