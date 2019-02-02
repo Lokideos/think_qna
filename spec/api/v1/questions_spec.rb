@@ -180,10 +180,10 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       context 'with valid attributes' do
-        it 'returns 201 created status' do
+        it 'returns 200 OK status' do
           patch api_path,
                 params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
-          expect(response).to have_http_status :created
+          expect(response).to have_http_status :ok
         end
 
         it 'updates the question' do

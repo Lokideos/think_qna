@@ -22,7 +22,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def update
     if answer.update(answer_params)
-      render json: answer, status: :created
+      render json: answer, status: :ok
     else
       render json: answer.errors.full_messages, status: :unprocessable_entity
     end
