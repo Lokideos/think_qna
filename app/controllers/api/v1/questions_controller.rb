@@ -14,7 +14,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   def create
     @question = Question.new(question_params.merge(user: current_resource_owner))
     if @question.save
-      render json: @question, status: 201
+      render json: @question, status: :created
     else
       render json: @question.errors.full_messages, status: :unprocessable_entity
     end
@@ -22,7 +22,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def update
     if question.update(question_params)
-      render json: question, status: 201
+      render json: question, status: :created
     else
       render json: question.errors.full_messages, status: :unprocessable_entity
     end

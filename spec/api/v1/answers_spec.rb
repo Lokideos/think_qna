@@ -63,7 +63,7 @@ describe 'Answers API' do
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 OK status' do
-        expect(response).to have_http_status 200
+        expect(response).to have_http_status :ok
       end
 
       it 'returns all public fields' do
@@ -101,10 +101,10 @@ describe 'Answers API' do
       let(:access_token) { create(:access_token) }
 
       context 'with valid attributes' do
-        it 'returns 201 status' do
+        it 'returns 201 Created status' do
           post api_path,
                params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
-          expect(response).to have_http_status 201
+          expect(response).to have_http_status :created
         end
 
         it 'create new answer in the database' do
@@ -145,7 +145,7 @@ describe 'Answers API' do
                  access_token: access_token.token,
                  format: :json
                }
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status :unprocessable_entity
         end
 
         it 'does not save answer in the database' do
@@ -182,10 +182,10 @@ describe 'Answers API' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       context 'with valid attributes' do
-        it 'returns 201 status' do
+        it 'returns 201 created status' do
           patch api_path,
                 params: { answer: attributes_for(:answer), access_token: access_token.token, format: :json }
-          expect(response).to have_http_status 201
+          expect(response).to have_http_status :created
         end
 
         it 'updates the answer' do
@@ -212,7 +212,7 @@ describe 'Answers API' do
                   access_token: access_token.token,
                   format: :json
                 }
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status :unprocessable_entity
         end
 
         it 'does not update the answer' do

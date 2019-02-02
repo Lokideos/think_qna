@@ -99,10 +99,10 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token) }
 
       context 'with valid attributes' do
-        it 'returns 201 status' do
+        it 'returns 201 created status' do
           post api_path,
                params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
-          expect(response).to have_http_status 201
+          expect(response).to have_http_status :created
         end
 
         it 'create new question in the database' do
@@ -143,7 +143,7 @@ describe 'Questions API' do
                  access_token: access_token.token,
                  format: :json
                }
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status :unprocessable_entity
         end
 
         it 'does not save question in the database' do
@@ -180,10 +180,10 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       context 'with valid attributes' do
-        it 'returns 201 status' do
+        it 'returns 201 created status' do
           patch api_path,
                 params: { question: attributes_for(:question), access_token: access_token.token, format: :json }
-          expect(response).to have_http_status 201
+          expect(response).to have_http_status :created
         end
 
         it 'updates the question' do
@@ -210,7 +210,7 @@ describe 'Questions API' do
                   access_token: access_token.token,
                   format: :json
                 }
-          expect(response).to have_http_status 422
+          expect(response).to have_http_status :unprocessable_entity
         end
 
         it 'does not update the question' do
