@@ -7,7 +7,6 @@ RSpec.describe Answer, type: :model do
   context 'Associations' do
     it { should have_many(:links).dependent(:destroy) }
     it { should have_many(:comments).dependent(:destroy) }
-    it { should have_one(:rating).dependent(:destroy) }
 
     it { should belong_to :question }
     it { should belong_to :user }
@@ -74,19 +73,7 @@ RSpec.describe Answer, type: :model do
       end
     end
 
-    describe '#create_rating' do
-      let!(:question) { create(:question) }
-
-      it 'creates rating after answer creation' do
-        expect { create(:answer, question: question) }.to change(Rating, :count).by(1)
-      end
-
-      it 'creates association to new rating for answer after creating answer' do
-        answer = create(:answer, question: question)
-
-        expect(answer.rating).to be_a(Rating)
-      end
-    end
+    it_behaves_like 'Concern Ratable'
   end
 
   it 'triggers :broadcast_answer on create & commit' do

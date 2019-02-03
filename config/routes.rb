@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  use_doorkeeper
   concern :ratable do
     member do
       patch :like
@@ -33,6 +34,18 @@ Rails.application.routes.draw do
 
     resources :attachments, only: %i[destroy]
     resources :links, only: %i[destroy]
+
+    namespace :api do
+      namespace :v1 do
+        resources :profiles, only: %i[index] do
+          get :me, on: :collection
+        end
+
+        resources :questions, except: %i[new edit] do
+          resources :answers, shallow: true, except: %i[new edit]
+        end
+      end
+    end
   end
 
   get '/:lang' => 'questions#index'
