@@ -6,6 +6,8 @@ class Question < ApplicationRecord
 
   after_create_commit :broadcast_question
 
+  scope :newly_created, -> { where('created_at > ?', 1.day.ago) }
+
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
   has_one :reward, dependent: :destroy
