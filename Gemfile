@@ -51,6 +51,9 @@ gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
+gem 'sidekiq'
+gem 'sinatra' , require: false
+gem 'whenever'
 
 # LOCALIZATION
 gem 'rails-i18n', '~> 5.0.0'
