@@ -4,6 +4,8 @@ class SendNotificationJob < ApplicationJob
   queue_as :default
 
   def perform(question)
-    NotificationMailer.notify(question).deliver_later
+    question.subscribed_users.each do |user|
+      NotificationMailer.notify(question, user).deliver_later
+    end
   end
 end

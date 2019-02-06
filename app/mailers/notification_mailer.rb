@@ -6,9 +6,9 @@ class NotificationMailer < ApplicationMailer
   #
   #   en.notification_mailer.notify.subject
   #
-  def notify(question)
+  def notify(question, user)
     @greeting = 'Hi'
-    @user = question.user
+    @user = user
     @question = question
 
     mail to: @user.email

@@ -37,5 +37,25 @@ RSpec.describe Question, type: :model do
     expect(question).to receive(:add_subscription)
     question.save
   end
+
+  describe '#subscribed_users' do
+    let(:author) { create(:user) }
+    let(:question) { create(:question, user: author) }
+    let(:users) { create_list(:user, 3) }
+    let(:non_subscribed_user) { create(:user) }
+
+    before do
+      users.each { |user| user.subscribe(question) }
+      users << author
+    end
+
+    it 'returns users subscribed on question' do
+      expect(question.subscribed_users.size).to eq 4
+    end
+
+    it 'does not return user, who is not subscribed on the question' do
+      expect(question.subscribed_users).to_not include(non_subscribed_user)
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

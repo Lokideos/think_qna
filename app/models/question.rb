@@ -23,6 +23,15 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  def subscribed_users
+    users = []
+    subscriptions.each do |sub|
+      users << sub.user
+    end
+
+    users
+  end
+
   private
 
   def broadcast_question

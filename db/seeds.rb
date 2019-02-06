@@ -47,3 +47,9 @@ answers[2].rating.score_up(users[0])
 answers[2].rating.score_up(users[1])
 answers[4].rating.score_up(users[1])
 answers[4].rating.score_down(users[2])
+
+# Subscriptions
+users[0].subscribe(questions[2])
+users[0].subscribe(questions[3])
+users[1].subscribe(questions[1])
+users[2].subscribe(questions[2])
