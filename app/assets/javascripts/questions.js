@@ -31,11 +31,23 @@ $(document).on('turbolinks:load', function() {
 
     $(document).on('ajax:success', '.subscribe-link', function(e) {
         var jsonResponse = e.detail[0];
-      $(this).addClass('hidden');
-      $('.notice').html(jsonResponse);
+        $('.question .subscription .unsubscribe-link').removeClass('hidden');
+        $(this).addClass('hidden');
+        $('.notice').html(jsonResponse);
     })
         .on('ajax:error', '.subscribe-link', function(e) {
             var errors = e.detail[0];
             $('.notice').html(errors);
         });
+
+    $(document).on('ajax:success', '.unsubscribe-link', function(e) {
+        var jsonResponse = e.detail[0]
+        $('.question .subscription .subscribe-link').removeClass('hidden');
+        $(this).addClass('hidden');
+        $('.notice').html(jsonResponse)
+    })
+        .on('ajax:error', '.unsubscribe-link', function(e) {
+            var errors = e.detail[0];
+            $('.notice').html(errors)
+        })
 });

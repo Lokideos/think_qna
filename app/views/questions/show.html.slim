@@ -91,8 +91,14 @@ section.question
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
   .subscription
-    -if can?(:subscribe, question)
+    - if can?(:subscribe, question)
       p= link_to 'Subscribe', subscribe_question_path(question), class: 'subscribe-link', method: :patch, remote: true
+    - else
+      p= link_to 'Subscribe', subscribe_question_path(question), class: 'subscribe-link hidden', method: :patch, remote: true
+    - if can?(:unsubscribe, question)
+      p= link_to 'Cancel Subscription', unsubscribe_question_path(question), class: 'unsubscribe-link', method: :patch, remote: true
+    - else
+      p= link_to 'Cancel Subscription', unsubscribe_question_path(question), class: 'unsubscribe-link hidden', method: :patch, remote: true
 
 section.answers
   .best-answer
