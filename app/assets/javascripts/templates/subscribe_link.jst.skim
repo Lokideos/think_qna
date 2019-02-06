@@ -1,0 +1,3 @@
+- question_id = @data
+
+a.subscribe-link data-type='json' data-remote='true' rel='nofollow' data-method='patch' href="/questions/#{question_id}/subscribe" Subscribe

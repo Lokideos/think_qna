@@ -20,8 +20,7 @@ feature 'User can subscribe to question', "
         click_on 'Subscribe'
       end
 
-      expect(page).to_not have_link'Subscribe'
-      expect(page).to have_content 'You have subscribed to question Question to subscribe'
+      expect(page).to_not have_link 'Subscribe'
     end
 
     scenario 'tries to subscribe to question if he is already subscribed to it', js: true do

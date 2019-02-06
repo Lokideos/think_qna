@@ -31,9 +31,8 @@ $(document).on('turbolinks:load', function() {
 
     $(document).on('ajax:success', '.subscribe-link', function(e) {
         var jsonResponse = e.detail[0];
-        $('.question .subscription .unsubscribe-link').removeClass('hidden');
-        $(this).addClass('hidden');
-        $('.notice').html(jsonResponse);
+        $(this).remove();
+        $('.question .subscription').html(JST["templates/unsubscribe_link"]({ data: jsonResponse }));
     })
         .on('ajax:error', '.subscribe-link', function(e) {
             var errors = e.detail[0];
@@ -42,9 +41,8 @@ $(document).on('turbolinks:load', function() {
 
     $(document).on('ajax:success', '.unsubscribe-link', function(e) {
         var jsonResponse = e.detail[0]
-        $('.question .subscription .subscribe-link').removeClass('hidden');
-        $(this).addClass('hidden');
-        $('.notice').html(jsonResponse)
+        $(this).remove();
+        $('.question .subscription').html(JST["templates/subscribe_link"]({ data: jsonResponse }));
     })
         .on('ajax:error', '.unsubscribe-link', function(e) {
             var errors = e.detail[0];

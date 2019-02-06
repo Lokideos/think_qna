@@ -13,23 +13,28 @@ feature 'User can cancel his subscription to the question', "
   context 'Authenticated user' do
     before { sign_in(user) }
 
-    before do
+    scenario 'cancels his subscription', js: true do
       user.subscribe(question)
       visit question_path(question)
-    end
 
-    scenario 'cancels his subscription', js: true do
       within '.question' do
         click_on 'Cancel Subscription'
       end
 
       expect(page).to_not have_link 'Cancel Subscription'
       expect(page).to have_link 'Subscribe'
-      expect(page).to have_content 'You have cancel your subscription to Unsubscribed Question'
     end
 
-    scenario 'tries to cancel his subscription, when there is no active subscription to this question'
+    scenario 'tries to cancel his subscription, when there is no active subscription to this question' do
+      visit question_path(question)
+
+      expect(page).to_not have_link 'Cancel Subscription'
+    end
   end
 
-  scenario 'Unauthenticated user tries to cancel subscription'
+  scenario 'Unauthenticated user tries to cancel subscription' do
+    visit question_path(question)
+
+    expect(page).to_not have_link 'Cancel Subscription'
+  end
 end

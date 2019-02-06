@@ -49,12 +49,12 @@ class QuestionsController < ApplicationController
 
   def subscribe
     current_user.subscribe(question)
-    render json: "You have subscribed to question #{question.title}", status: :ok
+    render json: question.id, status: :ok
   end
 
   def unsubscribe
     current_user.unsubscribe(question)
-    render json: "You have cancel your subscription to #{question.title}", status: :ok
+    render json: question.id, status: :ok
   end
 
   private
