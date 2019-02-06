@@ -90,6 +90,10 @@ section.question
 
     p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
 
+  .subscription
+    -if can?(:subscribe, question)
+      p= link_to 'Subscribe', subscribe_question_path(question), class: 'subscribe-link', method: :patch, remote: true
+
 section.answers
   .best-answer
     - if question.answers.find_by(best: true)

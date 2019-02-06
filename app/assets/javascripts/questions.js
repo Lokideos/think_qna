@@ -28,4 +28,14 @@ $(document).on('turbolinks:load', function() {
             $('.edit-question-form input[type="file"]').val('');
         }, 3);
     });
+
+    $(document).on('ajax:success', '.subscribe-link', function(e) {
+        var jsonResponse = e.detail[0];
+      $(this).addClass('hidden');
+      $('.notice').html(jsonResponse);
+    })
+        .on('ajax:error', '.subscribe-link', function(e) {
+            var errors = e.detail[0];
+            $('.notice').html(errors);
+        });
 });
