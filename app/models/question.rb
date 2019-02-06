@@ -5,6 +5,7 @@ class Question < ApplicationRecord
   include Commentable
 
   after_create_commit :broadcast_question
+  after_create_commit :add_subscription
 
   scope :newly_created, -> { where('created_at > ?', 1.day.ago) }
 
@@ -26,5 +27,9 @@ class Question < ApplicationRecord
 
   def broadcast_question
     ActionCable.server.broadcast 'all_questions', data: self
+  end
+
+  def add_subscription
+    user.subscribe(self)
   end
 end

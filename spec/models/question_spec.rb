@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
@@ -29,4 +31,11 @@ RSpec.describe Question, type: :model do
     )
     question.save
   end
+
+  it 'triggers :add_subscription after create & commit' do
+    question = build(:question)
+    expect(question).to receive(:add_subscription)
+    question.save
+  end
 end
+# rubocop:enable Metrics/BlockLength
