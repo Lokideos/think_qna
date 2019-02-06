@@ -220,6 +220,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #Subscribe' do
+    let!(:question) { create(:question) }
+
     context 'used by Authenticated user' do
       before { login(user) }
 
@@ -254,6 +256,49 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'returns 401 Unauthorized status' do
         patch :subscribe, params: { id: question, format: :json }
+        expect(response).to have_http_status :unauthorized
+      end
+    end
+  end
+
+  describe 'PATCH #Unsubscribe' do
+    let!(:question) { create(:question) }
+
+    context 'used by Authenticated user' do
+      before { login(user) }
+
+      before { user.subscribe(question) }
+
+      it 'deletes current subscription from the database' do
+        expect { patch :unsubscribe, params: { id: question, format: :json } }.to change(Subscription, :count).by(-1)
+      end
+
+      it 'returns 200 OK status' do
+        patch :unsubscribe, params: { id: question, format: :json }
+        expect(response).to have_http_status :ok
+      end
+    end
+
+    context 'used by Authenticated user, who has no subscription to question' do
+      before { login(user) }
+
+      it 'does not delete any subscription from the database' do
+        expect { patch :unsubscribe, params: { id: question, format: :json } }.to_not change(Subscription, :count)
+      end
+
+      it 'returns 403 Forbidden status' do
+        patch :unsubscribe, params: { id: question, format: :json }
+        expect(response).to have_http_status :forbidden
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not delete any subscription from the database' do
+        expect { patch :unsubscribe, params: { id: question, format: :json } }.to_not change(Subscription, :count)
+      end
+
+      it 'returns 401 Unauthorized status' do
+        patch :unsubscribe, params: { id: question, format: :json }
         expect(response).to have_http_status :unauthorized
       end
     end

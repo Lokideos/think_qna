@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       end
 
       patch :subscribe, on: :member
+      patch :unsubscribe, on: :member
     end
 
     resources :attachments, only: %i[destroy]

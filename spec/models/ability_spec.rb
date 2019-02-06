@@ -101,6 +101,14 @@ describe Ability do
       user.subscribe(question)
       should_not be_able_to :subscribe, question
     end
+
+    it do
+      question = create(:question)
+      user.subscribe(question)
+      should be_able_to :unsubscribe, question
+    end
+
+    it { should_not be_able_to :unsubscribe, create(:question) }
   end
 
   describe '#ratable??' do

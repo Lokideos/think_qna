@@ -115,7 +115,7 @@ RSpec.describe User, type: :model do
 
     describe '#subscribe' do
       let(:user) { create(:user) }
-      let(:question) { create(:question) }
+      let!(:question) { create(:question) }
 
       it 'creates new subscription in the database' do
         expect { user.subscribe(question) }.to change(Subscription, :count).by(1)
@@ -138,6 +138,20 @@ RSpec.describe User, type: :model do
 
       it 'should return false if user is not subscribed to the question' do
         expect(user).to_not be_subscribed(question)
+      end
+    end
+
+    describe '#unsubscribe' do
+      let(:user) { create(:user) }
+      let!(:question) { create(:question) }
+
+      it 'deletes subscription from the database' do
+        user.subscribe(question)
+        expect { user.unsubscribe(question) }.to change(Subscription, :count).by(-1)
+      end
+
+      it 'does not create new subscription in the database if user has not subscription' do
+        expect { user.unsubscribe(question) }.to_not change(Subscription, :count)
       end
     end
 
