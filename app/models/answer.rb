@@ -6,6 +6,7 @@ class Answer < ApplicationRecord
   default_scope { order(created_at: :asc) }
 
   after_create_commit :broadcast_answer
+  after_create_commit { SendNotificationJob.perform_later(question) }
 
   has_many :links, dependent: :destroy, as: :linkable
   has_many :comments, dependent: :destroy, as: :commentable

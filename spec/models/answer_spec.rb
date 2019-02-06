@@ -85,5 +85,11 @@ RSpec.describe Answer, type: :model do
     )
     answer.save
   end
+
+  it 'triggers SendNotificationJob#perform_later after create & commit' do
+    answer = build(:answer)
+    expect(SendNotificationJob).to receive(:perform_later).with(answer.question)
+    answer.save
+  end
 end
 # rubocop:enable Metrics/BlockLength
