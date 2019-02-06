@@ -6,7 +6,7 @@ rvm:
 
 services:
   - postgresql
-  -
+  - redis-server
 addons:
   chrome: stable
 
