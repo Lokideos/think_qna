@@ -12,6 +12,7 @@ RSpec.describe User, type: :model do
     it { should have_many(:authorizations).dependent(:destroy) }
     it { should have_many(:rating_changes) }
     it { should have_many(:ratings).through(:rating_changes) }
+    it { should have_many(:subscriptions).dependent(:destroy) }
   end
 
   context 'Methods' do
@@ -109,6 +110,34 @@ RSpec.describe User, type: :model do
 
       it 'saves the user in the database' do
         expect { user.save_user_for_oauth }.to change(User, :count).by(1)
+      end
+    end
+
+    describe '#subscribe' do
+      let(:user) { create(:user) }
+      let(:question) { create(:question) }
+
+      it 'creates new subscription in the database' do
+        expect { user.subscribe(question) }.to change(Subscription, :count).by(1)
+      end
+
+      it 'does not create new subscription in the database if user already has subscription to this question' do
+        user.subscribe(question)
+        expect { user.subscribe(question) }.to_not change(Subscription, :count)
+      end
+    end
+
+    describe '#subscribed?' do
+      let(:user) { create(:user) }
+      let(:question) { create(:question) }
+
+      it 'should return true if user is subscribed to the question' do
+        user.subscribe(question)
+        expect(user).to be_subscribed(question)
+      end
+
+      it 'should return false if user is not subscribed to the question' do
+        expect(user).to_not be_subscribed(question)
       end
     end
 

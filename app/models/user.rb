@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :authorizations, dependent: :destroy
   has_many :rating_changes
   has_many :ratings, through: :rating_changes
+  has_many :subscriptions, dependent: :destroy
 
   def author_of?(resource)
     resource.user_id == id
@@ -31,6 +32,14 @@ class User < ApplicationRecord
     self.password = Devise.friendly_token[0, 20]
     self.password_confirmation = password
     save
+  end
+
+  def subscribe(question)
+    Subscription.create!(user: self, question: question) unless subscribed?(question)
+  end
+
+  def subscribed?(question)
+    subscriptions.find_by(question_id: question)
   end
 
   class << self
