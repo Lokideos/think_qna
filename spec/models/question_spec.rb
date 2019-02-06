@@ -34,8 +34,16 @@ RSpec.describe Question, type: :model do
 
   it 'triggers :add_subscription after create & commit' do
     question = build(:question)
-    expect(question).to receive(:add_subscription)
+    expect(question).to receive(:add_subscription).and_return(User)
     question.save
+  end
+
+  describe '#add_subscription' do
+    let(:question) { create(:question) }
+
+    it 'subscribes author of the questino to the question' do
+      expect(question.user).to be_subscribed(question)
+    end
   end
 
   describe '#subscribed_users' do
