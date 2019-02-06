@@ -24,12 +24,8 @@ feature 'User can subscribe to question', "
       expect(page).to have_link 'Cancel Subscription'
     end
 
-    scenario 'tries to subscribe to question if he is already subscribed to it', js: true do
-      visit question_path(question)
-
-      within '.question' do
-        click_on 'Subscribe'
-      end
+    scenario 'tries to subscribe to question if he is already subscribed to it' do
+      user.subscribe(question)
 
       visit question_path(question)
 
