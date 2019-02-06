@@ -59,6 +59,8 @@ class Ability
 
     can :check_rewards, User, id: user.id
     can :me, User, id: user.id
+
+    can :subscribe, Question
   end
 
   def ratable?(item)

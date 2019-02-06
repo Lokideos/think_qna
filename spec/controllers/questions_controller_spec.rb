@@ -219,6 +219,46 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #Subscribe' do
+    context 'used by Authenticated user' do
+      before { login(user) }
+
+      it 'creates new subscription in the database' do
+        expect { patch :subscribe, params: { id: question, format: :json } }.to change(Subscription, :count).by(1)
+      end
+
+      it 'returns 200 OK status' do
+        patch :subscribe, params: { id: question, format: :json }
+        expect(response).to have_http_status :ok
+      end
+    end
+
+    context 'used by Authenticated user, who is already subscribed on the question' do
+      before { login(user) }
+      before { patch :subscribe, params: { id: question, format: :json } }
+
+      it 'does not create new subscription in the database' do
+        expect { patch :subscribe, params: { id: question, format: :json } }.to_not change(Subscription, :count)
+      end
+
+      it 'returns 422 Unprocessable entity status' do
+        patch :subscribe, params: { id: question, format: :json }
+        expect(response).to have_http_status :unprocessable_entity
+      end
+    end
+
+    context 'used by Unauthenticated user' do
+      it 'does not create new subscription in the database' do
+        expect { patch :subscribe, params: { id: question, format: :json } }.to_not change(Subscription, :count)
+      end
+
+      it 'returns 401 Unauthorized status' do
+        patch :subscribe, params: { id: question, format: :json }
+        expect(response).to have_http_status :unauthorized
+      end
+    end
+  end
+
   it_behaves_like 'Concern Rated' do
     let(:resource) { question }
   end

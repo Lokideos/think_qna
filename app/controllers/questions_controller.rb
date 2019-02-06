@@ -47,6 +47,14 @@ class QuestionsController < ApplicationController
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
 
+  def subscribe
+    if current_user.subscribe(question)
+      render json: "You have subscribed to question #{question.title}", status: :ok
+    else
+      render json: 'You can not subscribe to the question', status: :unprocessable_entity
+    end
+  end
+
   private
 
   def question_params
