@@ -10,17 +10,36 @@ feature 'User can subscribe to question', "
   given(:user) { create(:user) }
   given(:question) { create(:question, title: 'Question to subscribe') }
 
-  scenario 'Authenticated user subscribes to the question', js: true do
-    sign_in(user)
-    visit question_path(question)
+  context 'Authenticated user' do
+    before { sign_in(user) }
 
-    within '.question' do
-      click_on 'Subscribe'
+    scenario 'subscribes to the question', js: true do
+      visit question_path(question)
+
+      within '.question' do
+        click_on 'Subscribe'
+      end
+
+      expect(page).to_not have_link'Subscribe'
+      expect(page).to have_content 'You have subscribed to question Question to subscribe'
     end
 
-    expect(page).to_not have_link'Subscribe'
-    expect(page).to have_content 'You have subscribed to question Question to subscribe'
+    scenario 'tries to subscribe to question if he is already subscribed to it', js: true do
+      visit question_path(question)
+
+      within '.question' do
+        click_on 'Subscribe'
+      end
+
+      visit question_path(question)
+
+      expect(page).to_not have_link 'Subscribe'
+    end
   end
 
-  scenario 'Unauthenticated user tries to subscribe to the question'
+  scenario 'Unauthenticated user tries to subscribe to the question' do
+    visit question_path(question)
+
+    expect(page).to_not have_link 'Subscribe'
+  end
 end

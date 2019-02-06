@@ -48,11 +48,8 @@ class QuestionsController < ApplicationController
   end
 
   def subscribe
-    if current_user.subscribe(question)
-      render json: "You have subscribed to question #{question.title}", status: :ok
-    else
-      render json: 'You can not subscribe to the question', status: :unprocessable_entity
-    end
+    current_user.subscribe(question)
+    render json: "You have subscribed to question #{question.title}", status: :ok
   end
 
   private

@@ -241,9 +241,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { patch :subscribe, params: { id: question, format: :json } }.to_not change(Subscription, :count)
       end
 
-      it 'returns 422 Unprocessable entity status' do
+      it 'returns 403 Forbidden' do
         patch :subscribe, params: { id: question, format: :json }
-        expect(response).to have_http_status :unprocessable_entity
+        expect(response).to have_http_status :forbidden
       end
     end
 
