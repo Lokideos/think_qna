@@ -4,6 +4,6 @@ class SendNotificationJob < ApplicationJob
   queue_as :default
 
   def perform(question)
-    Services::Notification.new.send_notification(question)
+    NotificationMailer.notify(question).deliver_later
   end
 end

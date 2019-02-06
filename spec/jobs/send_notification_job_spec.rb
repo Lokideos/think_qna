@@ -3,15 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe SendNotificationJob, type: :job do
-  let(:service) { double('Services::Notification') }
-  let(:question) { double('Question.new') }
+  let(:question) { create(:question) }
 
-  before do
-    allow(Services::Notification).to receive(:new).and_return(service)
-  end
-
-  it 'calls Service::Notification#notify' do
-    expect(service).to receive(:send_notification).with(question)
+  it 'sends notification' do
+    expect(NotificationMailer).to receive(:notify).with(question).and_call_original
     SendNotificationJob.perform_now(question)
   end
 end
