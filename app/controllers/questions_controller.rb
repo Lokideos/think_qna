@@ -54,7 +54,7 @@ class QuestionsController < ApplicationController
 
   def unsubscribe
     current_user.unsubscribe(question)
-    render json: "You have cancel your subsciption to #{question.title}", status: :ok
+    render json: "You have cancel your subscription to #{question.title}", status: :ok
   end
 
   private
