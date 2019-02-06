@@ -87,8 +87,17 @@ RSpec.describe Answer, type: :model do
   end
 
   it 'triggers SendNotificationJob#perform_later after create & commit' do
-    answer = build(:answer)
+    question = create(:question)
+    user = create(:user)
+    user.subscribe(question)
+    answer = build(:answer, question: question, user: user)
     expect(SendNotificationJob).to receive(:perform_later).with(answer.question)
+    answer.save
+  end
+
+  it 'does not trigger SendNotificationJob#perform_later after create & commit if user is not subscribed to the question' do
+    answer = build(:answer)
+    expect(SendNotificationJob).to_not receive(:perform_later)
     answer.save
   end
 end

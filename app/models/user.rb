@@ -39,7 +39,7 @@ class User < ApplicationRecord
   end
 
   def subscribed?(question)
-    subscriptions.find_by(question_id: question)
+    subscriptions.find_by(question_id: question) ? true : false
   end
 
   class << self
