@@ -35,11 +35,11 @@ class User < ApplicationRecord
   end
 
   def subscribe(question)
-    Subscription.create!(user: self, question: question) unless subscribed?(question)
+    subscriptions.create!(question: question) unless subscribed?(question)
   end
 
   def unsubscribe(question)
-    Subscription.where(user: self, question: question).first.destroy! if subscribed?(question)
+    subscriptions.find_by(question: question).destroy! if subscribed?(question)
   end
 
   def subscribed?(question)
