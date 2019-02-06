@@ -7,7 +7,7 @@ class Question < ApplicationRecord
   after_create_commit :broadcast_question
   after_create_commit :add_subscription
 
-  scope :newly_created, -> { where('created_at > ?', 1.day.ago) }
+  scope :newly_created, -> { where('created_at > ?', Time.now - 86_400) }
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
