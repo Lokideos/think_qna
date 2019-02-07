@@ -93,6 +93,22 @@ describe Ability do
       it { should be_able_to :destroy, author_attachment_resource.files.last }
       it { should_not be_able_to :destroy, attachment_resource.files.last }
     end
+
+    it { should be_able_to :subscribe, create(:question) }
+
+    it do
+      question = create(:question)
+      user.subscribe(question)
+      should_not be_able_to :subscribe, question
+    end
+
+    it do
+      question = create(:question)
+      user.subscribe(question)
+      should be_able_to :unsubscribe, question
+    end
+
+    it { should_not be_able_to :unsubscribe, create(:question) }
   end
 
   describe '#ratable??' do

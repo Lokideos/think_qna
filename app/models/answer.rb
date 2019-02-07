@@ -6,6 +6,7 @@ class Answer < ApplicationRecord
   default_scope { order(created_at: :asc) }
 
   after_create_commit :broadcast_answer
+  after_create_commit :perform_notification_job
 
   has_many :links, dependent: :destroy, as: :linkable
   has_many :comments, dependent: :destroy, as: :commentable
@@ -65,5 +66,9 @@ class Answer < ApplicationRecord
     prepared_data[:rating] = rating.score
 
     prepared_data
+  end
+
+  def perform_notification_job
+    SendNotificationJob.perform_later(question) if user.subscribed?(question)
   end
 end

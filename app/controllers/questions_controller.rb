@@ -47,6 +47,16 @@ class QuestionsController < ApplicationController
     redirect_to questions_path, notice: I18n.t('notifications.deleted', resource: question.class.model_name.human)
   end
 
+  def subscribe
+    current_user.subscribe(question)
+    render json: question.id, status: :ok
+  end
+
+  def unsubscribe
+    current_user.unsubscribe(question)
+    render json: question.id, status: :ok
+  end
+
   private
 
   def question_params

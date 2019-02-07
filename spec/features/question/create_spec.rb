@@ -50,6 +50,17 @@ feature 'User can create question', "
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
     end
+
+    scenario 'is subscribed to question after question creation' do
+      within '.question-info' do
+        fill_in 'Title', with: 'Test question'
+        fill_in 'Body', with: 'text text text'
+      end
+
+      click_on 'Ask'
+
+      expect(page).to_not have_link 'Subscribe'
+    end
   end
 
   scenario 'Unauthenticated user tries to ask a question' do

@@ -1,6 +1,11 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   concern :ratable do
     member do
@@ -30,6 +35,9 @@ Rails.application.routes.draw do
       resources :answers, concerns: %i[ratable commentable], shallow: true, only: %i[create update destroy] do
         patch :choose_best, on: :member
       end
+
+      patch :subscribe, on: :member
+      patch :unsubscribe, on: :member
     end
 
     resources :attachments, only: %i[destroy]

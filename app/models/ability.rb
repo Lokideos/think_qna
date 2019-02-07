@@ -59,6 +59,14 @@ class Ability
 
     can :check_rewards, User, id: user.id
     can :me, User, id: user.id
+
+    can :subscribe, Question do |question|
+      !user.subscribed?(question)
+    end
+
+    can :unsubscribe, Question do |question|
+      user.subscribed?(question)
+    end
   end
 
   def ratable?(item)

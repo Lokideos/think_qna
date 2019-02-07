@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
   it { should have_one(:reward).dependent(:destroy) }
   it { should belong_to :user }
 
@@ -28,4 +31,39 @@ RSpec.describe Question, type: :model do
     )
     question.save
   end
+
+  it 'triggers :add_subscription after create & commit' do
+    question = build(:question)
+    expect(question).to receive(:add_subscription).and_return(User)
+    question.save
+  end
+
+  describe '#add_subscription' do
+    let(:question) { create(:question) }
+
+    it 'subscribes author of the questino to the question' do
+      expect(question.user).to be_subscribed(question)
+    end
+  end
+
+  describe '#subscribed_users' do
+    let(:author) { create(:user) }
+    let(:question) { create(:question, user: author) }
+    let(:users) { create_list(:user, 3) }
+    let(:non_subscribed_user) { create(:user) }
+
+    before do
+      users.each { |user| user.subscribe(question) }
+      users << author
+    end
+
+    it 'returns users subscribed on question' do
+      expect(question.subscribed_users.size).to eq 4
+    end
+
+    it 'does not return user, who is not subscribed on the question' do
+      expect(question.subscribed_users).to_not include(non_subscribed_user)
+    end
+  end
 end
+# rubocop:enable Metrics/BlockLength

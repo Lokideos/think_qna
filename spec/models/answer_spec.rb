@@ -85,5 +85,28 @@ RSpec.describe Answer, type: :model do
     )
     answer.save
   end
+
+  it 'triggers #perform_notification_job after create & commit' do
+    answer = build(:answer)
+    expect(answer).to receive(:perform_notification_job)
+    answer.save
+  end
+
+  describe '#perform_notification_job' do
+    it 'calls SendNotificationJob#perform_later if user is subscribed to answers question' do
+      question = create(:question)
+      user = create(:user)
+      user.subscribe(question)
+      answer = build(:answer, question: question, user: user)
+      expect(SendNotificationJob).to receive(:perform_later).with(question)
+      answer.save
+    end
+
+    it 'does not call SendNotificationJob#perform_later if user is subscribed to answers question' do
+      answer = build(:answer)
+      expect(SendNotificationJob).to_not receive(:perform_later)
+      answer.save
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
