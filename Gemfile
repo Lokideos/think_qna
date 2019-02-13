@@ -59,6 +59,10 @@ gem 'whenever'
 gem 'rails-i18n', '~> 5.0.0'
 gem 'i18n-js', '~> 3.0.0'
 
+# Sphinx
+gem 'mysql2'
+gem 'thinking-sphinx'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -31,3 +31,9 @@
 
 # Ignore rubymine settings
 .idea/
+
+dumb.rdb
+
+# Ignore search engine local index
+/config/*.sphinx.conf
+/db/sphinx
