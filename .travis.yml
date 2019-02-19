@@ -25,4 +25,4 @@ script:
   - xvfb-run -a bundle exec rake ts:configure
   - xvfb-run -a bundle exec rake ts:index
   - xvfb-run -a bundle exec rake ts:start
-  - xvfb-run -a bundle exec rspec/spec --color --tty
+  - xvfb-run -a bundle exec rspec --color --tty
