@@ -19,7 +19,7 @@ before_install:
   - rm config/initializers/devise.rb
   - mv config/devise.rb.travis config/initializers/devise.rb
 script:
-  - xvfb-run -a rake ts:configure
-  - xvfb-run -a rake ts:index
-  - xvfb-run -a rake ts:start
-  - xvfb-run -a bundle exec rspec --color --tty
+  - xvfb-run -a bundle exec rake ts:configure
+  - xvfb-run -a bundle exec rake ts:index
+  - xvfb-run -a bundle exec rake ts:start
+  - xvfb-run -a bundle exec rspec/spec --color --tty
