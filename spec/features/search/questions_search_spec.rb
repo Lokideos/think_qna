@@ -15,6 +15,7 @@ feature 'User can search for question', "
     ThinkingSphinx::Test.run do
       within '.search' do
         fill_in 'Search', with: 'Title 1'
+        select 'Question', from: 'Search Type'
         click_on 'Find'
       end
 

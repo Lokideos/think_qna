@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 2019_02_15_075421) do
 
   create_table "searches", force: :cascade do |t|
     t.string "query", null: false
+    t.string "search_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -16,16 +16,20 @@ class SearchesController < ApplicationController
   end
 
   def show
-    @search_result = Question.search(Search.find(params[:id]).query)
+    @search_result = search.perform_search
   end
 
   private
 
   def search_params
-    params.require(:search).permit(:query)
+    params.require(:search).permit(:query, :search_type)
   end
 
   def load_questions
     @questions = Question.all
+  end
+
+  def search
+    @search ||= Search.find(params[:id])
   end
 end

@@ -45,7 +45,7 @@ RSpec.describe SearchesController, type: :controller do
     end
 
     it 'assigns search results to @search_result' do
-      expect(assigns(:search_result)).to eq Question.search(search.query)
+      expect(assigns(:search_result)).to eq search.search_type.constantize.search(search.query)
     end
   end
 end

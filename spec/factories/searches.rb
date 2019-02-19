@@ -2,7 +2,8 @@
 
 FactoryBot.define do
   factory :search do
-    query { 'MyString' }
+    query { 'my_query_request' }
+    search_type { 'Question' }
 
     trait :invalid do
       query { nil }
