@@ -18,6 +18,7 @@ before_install:
   - mv config/storage.yml.travis config/storage.yml
   - rm config/initializers/devise.rb
   - mv config/devise.rb.travis config/initializers/devise.rb
+  - sudo apt-get install sphinxsearch
 script:
   - xvfb-run -a bundle exec rake ts:configure
   - xvfb-run -a bundle exec rake ts:index
