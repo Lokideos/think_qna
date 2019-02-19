@@ -12,7 +12,7 @@ addons:
 
 before_install:
   - gem update --system
-  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create role travis_app with createdb login password 'travis_password';' -U postgres
   - cp config/database.yml.travis config/database.yml
   - rm config/storage.yml
   - mv config/storage.yml.travis config/storage.yml
@@ -20,6 +20,8 @@ before_install:
   - mv config/devise.rb.travis config/initializers/devise.rb
   - sudo apt-get install sphinxsearch
 script:
+  - xvfb-run -a bundle exec rails db:create
+  - xvfb-run -a bundle exec rails db:migrate
   - xvfb-run -a bundle exec rake ts:configure
   - xvfb-run -a bundle exec rake ts:index
   - xvfb-run -a bundle exec rake ts:start

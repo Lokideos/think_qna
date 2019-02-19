@@ -1,7 +1,13 @@
 test:
   adapter: postgresql
   database: travis_ci_test
+  username: travis_app
+  password: travis_password
+  host: localhost
 
 production:
   adapter: postgresql
   database: travis_ci_test
+  username: travis_app
+  password: travis_password
+  host: localhost
