@@ -8,8 +8,8 @@ class SearchesController < ApplicationController
   def create
     @search = Search.new(search_params)
 
-    if @search.save
-      redirect_to @search
+    if search.save
+      redirect_to search
     else
       render 'questions/index'
     end
@@ -32,4 +32,6 @@ class SearchesController < ApplicationController
   def search
     @search ||= Search.find(params[:id])
   end
+
+  helper_method :search
 end

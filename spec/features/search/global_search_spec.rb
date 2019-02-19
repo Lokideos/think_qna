@@ -11,7 +11,7 @@ feature 'User can perform global search', "
   given!(:answer) { create(:answer, body: 'Shared Info 1') }
   given!(:answer_2) { create(:answer, body: 'Bad info') }
 
-  scenario 'User searches for the needed information', sphinx: true do
+  scenario 'User searches for the needed information globally', sphinx: true do
     visit questions_path
     ThinkingSphinx::Test.run do
       within '.search' do
