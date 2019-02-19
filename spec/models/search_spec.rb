@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Search, type: :model do
   it { should validate_presence_of :query }
   it { should validate_presence_of :search_type }
@@ -19,5 +20,24 @@ RSpec.describe Search, type: :model do
 
       expect(search.perform_search).to eq 'Search result'
     end
+
+    it 'should call ThinkingSphinx.search if search_type is Global' do
+      search = create(:search, search_type: 'Global')
+      expect(ThinkingSphinx).to receive(:search)
+
+      search.perform_search
+    end
+
+    it 'should call .search on search_type if it is not Global' do
+      Search::SEARCH_TYPES.each do |search_type|
+        next if search_type == 'Global'
+
+        search = create(:search, search_type: search_type)
+        expect(search_type.constantize).to receive(:search)
+
+        search.perform_search
+      end
+    end
   end
 end
+# rubocop:enable Metrics/BlockLength

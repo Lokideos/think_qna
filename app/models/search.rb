@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class Search < ApplicationRecord
-  SEARCH_TYPES = %w[Question Answer Comment User].freeze
+  SEARCH_TYPES = %w[Question Answer Comment User Global].freeze
 
   validates :query, :search_type, presence: true
   validate :correct_search_type
 
   def perform_search
-    search_type.capitalize.constantize.search(query)
+    search_type == 'Global' ? ThinkingSphinx.search(query) : search_type.capitalize.constantize.search(query)
   end
 
   private
