@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+    @search = Search.new
   end
 
   # rubocop:disable Metrics/AbcSize

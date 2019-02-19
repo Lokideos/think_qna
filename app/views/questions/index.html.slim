@@ -1,3 +1,13 @@
+section.search
+  h2.visually-hidden Search
+
+  = form_with model: @search, local: true do |f|
+
+    = f.label :query, 'Search'
+    = f.text_field :query
+
+    p= f.submit 'Find'
+
 p= link_to t('.ask'), new_question_path
 ul.all-questions
   = render @questions

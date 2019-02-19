@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
@@ -26,6 +27,8 @@ Rails.application.routes.draw do
 
     get 'create_email/show'
     post 'create_email/create'
+
+    resources :searches, only: %i[show create]
 
     resources :users, only: [] do
       get :rewards, on: :member
