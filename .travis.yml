@@ -13,7 +13,7 @@ addons:
 before_install:
   - gem update --system
   - sudo apt-get install sphinxsearch
-  - psql -c 'create role travis_app with createdb login password 'travis_password'; -U postgres
+  - psql -c 'create role travis_app with createdb login password "travis_password";' -U postgres
   - cp config/database.yml.travis config/database.yml
   - rm config/storage.yml
   - mv config/storage.yml.travis config/storage.yml
