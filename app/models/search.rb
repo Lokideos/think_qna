@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Search < ApplicationRecord
-  SEARCH_TYPES = %w[Question Answer].freeze
+  SEARCH_TYPES = %w[Question Answer Comment].freeze
 
   validates :query, :search_type, presence: true
   validate :correct_search_type
