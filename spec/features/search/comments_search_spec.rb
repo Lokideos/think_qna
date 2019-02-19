@@ -10,7 +10,7 @@ feature 'User can search for comment', "
   given!(:comment_1) { create(:comment, body: 'Comment Body 1') }
   given!(:comment_2) { create(:comment, body: 'Comment Body 2') }
 
-  scenario 'User searches for the question', sphinx: true do
+  scenario 'User searches for the comment', sphinx: true do
     visit questions_path
     ThinkingSphinx::Test.run do
       within '.search' do
