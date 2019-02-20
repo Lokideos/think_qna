@@ -16,6 +16,8 @@ class Services::Search
   validates :search_type, inclusion: { in: SEARCH_TYPES }
 
   def call
+    raise StandardError, 'Invalid search attributes' unless valid?
+
     search_type == 'Global' ? ThinkingSphinx.search(query) : search_type.capitalize.constantize.search(query)
   end
 end

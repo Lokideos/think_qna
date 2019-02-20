@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Services::Search, type: :model do
   subject { Services::Search.new('query_string', 'Question') }
 
@@ -14,6 +15,12 @@ RSpec.describe Services::Search, type: :model do
       allow(subject.search_type.constantize).to receive(:search).and_return('Search result')
 
       expect(subject.call).to eq 'Search result'
+    end
+
+    it 'should raise exception StandardError if search attributes is invalid' do
+      service = Services::Search.new(nil, 'bad_type')
+
+      expect { service.call }.to raise_error StandardError
     end
 
     it 'should call ThinikingSphinx search if search_type is Global' do
@@ -35,3 +42,4 @@ RSpec.describe Services::Search, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
