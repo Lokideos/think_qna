@@ -7,8 +7,7 @@ class SearchesController < ApplicationController
     unauthorized! if cannot? :search, :general_search
 
     if search_service.valid?
-      redirect_to controller: 'searches', action: 'search_result',
-                  search_type: params['search_type'], query: params['query']
+      redirect_to action: 'search_result', search_type: params['search_type'], query: params['query']
     else
       redirect_to questions_path
     end

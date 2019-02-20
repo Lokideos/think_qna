@@ -12,6 +12,7 @@ feature 'User can search for answer', "
 
   scenario 'User searches for the answer', sphinx: true do
     visit questions_path
+
     ThinkingSphinx::Test.run do
       within '.search' do
         fill_in 'Search', with: 'Body 1'
