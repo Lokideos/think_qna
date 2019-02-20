@@ -1,37 +1,32 @@
 # frozen_string_literal: true
 
 class SearchesController < ApplicationController
-  authorize_resource
+  skip_authorization_check
 
-  before_action :load_questions, only: :create
+  before_action :update_cookies, only: :general_search
 
-  def create
-    @search = Search.new(search_params)
-
-    if search.save
-      redirect_to search
+  def general_search
+    if search_service.valid?
+      redirect_to search_result_searches_path
     else
-      render 'questions/index'
+      redirect_to questions_path
     end
   end
 
-  def show
-    @search_result = search.perform_search
+  def search_result
+    @search_result = search_service.call
   end
 
   private
 
-  def search_params
-    params.require(:search).permit(:query, :search_type)
+  def update_cookies
+    cookies.delete 'search.query'
+    cookies.delete 'search.search_type'
+    cookies['search.query'] = params['query']
+    cookies['search.search_type'] = params['search_type']
   end
 
-  def load_questions
-    @questions = Question.all
+  def search_service
+    Services::Search.new(cookies['search.query'], cookies['search.search_type'])
   end
-
-  def search
-    @search ||= Search.find(params[:id])
-  end
-
-  helper_method :search
 end

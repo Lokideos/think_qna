@@ -18,10 +18,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:questions)).to match_array(questions)
     end
 
-    it 'assigns a new Search to @search' do
-      expect(assigns(:search)).to be_a_new(Search)
-    end
-
     it 'renders index view' do
       expect(response).to render_template :index
     end

@@ -4,48 +4,44 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe SearchesController, type: :controller do
-  describe 'POST #create' do
-    context 'with valid attributes' do
-      it 'creates search in the database' do
-        expect { post :create, params: { search: attributes_for(:search) } }.to change(Search, :count).by(1)
-      end
+  describe 'GET #general_search' do
+    it 'assigns parameters to cookies' do
+      get :general_search, params: { query: 'example_query', search_type: 'Question' }
 
-      it 'redirects to created search' do
-        post :create, params: { search: attributes_for(:search) }
-        expect(response).to redirect_to assigns(:search)
+      expect(response.cookies['search.query']).to eq 'example_query'
+      expect(response.cookies['search.search_type']).to eq 'Question'
+    end
+
+    context 'with valid parameters' do
+      it 'redirects to search_result' do
+        get :general_search, params: { query: 'example_query', search_type: 'Question' }
+        expect(response).to redirect_to search_result_searches_path
       end
     end
 
-    context 'with invalid attributes' do
-      let(:questions) { create_list(:question, 3) }
-
-      it 'does not create search in the database' do
-        expect { post :create, params: { search: attributes_for(:search, :invalid) } }.to_not change(Search, :count)
-      end
-
-      it 'populates an array of questions' do
-        post :create, params: { search: attributes_for(:search, :invalid) }
-        expect(assigns(:questions)).to match_array(questions)
-      end
-
-      it 're-renders questions index view' do
-        post :create, params: { search: attributes_for(:search, :invalid) }
-        expect(response).to render_template 'questions/index'
+    context 'with invalid parameters' do
+      it 'redirects to questions path' do
+        get :general_search, params: { query: '', search_type: 'bad_type' }
+        expect(response).to redirect_to questions_path
       end
     end
   end
 
-  describe 'GET #show' do
-    let(:search) { create(:search) }
-
-    before { ThinkingSphinx::Test.run { get :show, params: { id: search } } }
-
-    it 'renders :show template' do
-      expect(response).to render_template :show
+  describe 'GET #search_result' do
+    before do
+      request.cookies['search.query'] = 'example_query'
+      request.cookies['search.search_type'] = 'Question'
+      ThinkingSphinx::Test.run { get :search_result }
     end
 
     it 'assigns search results to @search_result' do
-      expect(assigns(:search_result)).to eq search.search_type.constantize.search(search.query)
+      expect(assigns(:search_result)).to eq request.cookies['search.search_type'].constantize.search(
+        request.cookies['search.query']
+      )
+    end
+
+    it 'renders :search_result template' do
+      expect(response).to render_template :search_result
     end
   end
 end

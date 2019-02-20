@@ -1,14 +1,12 @@
 section.search
   h2.visually-hidden Search
-  = render 'shared/errors', resource: @search
-
-  = form_with model: @search, local: true do |f|
+  = form_with url: general_search_searches_path, method: :get, local: true do |f|
 
     = f.label :query, 'Search'
     = f.text_field :query
 
     = f.label :search_type, 'Search Type'
-    = f.select :search_type, options_for_select(Search::SEARCH_TYPES)
+    = f.select :search_type, options_for_select(Services::Search::SEARCH_TYPES)
 
     p= f.submit 'Find'
 
