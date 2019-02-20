@@ -2,21 +2,4 @@ h1 Search Results
 
 ul
   - @search_result.each do |result|
-    li
-      - if result.is_a?(Question)
-        p= result.title
-        = link_to 'Go to search result', result.class.find(result.id)
-
-      - if result.is_a?(Answer)
-        p= result.body
-        = link_to 'Go to search result', result.class.find(result.id).question
-
-      - if result.is_a?(Comment)
-        p = result.body
-        - if result.commentable.is_a?(Question)
-          = link_to 'Go to search result', result.class.find(result.id).commentable
-        - else
-          = link_to 'Go to search result', result.class.find(result.id).commentable.question
-
-      - if result.is_a?(User)
-        p= result.email
+    li= render "searches/#{result.class.to_s.underscore}_search", resource: result
