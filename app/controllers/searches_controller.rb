@@ -3,13 +3,12 @@
 class SearchesController < ApplicationController
   skip_authorization_check
 
-  before_action :update_cookies, only: :general_search
-
   def general_search
     unauthorized! if cannot? :search, :general_search
 
     if search_service.valid?
-      redirect_to search_result_searches_path
+      redirect_to controller: 'searches', action: 'search_result',
+                  search_type: params['search_type'], query: params['query']
     else
       redirect_to questions_path
     end
@@ -23,14 +22,7 @@ class SearchesController < ApplicationController
 
   private
 
-  def update_cookies
-    cookies.delete 'search.query'
-    cookies.delete 'search.search_type'
-    cookies['search.query'] = params['query']
-    cookies['search.search_type'] = params['search_type']
-  end
-
   def search_service
-    Services::Search.new(cookies['search.query'], cookies['search.search_type'])
+    Services::Search.new(params['query'], params['search_type'])
   end
 end
