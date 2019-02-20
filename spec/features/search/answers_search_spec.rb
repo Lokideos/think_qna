@@ -14,6 +14,8 @@ feature 'User can search for answer', "
     visit questions_path
 
     ThinkingSphinx::Test.run do
+      index
+
       within '.search' do
         fill_in 'Search', with: 'Body 1'
         select 'Answer', from: 'Search Type'
