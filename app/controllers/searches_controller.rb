@@ -6,6 +6,8 @@ class SearchesController < ApplicationController
   before_action :update_cookies, only: :general_search
 
   def general_search
+    unauthorized! if cannot? :search, :general_search
+
     if search_service.valid?
       redirect_to search_result_searches_path
     else
@@ -14,6 +16,8 @@ class SearchesController < ApplicationController
   end
 
   def search_result
+    unauthorized! if cannot? :search, :search_result
+
     @search_result = search_service.call
   end
 
