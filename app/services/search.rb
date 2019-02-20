@@ -5,15 +5,15 @@ class Services::Search
 
   SEARCH_TYPES = %w[Question Answer Comment User Global].freeze
 
+  validates :query, :search_type, presence: true
+  validates :search_type, inclusion: { in: SEARCH_TYPES }
+
   attr_accessor :query, :search_type
 
   def initialize(query, search_type)
     @query = query
     @search_type = search_type
   end
-
-  validates :query, :search_type, presence: true
-  validates :search_type, inclusion: { in: SEARCH_TYPES }
 
   def call
     raise StandardError, I18n.t('errors.invalid_search_attributes') unless valid?
