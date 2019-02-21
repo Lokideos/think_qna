@@ -23,12 +23,16 @@ RSpec.describe SearchesController, type: :controller do
   end
 
   describe 'GET #search_result' do
+    let(:service) { double('Services::Search.new(params["query"], params["search_type"])') }
+
+    before { allow_any_instance_of(SearchesController).to receive(:search_service).and_return(service) }
+
     context 'with questions' do
       let(:question_1) { create(:question, title: 'Question Title 1') }
       let(:question_2) { create(:question, title: 'Question Title 2') }
 
       before do
-        allow(Question).to receive(:search).with('Title 1').and_return([question_1, question_2])
+        allow(service).to receive(:call).and_return([question_1, question_2])
         get :search_result, params: { query: 'Title 1', search_type: 'Question' }
       end
 
@@ -46,7 +50,7 @@ RSpec.describe SearchesController, type: :controller do
       let(:answer_2) { create(:answer, body: 'Answer Body 2') }
 
       before do
-        allow(Answer).to receive(:search).with('Answer').and_return([answer_1, answer_2])
+        allow(service).to receive(:call).and_return([answer_1, answer_2])
         get :search_result, params: { query: 'Answer', search_type: 'Answer' }
       end
 
@@ -64,7 +68,7 @@ RSpec.describe SearchesController, type: :controller do
       let(:comment_2) { create(:comment, body: 'Comment Body 2') }
 
       before do
-        allow(Comment).to receive(:search).with('Comment').and_return([comment_1, comment_2])
+        allow(service).to receive(:call).and_return([comment_1, comment_2])
         get :search_result, params: { query: 'Comment', search_type: 'Comment' }
       end
 
@@ -82,7 +86,7 @@ RSpec.describe SearchesController, type: :controller do
       let(:user_2) { create(:user, email: 'user2@email.com') }
 
       before do
-        allow(User).to receive(:search).with('email.com').and_return([user_1, user_2])
+        allow(service).to receive(:call).and_return([user_1, user_2])
         get :search_result, params: { query: 'email.com', search_type: 'User' }
       end
 
@@ -103,7 +107,7 @@ RSpec.describe SearchesController, type: :controller do
       let(:search_results) { [user, comment, answer, question] }
 
       before do
-        allow(ThinkingSphinx).to receive(:search).with('global').and_return(search_results)
+        allow(service).to receive(:call).and_return(search_results)
         get :search_result, params: { query: 'global', search_type: 'Global' }
       end
 
