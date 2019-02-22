@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+
+# rubocop:disable Metrics/BlockLength
 RSpec.describe SearchesController, type: :controller do
   describe 'GET #general_search' do
     context 'with valid parameters' do
@@ -37,3 +39,4 @@ RSpec.describe SearchesController, type: :controller do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
