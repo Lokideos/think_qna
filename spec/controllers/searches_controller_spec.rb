@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-
-# rubocop:disable Metrics/BlockLength
 RSpec.describe SearchesController, type: :controller do
   describe 'GET #general_search' do
     context 'with valid parameters' do
@@ -23,102 +21,19 @@ RSpec.describe SearchesController, type: :controller do
   end
 
   describe 'GET #search_result' do
-    let(:service) { double('Services::Search.new(params["query"], params["search_type"])') }
+    let(:service) { double('Services::Search') }
 
-    before { allow_any_instance_of(SearchesController).to receive(:search_service).and_return(service) }
+    before { allow(Services::Search).to receive(:new).and_return(service) }
 
-    context 'with questions' do
-      let(:question_1) { create(:question, title: 'Question Title 1') }
-      let(:question_2) { create(:question, title: 'Question Title 2') }
-
-      before do
-        allow(service).to receive(:call).and_return([question_1, question_2])
-        get :search_result, params: { query: 'Title 1', search_type: 'Question' }
-      end
-
-      it 'assigns search results to @search_result' do
-        expect(assigns(:search_result)).to match_array [question_1, question_2]
-      end
-
-      it 'renders :search_result template' do
-        expect(response).to render_template :search_result
-      end
+    it 'calls search service' do
+      expect(service).to receive(:call)
+      get :search_result, params: { query: 'some_query', search_type: 'correct_type' }
     end
 
-    context 'with answers' do
-      let(:answer_1) { create(:answer, body: 'Answer Body 1') }
-      let(:answer_2) { create(:answer, body: 'Answer Body 2') }
-
-      before do
-        allow(service).to receive(:call).and_return([answer_1, answer_2])
-        get :search_result, params: { query: 'Answer', search_type: 'Answer' }
-      end
-
-      it 'assigns search results to @search_result' do
-        expect(assigns(:search_result)).to match_array [answer_1, answer_2]
-      end
-
-      it 'renders :search_result template' do
-        expect(response).to render_template :search_result
-      end
-    end
-
-    context 'with comments' do
-      let(:comment_1) { create(:comment, body: 'Comment Body 1') }
-      let(:comment_2) { create(:comment, body: 'Comment Body 2') }
-
-      before do
-        allow(service).to receive(:call).and_return([comment_1, comment_2])
-        get :search_result, params: { query: 'Comment', search_type: 'Comment' }
-      end
-
-      it 'assigns search results to @search_result' do
-        expect(assigns(:search_result)).to match_array [comment_1, comment_2]
-      end
-
-      it 'renders :search_result template' do
-        expect(response).to render_template :search_result
-      end
-    end
-
-    context 'with users' do
-      let(:user_1) { create(:user, email: 'user@email.com') }
-      let(:user_2) { create(:user, email: 'user2@email.com') }
-
-      before do
-        allow(service).to receive(:call).and_return([user_1, user_2])
-        get :search_result, params: { query: 'email.com', search_type: 'User' }
-      end
-
-      it 'assigns search results to @search_result' do
-        expect(assigns(:search_result)).to match_array [user_1, user_2]
-      end
-
-      it 'renders :search_result template' do
-        expect(response).to render_template :search_result
-      end
-    end
-
-    context 'with global search' do
-      let(:user) { create(:user, email: 'global@email.com') }
-      let(:comment) { create(:comment, body: 'Global Comment') }
-      let(:answer) { create(:answer, body: 'Global Answer') }
-      let(:question) { create(:question, title: 'Question global') }
-      let(:search_results) { [user, comment, answer, question] }
-
-      before do
-        allow(service).to receive(:call).and_return(search_results)
-        get :search_result, params: { query: 'global', search_type: 'Global' }
-      end
-
-      it 'assigns search results to @search_result' do
-        expect(assigns(:search_result)).to match_array search_results
-      end
-
-      it 'renders :search_result template' do
-        expect(response).to render_template :search_result
-      end
+    it 'renders :search_result template' do
+      allow(service).to receive(:call)
+      get :search_result, params: { query: 'some_query', search_type: 'correct_type' }
+      expect(response).to render_template :search_result
     end
   end
 end
-# rubocop:enable Metrics/BlockLength
