@@ -23,34 +23,24 @@ RSpec.describe Services::Search, type: :model do
       expect { service.call }.to raise_error StandardError
     end
 
-    it 'should call .search on Question and return matched questions' do
-      question1 = create(:question, title: 'question 1')
-      question2 = create(:question, title: 'question 2')
-      service = Services::Search.new('question', 'Question')
-      expect(Question).to receive(:search).with(service.query).and_return([question1, question2])
-      service.call
-    end
+    it 'should call .search on Question/Answer/Comment and return matched results' do
+      Services::Search::SEARCH_TYPES.each do |search_type|
+        next if %w[Global User].include?(search_type)
 
-    it 'should call .search on Answer and return matched answers' do
-      answer1 = create(:answer, body: 'answer 1')
-      answer2 = create(:answer, body: 'answer 2')
-      service = Services::Search.new('answer', 'Answer')
-      expect(Answer).to receive(:search).with(service.query).and_return([answer1, answer2])
-      service.call
-    end
+        object1 = create(search_type.downcase.to_sym, body: "#{search_type.downcase.to_sym} 1")
+        object2 = create(search_type.downcase.to_sym, body: "#{search_type.downcase.to_sym} 2")
+        service = Services::Search.new(search_type.downcase, search_type)
 
-    it 'should call .search on Comment and return matched comments' do
-      comment1 = create(:comment, body: 'comment 1')
-      comment2 = create(:comment, body: 'comment 2')
-      service = Services::Search.new('comment', 'Comment')
-      expect(Comment).to receive(:search).with(service.query).and_return([comment1, comment2])
-      service.call
+        expect(search_type.constantize).to receive(:search).with(service.query).and_return([object1, object2])
+        service.call
+      end
     end
 
     it 'should call .search on User and return matched users' do
       user1 = create(:user, email: 'mymail1@users.com')
       user2 = create(:user, email: 'mymail2@users.com')
       service = Services::Search.new('users', 'User')
+
       expect(User).to receive(:search).with(service.query).and_return([user1, user2])
       service.call
     end
@@ -62,6 +52,7 @@ RSpec.describe Services::Search, type: :model do
       user = create(:user, email: 'mail@shared.com')
       search_result = [question, answer, comment, user]
       service = Services::Search.new('shared', 'Global')
+
       expect(ThinkingSphinx).to receive(:search).with(service.query).and_return(search_result)
       service.call
     end
