@@ -5,6 +5,7 @@ ru:
     corret_url_address: 'должно быть корректным url-адресом.'
     resource_ownership: 'Пользователь не может оценивать собственные ресурсы.'
     like_duplicate: 'может голосовать за или против только один раз подряд.'
+    invalid_search_attributes: 'Неверные атрибуты поиска.'
   notifications:
     created: 'Ваш %{resource} был успешно создан.'
     updated: 'Ваш %{resource} был успешно отредактирован.'
@@ -65,6 +66,10 @@ ru:
       links_section_headline: 'Ссылки:'
       best_answer_section_headline: 'Награда за Лучший Ответ'
     index:
+      search_headline: 'Поиск'
+      search_query: 'Поиск'
+      search_type: 'Тип Поиска'
+      search_submit: 'Найти'
       ask: 'Задать Вопрос'
     new:
       best_answer_section_headline: 'Награда за Лучший Ответ'
@@ -131,3 +136,9 @@ ru:
     show:
       headline: 'Подтверждение электронной почты'
       confirm: 'Подтвердить'
+
+  searches:
+    search_result:
+      headline: 'Результаты Поиска'
+    shared:
+      go_to_result: 'К результату поиска'

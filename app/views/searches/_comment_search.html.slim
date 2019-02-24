@@ -1,0 +1,5 @@
+p = resource.body
+- if resource.commentable.is_a?(Question)
+  = link_to t('searches.shared.go_to_result'), resource.class.find(resource.id).commentable
+- else
+  = link_to t('searches.shared.go_to_result'), resource.class.find(resource.id).commentable.question

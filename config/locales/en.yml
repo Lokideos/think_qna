@@ -36,6 +36,7 @@ en:
     corret_url_address: 'should be correct url address.'
     resource_ownership: "User can't rate his resources."
     like_duplicate: 'can like or dislike resource only once in a row.'
+    invalid_search_attributes: 'Invalid search attributes.'
   notifications:
     created: 'Your %{resource} has been successfully created.'
     updated: 'Your %{resource} has been successfully updated.'
@@ -95,6 +96,10 @@ en:
       links_section_headline: 'Links:'
       best_answer_section_headline: 'Best Answer Reward'
     index:
+      search_headline: 'Search'
+      search_query: 'Search'
+      search_type: 'Search Type'
+      search_submit: 'Find'
       ask: 'Ask question'
     new:
       best_answer_section_headline: 'Best Answer Reward'
@@ -162,3 +167,9 @@ en:
     show:
       headline: 'Email confirmation'
       confirm: 'Confirm'
+
+  searches:
+    search_result:
+      headline: 'Search Results'
+    shared:
+      go_to_result: 'Go to search result'

@@ -1,0 +1,5 @@
+h1= t('.headline')
+
+ul
+  - @search_result.each do |result|
+    li= render "searches/#{result.class.to_s.underscore}_search", resource: result

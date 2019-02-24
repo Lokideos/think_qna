@@ -1,3 +1,15 @@
+section.search
+  h2.visually-hidden= t('.search_headline')
+  = form_with url: general_search_searches_path, method: :get, local: true do |f|
+
+    = f.label :query, t('.search_query')
+    = f.text_field :query
+
+    = f.label :search_type, t('.search_type')
+    = f.select :search_type, options_for_select(Services::Search::SEARCH_TYPES)
+
+    p= f.submit t('.search_submit')
+
 p= link_to t('.ask'), new_question_path
 ul.all-questions
   = render @questions
