@@ -65,17 +65,23 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "think_qna_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+
   config.action_mailer.default_url_options = { host: '104.248.89.197' }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-      address:            'smtp.gmail.com',
-      port:                            587,
-      domain:          '104.248.89.197:80',
-      user_name:      ENV['SMTP_USERNAME'],
-      password:       ENV['SMTP_PASSWORD'],
-      authentication:              'plain',
-      enable_starttls_auto:            true
-  }
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.smtp_settings = { address: '104.248.89.197', port: 25 }
+
+
+  # config.action_mailer.default_url_options = { host: '104.248.89.197' }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #     address:            'smtp.gmail.com',
+  #     port:                            587,
+  #     domain:          '104.248.89.197:80',
+  #     user_name:      ENV['SMTP_USERNAME'],
+  #     password:       ENV['SMTP_PASSWORD'],
+  #     authentication:              'plain',
+  #     enable_starttls_auto:            true
+  # }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
