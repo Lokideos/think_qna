@@ -83,13 +83,13 @@ Rails.application.configure do
   #     enable_starttls_auto:            true
   # }
 
-  config.action_mailer.default_url_options = { host: '104.248.89.197' }
+  config.action_mailer.default_url_options = { host: 'tests-for-gurus.herokuapp.com' }
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
       address: 'mail.smtp2go.com',
       port: 2525, # 8025, 587 and 25 can also be used.
-      domain: '104.248.89.197',
+      domain: 'tests-for-gurus.herokuapp.com',
       authentication: 'plain',
       enable_starttls_auto: true,
       user_name: ENV['SMTP2GO_USERNAME'],
