@@ -55,6 +55,7 @@ gem 'sidekiq'
 gem 'sinatra' , require: false
 gem 'whenever'
 gem 'unicorn'
+gem 'redis-rails'
 
 # LOCALIZATION
 gem 'rails-i18n', '~> 5.0.0'

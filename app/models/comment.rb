@@ -5,7 +5,7 @@ class Comment < ApplicationRecord
 
   after_create_commit :broadcast_comment
 
-  belongs_to :commentable, polymorphic: true
+  belongs_to :commentable, polymorphic: true, touch: true
   belongs_to :user
 
   validates :body, presence: true

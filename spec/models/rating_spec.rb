@@ -6,7 +6,7 @@ require 'rails_helper'
 RSpec.describe Rating, type: :model do
   it { should have_many(:rating_changes) }
   it { should have_many(:users).through(:rating_changes) }
-  it { should belong_to :ratable }
+  it { should belong_to(:ratable).touch(true) }
   it { should validate_presence_of :score }
 
   context 'Methods' do
