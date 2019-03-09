@@ -1,4 +1,5 @@
-li.comment
-  p= comment.body
-  - if can?(:destroy, comment)
-    = link_to t('.delete'), comment_path(comment), class: 'comment-delete-link', method: :delete, data: { type: :json }, remote: true
+- cache comment do
+  li.comment
+    p= comment.body
+    - if can?(:destroy, comment)
+      = link_to t('.delete'), comment_path(comment), class: 'comment-delete-link', method: :delete, data: { type: :json }, remote: true

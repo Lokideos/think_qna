@@ -1,100 +1,102 @@
-section.question
-  .question-info id="question-info-#{question.id}"
-    h1= question.title
-    p.question-info-body= question.body
+- cache question do
+  section.question
+    .question-info id="question-info-#{question.id}"
+      h1= question.title
+      p.question-info-body= question.body
 
-    .question-attached-files
-      p= t('.attached_files_section_headline')
-      - if question.files.attached?
-        - question.files.each do |file|
-          = render 'attachments/attachment', resource: question, file: file
-
-    .links
-      h2= t('.links_section_headline')
-      ul
-        - question.links.each do |link|
-          - if link.persisted?
-            = render link, resource: question
-
-    - if question.reward
-      .best-answer-reward
-        h2= t('.best_answer_section_headline')
-        p= question.reward.title
-        = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
-
-    .question-rating
-      - if question.rating && current_user
-        h2= t('.rating_section_headline')
-        .question-rating-value
-          p= t('.rating_score', score: question.rating.score )
-        - if !current_user&.author_of?(question)
-          = render 'shared/rate_links', resource: question
-
-    .question-comments.comments-section
-      h2= t('.comment_section_headline')
-      ul.comments-list
-        - question.comments.each do |comment|
-          - if comment.persisted?
-            = render comment
-
-      - if current_user
-        .new-comment
-          .comment-errors
-          = form_with model: [question, @comment], class: 'create-comment-form' do |f|
-            p
-              = f.label :body
-              = f.text_field :body
-
-            p
-              = f.submit 'Create', class: 'create-comment-btn'
-
-  - if can?(:update, question)
-    p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
-    .question-update-errors
-      = render 'shared/errors', resource: question
-
-    = form_with model: question, class: 'edit-question-form hidden' do |f|
-      p
-        = f.label :title
-        = f.text_field :title
-
-      p
-        = f.label :body
-        = f.text_area :body
-
-      .question-form-attached-files
+      .question-attached-files
         p= t('.attached_files_section_headline')
         - if question.files.attached?
           - question.files.each do |file|
             = render 'attachments/attachment', resource: question, file: file
 
-      p.question-file-upload-section
-        = f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-
-      .question-form-attached-links
+      .links
         h2= t('.links_section_headline')
         ul
           - question.links.each do |link|
             - if link.persisted?
               = render link, resource: question
 
-      .question-links-attach-section
-        p= t('.new_links_section_headline')
+      - if question.reward
+        - cache question.reward do
+          .best-answer-reward
+            h2= t('.best_answer_section_headline')
+            p= question.reward.title
+            = image_tag(question.reward.image.variant(resize: '100x100').processed.service_url, class: 'best-answer-reward-image')
+
+      .question-rating
+        - if question.rating && current_user
+          h2= t('.rating_section_headline')
+          .question-rating-value
+            p= t('.rating_score', score: question.rating.score )
+          - if !current_user&.author_of?(question)
+            = render 'shared/rate_links', resource: question
+
+      .question-comments.comments-section
+        h2= t('.comment_section_headline')
+        ul.comments-list
+          - question.comments.each do |comment|
+            - if comment.persisted?
+              = render comment
+
+        - if current_user
+          .new-comment
+            .comment-errors
+            = form_with model: [question, @comment], class: 'create-comment-form' do |f|
+              p
+                = f.label :body
+                = f.text_field :body
+
+              p
+                = f.submit 'Create', class: 'create-comment-btn'
+
+    - if can?(:update, question)
+      p= link_to t('.edit', resource: question.class.model_name.human), edit_question_path(question), class: 'edit-question-link'
+      .question-update-errors
+        = render 'shared/errors', resource: question
+
+      = form_with model: question, class: 'edit-question-form hidden' do |f|
         p
-          = render 'links/link_nested_fields', form_builder: f
-          .additional-links
-            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+          = f.label :title
+          = f.text_field :title
 
-      p= f.submit t('.update'), class: 'question-form-update-btn'
+        p
+          = f.label :body
+          = f.text_area :body
 
-    p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
+        .question-form-attached-files
+          p= t('.attached_files_section_headline')
+          - if question.files.attached?
+            - question.files.each do |file|
+              = render 'attachments/attachment', resource: question, file: file
 
-  .subscription
-    - if can?(:subscribe, question)
-      p= link_to 'Subscribe', subscribe_question_path(question), class: 'subscribe-link', method: :patch, remote: true
-    - if can?(:unsubscribe, question)
-      p= link_to 'Cancel Subscription', unsubscribe_question_path(question), class: 'unsubscribe-link', method: :patch, remote: true
+        p.question-file-upload-section
+          = f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
+
+        .question-form-attached-links
+          h2= t('.links_section_headline')
+          ul
+            - question.links.each do |link|
+              - if link.persisted?
+                = render link, resource: question
+
+        .question-links-attach-section
+          p= t('.new_links_section_headline')
+          p
+            = render 'links/link_nested_fields', form_builder: f
+            .additional-links
+              = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+
+        p= f.submit t('.update'), class: 'question-form-update-btn'
+
+      p= link_to t('.delete', resource: question.class.model_name.human), question_path(question), method: :delete
+
+    .subscription
+      - if can?(:subscribe, question)
+        p= link_to 'Subscribe', subscribe_question_path(question), class: 'subscribe-link', method: :patch, remote: true
+      - if can?(:unsubscribe, question)
+        p= link_to 'Cancel Subscription', unsubscribe_question_path(question), class: 'unsubscribe-link', method: :patch, remote: true
 
 section.answers
   .best-answer

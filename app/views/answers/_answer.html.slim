@@ -1,43 +1,44 @@
-.answer-instance id="answer-info-#{answer.id}"
-  = answer.body
-  .answer-attached-files
-    p= t('.attached_files_section_headline')
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        = render 'attachments/attachment', resource: answer, file: file
+- cache answer do
+  .answer-instance id="answer-info-#{answer.id}"
+    = answer.body
+    .answer-attached-files
+      p= t('.attached_files_section_headline')
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          = render 'attachments/attachment', resource: answer, file: file
 
-  h2= t('.links_section_headline')
-  .answer-links
-    ul
-      - answer.links.each do |link|
-        - if link.persisted?
-          = render link, resource: answer
+    h2= t('.links_section_headline')
+    .answer-links
+      ul
+        - answer.links.each do |link|
+          - if link.persisted?
+            = render link, resource: answer
 
-  .answer-rating
-    - if answer.rating && current_user
-      h2= t('.rating_section_headline')
-      .answer-rating-value
-        p= t('.rating_score', score: answer.rating.score)
-      - if !current_user&.author_of?(answer)
-        = render 'shared/rate_links', resource: answer
+    .answer-rating
+      - if answer.rating && current_user
+        h2= t('.rating_section_headline')
+        .answer-rating-value
+          p= t('.rating_score', score: answer.rating.score)
+        - if !current_user&.author_of?(answer)
+          = render 'shared/rate_links', resource: answer
 
-  .answer-comments.comments-section
-    h2= t('.comment_section_headline')
-    ul.comments-list
-      - answer.comments.each do |comment|
-        - if comment.persisted?
-          = render comment, resource: answer
+    .answer-comments.comments-section
+      h2= t('.comment_section_headline')
+      ul.comments-list
+        - answer.comments.each do |comment|
+          - if comment.persisted?
+            = render comment, resource: answer
 
-    - if current_user
-      .new-comment
-        .comment-errors
-        = form_with model: [answer, comment], class: 'create-comment-form' do |f|
-          p
-            = f.label :body
-            = f.text_field :body
+      - if current_user
+        .new-comment
+          .comment-errors
+          = form_with model: [answer, comment], class: 'create-comment-form' do |f|
+            p
+              = f.label :body
+              = f.text_field :body
 
-          p
-            = f.submit 'Create', class: 'create-comment-btn'
+            p
+              = f.submit 'Create', class: 'create-comment-btn'
 
 - if can?(:update, answer)
   = link_to t('.edit', resource: answer.class.model_name.human), '#', class: 'edit-answer-link', data: {answer_id: answer.id}

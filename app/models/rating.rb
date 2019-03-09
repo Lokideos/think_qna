@@ -3,7 +3,7 @@
 class Rating < ApplicationRecord
   has_many :rating_changes
   has_many :users, through: :rating_changes
-  belongs_to :ratable, polymorphic: true
+  belongs_to :ratable, polymorphic: true, touch: true
 
   validates :score, presence: true
 

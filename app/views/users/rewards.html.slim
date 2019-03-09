@@ -2,7 +2,8 @@ h1= t('.headline')
 - if @rewards
   ul.rewards-list
     - @rewards.each do |reward|
-      li
-        p.reward-element= reward.question.title
-        p.reward-element= reward.title
-        = image_tag(reward.image.variant(resize: '50x50').processed.service_url, class: 'reward-image reward-element')
+      - cache reward do
+        li
+          p.reward-element= reward.question.title
+          p.reward-element= reward.title
+          = image_tag(reward.image.variant(resize: '50x50').processed.service_url, class: 'reward-image reward-element')
